@@ -32,8 +32,14 @@ public class MainController {
         }
     }
 
-    @GetMapping("/profile")
+    @GetMapping
     public String PROFILE() {
         return "profile";
+    }
+
+    @GetMapping("/token_handler")
+    public String TOKEN_HANDLER(@RequestParam("code") String code) {
+        System.out.println("AUTHENTICATION CODE: " + code);
+        return "token_handler";
     }
 }
