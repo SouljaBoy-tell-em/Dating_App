@@ -14,6 +14,8 @@ import Header from "./components/Header";
 
 import Context from ".";
 import PersonalityTest from "./pages/PersonalityTest/PersonalityTest";
+import Chat from "./components/Chat";
+import ChatPage from "./components/MyChat/ChatPage";
 
 const Container = styled.div`
   display: flex;
@@ -51,7 +53,18 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/chat"
+          element={
+            // <PrivateRoute>
+            //   <ChatPage/>
+            // </PrivateRoute>
+            <ChatPage/>
+
+          }
+        />
       </Routes>
+      {/* <Chat></Chat> */}
     </Container>
   );
 }

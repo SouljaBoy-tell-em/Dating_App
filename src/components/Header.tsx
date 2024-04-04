@@ -39,6 +39,7 @@ const Header = () => {
         <Link to={"/private"} className="header-link">Private </Link>
         <Link to={"/"} className="header-link">About</Link>
         <Link to={"/PersonalityTest"} className="header-link">Personality Test</Link>
+        <Link to={"/chat"} className="header-link">Chat</Link>
 
       </HeaderLinks>
 
