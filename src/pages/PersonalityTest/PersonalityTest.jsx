@@ -1,6 +1,6 @@
 import "../PersonalityTest/Styles.css";
 import styled from "styled-components";
-import {useState } from "react";
+import { useState } from "react";
 
 const Container = styled.div``;
 
@@ -30,7 +30,6 @@ const Buttons = styled.div`
   gap: 10px;
 `;
 
-
 const PersonalityTest = () => {
   const [isStarted, setStarted] = useState(false);
 
@@ -41,7 +40,6 @@ const PersonalityTest = () => {
   const [answers, setAnswers] = useState(
     new Array(questions.length).fill(undefined)
   );
-  
 
   const [noChoose, setNoChoose] = useState(false);
 
@@ -55,12 +53,11 @@ const PersonalityTest = () => {
     if (numOfQuestion < questions.length && choose != null) {
       answers[numOfQuestion] = choose;
       setAnswers(answers);
-      setChoose(answers[numOfQuestion+1]);
+      setChoose(answers[numOfQuestion + 1]);
       setNumOfQuestion(numOfQuestion + 1);
-
     } else if (choose == null) {
       setNoChoose(true);
-      setTimeout(function() {
+      setTimeout(function () {
         setNoChoose(false);
       }, 500);
     }
@@ -139,9 +136,14 @@ const PersonalityTest = () => {
             <label for="no">No</label>
           </div>
           <Buttons>
-            <button class="prev-btn" onClick={handlePrev}>
-              Previous
-            </button>
+            {numOfQuestion > 0 ? (
+              <button class="prev-btn" onClick={handlePrev}>
+                Prev
+              </button>
+            ) : (
+              ""
+            )}
+
             <button class="next-btn" onClick={handleNext}>
               {numOfQuestion === questions.length - 1 ? "Show res" : "Next"}
             </button>
