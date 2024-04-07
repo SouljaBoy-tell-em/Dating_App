@@ -1,0 +1,49 @@
+.dis-button {
+  position: absolute;
+  bottom: 10%;
+  left: 20%;
+  padding: 10px 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  background-color: #de673c; /* Цвет кнопки, похожий на цвет Tinder */
+  border: none;
+  border-radius: 20px; /* Создаем закругленные углы */
+  cursor: pointer;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); /* Добавляем тень */
+  transition: background-color 0.3s, box-shadow 0.3s; /* Плавное изменение цвета и тени при наведении */
+}
+
+.dis-button:hover {
+  background-color: #8b2c03; /* Изменяем цвет кнопки при наведении */
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4); /* Увеличиваем тень при наведении */
+}
+
+.dis-button:active {
+  transform: scale(1.1); /* Увеличиваем размер кнопки на 10% */
+}
+
+.like-button {
+  position: absolute;
+  bottom: 10%;
+  left: 55%;
+  padding: 10px 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  background-color: #3cde77;
+  border: none;
+  border-radius: 20px; /* Создаем закругленные углы */
+  cursor: pointer;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); /* Добавляем тень */
+  transition: background-color 0.3s, box-shadow 0.3s; /* Плавное изменение цвета и тени при наведении */
+}
+
+.like-button:hover {
+  background-color: #357e2e;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4); /* Увеличиваем тень при наведении */
+}
+
+.like-button:active {
+  transform: scale(1.1); /* Увеличиваем размер кнопки на 10% */
+}

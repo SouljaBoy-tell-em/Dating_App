@@ -1,0 +1,13 @@
+server:
+  port: 8189
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/spring_security_test
+    username: ilya
+    password: ilya
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  main:
+    allow-circular-references: true
