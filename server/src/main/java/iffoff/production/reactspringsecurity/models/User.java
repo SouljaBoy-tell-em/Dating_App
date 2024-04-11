@@ -25,6 +25,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "hasProfile")
+    private boolean hasProfile;
+
     @ManyToMany
     @JoinTable(
             name = "users_roles",
