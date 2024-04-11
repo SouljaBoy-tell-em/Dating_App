@@ -152,17 +152,18 @@
     <div class="shape"></div>
     <div class="shape"></div>
 </div>
-<form th:action="@{/login}" method="post" th:object="${user}">
+
+<form th:action="@{/profile}" method="post" th:object="${user}">
     <h3>Login Here</h3>
     <div align="center">
         <h5> <a href = "/register" text> Register now </a></h5>
     </div>
 
-    <label for="username">Username</label>
-    <input type="text" placeholder="Email or Phone" name="username" id="username">
+    <label>Username</label>
+    <input type="text"th:field="*{username}">
 
-    <label for="password">Password</label>
-    <input type="password" placeholder="password" name="password" id="password">
+    <label>Password</label>
+    <input type="password"  th:field="*{password}">
 
     <button>Log In</button>
     <div class="social">
