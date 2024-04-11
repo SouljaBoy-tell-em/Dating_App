@@ -5,7 +5,7 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/spring_security_test
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/security
     username: ilya
     password: ilya
     driver-class-name: com.mysql.cj.jdbc.Driver
