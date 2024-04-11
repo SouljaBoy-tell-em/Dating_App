@@ -15,13 +15,21 @@ import org.springframework.web.client.RestTemplate;
 @Data
 @NoArgsConstructor
 public class JwtAuthResponse<T> {
-
     private final String AUTHORIZATION = "Authorization";
     private final String BEARER = "Bearer ";
-
     private String JwtToken;
     private String JwtRefreshToken;
 
+    /**
+     * The GetElementByToken(String, String, User, HttpMethod, Class) executes request
+     * and returns depending on the parameters element
+     * @param REST_API_AUTH_LINK authorization link
+     * @param REST_API_REQUEST_LINK request link
+     * @param user current authorized user
+     * @param requestType type of the request(GET, POST, PUT, PATCH, DELETE)
+     * @param objectType type of object for exchange request
+     * @return requested element.
+     */
     public ResponseEntity<T> GetElementByToken(String REST_API_AUTH_LINK,
                                                String REST_API_REQUEST_LINK,
                                                User user,

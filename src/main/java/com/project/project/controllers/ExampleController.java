@@ -27,9 +27,4 @@ public class ExampleController {
     public String exampleAdmin() {
         return "Hello, admin!";
     }
-
-    @GetMapping("/get-admin")
-    public void getAdmin() {
-        service.getAdmin();
-    }
 }

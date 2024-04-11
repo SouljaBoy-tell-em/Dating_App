@@ -22,14 +22,25 @@ import java.util.function.Function;
 public class JwtService {
     private final Long ACCESS_EXPIRED_IN = (long) (1000 * 10);
     private final Long REFRESH_EXPIRED_IN = ACCESS_EXPIRED_IN * 10;
+
     @Value("${jwt.access.key}")
     public String JwtAccessKey;
-//    @Value("${jwt.refresh.key}")
     public String JwtRefreshKey = "53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D63000000000";
+
+    /**
+     * The DateExpiration(String) extracts the date expiration.
+     * @param token access token.
+     * @return extraction date.
+     */
     private Date DateExpiration(String token, String jwtKey) {
         return ExtractClaim(token, Claims::getExpiration, jwtKey);
     }
 
+    /**
+     * The ExtractAll(String) extracts all data from access token.
+     * @param token access token.
+     * @return all data, that extract.
+     */
     public Claims ExtractAll(String token, String jwtKey) {
         try {
             return Jwts
@@ -45,6 +56,12 @@ public class JwtService {
         return null;
     }
 
+    /**
+     * The ExtractClaim(String, Function) extracts all data from access token.
+     * @param token access token.
+     * @param claimsResolvers
+     * @return all data, that extract.
+     */
     private <T> T ExtractClaim(String token,
                                Function<Claims, T> claimsResolvers,
                                String jwtKey) {
@@ -52,10 +69,22 @@ public class JwtService {
         return claimsResolvers.apply(claims);
     }
 
+    /**
+     * The GetTimeExpiration(String, String) gets date of JWT-token expiration.
+     * @param token JWT token.
+     * @param jwtKey JWT key.
+     * @return date of expiration.
+     */
     public Date GetTimeExpiration(String token, String jwtKey) {
         return ExtractClaim(token, Claims::getExpiration, jwtKey);
     }
 
+    /**
+     * The GenerateToken(Map, UserDetails) generates token.
+     * @param additionalData secondary data.
+     * @param userDetails main data.
+     * @return jwt token.
+     */
     private String GenerateToken(Map<String, Object> additionalData,
                                      UserDetails userDetails) {
         return Jwts
@@ -69,6 +98,11 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * The GenerateToken(UserDetails) generates token.
+     * @param userDetails main data.
+     * @return JWT refresh-token.
+     */
     public String GenerateRefreshToken(UserDetails userDetails) {
         return Jwts
                 .builder()
@@ -80,6 +114,11 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * The GenerateTokenValue(UserDetails) generates token.
+     * @param userDetails main data.
+     * @return jwt token.
+     */
     public String GenerateTokenValue(UserDetails userDetails) {
         Map<String, Object> additionalDataMap = new HashMap<>();
         if(userDetails instanceof User user) {
@@ -89,6 +128,10 @@ public class JwtService {
         return GenerateToken(additionalDataMap, userDetails);
     }
 
+    /**
+     * The Handler() sets the generation key.
+     * @return jwt key.
+     */
     private Key Handler(String JwtKey) {
         return Keys
                 .hmacShaKeyFor(Decoders
@@ -97,11 +140,22 @@ public class JwtService {
                 );
     }
 
+    /**
+     * The IsTokenExpired(String) checks if token is expired.
+     * @param token access token.
+     * @return true, if token expired.
+     */
     private boolean IsTokenExpired(String token) {
         return DateExpiration(token, JwtAccessKey)
                 .before(new Date());
     }
 
+    /**
+     * The IsTokenValid(Map, UserDetails) checks validation of the token.
+     * @param token access token.
+     * @param userDetails main user data.
+     * @return true, if token is valid.
+     */
     public boolean IsTokenValid(String token, String jwtKey, UserDetails userDetails) {
         return (UsernameExtraction(token, jwtKey)
                 .equals(userDetails
@@ -109,6 +163,11 @@ public class JwtService {
                 !IsTokenExpired(token);
     }
 
+    /**
+     * The UsernameExtraction(token) extracts username from token.
+     * @param token access token.
+     * @return username.
+     */
     public String UsernameExtraction(String token, String jwtKey) {
         return ExtractClaim(token, Claims::getSubject, jwtKey);
     }

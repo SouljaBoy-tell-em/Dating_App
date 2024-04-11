@@ -33,6 +33,11 @@ public class AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    /**
+     * The Authorization(LoginRequest) authorizes the user.
+     * @param request request for authorization.
+     * @return response, that contains jwt token.
+     */
     public JwtAuthResponse Authorization(AuthorizationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -47,6 +52,11 @@ public class AuthService {
                                    jwtService.GenerateRefreshToken(user));
     }
 
+    /**
+     * The Refresh(RefreshRequest) refreshes old equations of tokens.
+     * @param request request for refreshing.
+     * @return response, that contains a new pair of jwt tokens.
+     */
     public JwtAuthResponse Refresh(RefreshRequest request) {
         String jwtRefreshToken = request.getJwtRefreshToken();
         String username = jwtService.UsernameExtraction(jwtRefreshToken, jwtService.JwtRefreshKey);
@@ -56,6 +66,11 @@ public class AuthService {
                                    jwtService.GenerateRefreshToken(user));
     }
 
+    /**
+     * The Register(RegisterRequest) registers the user.
+     * @param request request for registration.
+     * @return response, that contains jwt token.
+     */
     public JwtAuthResponse Register(RegisterRequest request) {
         User user = User
                 .builder()

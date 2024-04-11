@@ -14,22 +14,20 @@ public class UserServiceManager {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * The Add(User) adds a new user in the DB.
+     * @param user user.
+     */
     public void Add(User user) {
         if(userRepository.existsById(user.getUsername()))
             return;
         userRepository.save(user);
     }
 
-    public User GetById(String username) {
-        return userRepository
-                .findById(username)
-                .get();
-    }
-
-    public UserDetailsService UserDetailsService() {
-        return this::GetById;
-    }
-
+    /**
+     * The GetAuthorizedUser() is a method, that checks user authorization.
+     * @return link to the UserDetailsService method.
+     */
     public User GetAuthorizedUser() {
         Authentication authentication = SecurityContextHolder
                 .getContext()
@@ -37,9 +35,23 @@ public class UserServiceManager {
         return GetById(authentication.getName());
     }
 
-    public void getAdmin() {
-        var user = GetAuthorizedUser();
-        user.setRole(UserRole.ROLE_ADMIN);
-        Add(user);
+    /**
+     * The GetById(String) gets a user by id.
+     * @param username username.
+     * @return user, if user exists in the DB.
+     */
+    public User GetById(String username) {
+        return userRepository
+                .findById(username)
+                .get();
     }
+
+    /**
+     * The UserDetailsService() is a service data explorer.
+     * @return link to the UserDetailsService method.
+     */
+    public UserDetailsService UserDetailsService() {
+        return this::GetById;
+    }
+
 }
