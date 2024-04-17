@@ -60,7 +60,7 @@
       bottom: -80px;
   }
   form {
-      height: 200px;
+      height: 540px;
       width: 400px;
       background-color: rgba(255,255,255,0.13);
       position: absolute;
@@ -152,11 +152,14 @@
     <div class="shape"></div>
     <div class="shape"></div>
 </div>
-<form th:action="@{/login}" method="post">
-    <div align="center">
-        <h4>Registration completed successfully !</h4>
-        <h5> <a href = "/login"> Log In </a></h5>
-    </div>
+<form th:action="@{/successfully_register}" method="post" th:object="${user}">
+
+    <label for="username">Username</label>
+    <input type="text" th:field="*{username}" placeholder="Email or Phone" name="username" id="username" >
+
+    <label for="password">Password</label>
+    <input type="password" th:field="*{password}" placeholder="Password" name="password" id="password">
+    <button>Register</button>
 </form>
 </body>
 </html>
