@@ -48,9 +48,11 @@ public class AuthRestController {
         if(currentUser.isConfirmed() == true)
             return new ResponseEntity<>("This user already confirmed.",
                                                               HttpStatus.OK);
-        if(confirmCode.getExpiredTime().getTime() - (new Date()).getTime() < 0)
+        if(confirmCode.getExpiredTime().getTime() - (new Date()).getTime() < 0) {
+            confirmEmailRepository.deleteById(currentUser.getUsername());
             return new ResponseEntity<>("Code confirmation time has expired.",
-                                                                     HttpStatus.OK);
+                    HttpStatus.OK);
+        }
         if(confirmCode.getConfirmCode() != request.getConfirmCode())
             return new ResponseEntity<>("Incorrect confirm code.",
                                                          HttpStatus.OK);
