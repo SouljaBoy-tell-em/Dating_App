@@ -18,7 +18,7 @@ public class User implements Serializable, UserDetails {
 
     @Column(name = "username")
     @Id
-    @Pattern(regexp = "^[A-Za-z][A-Za-z0-9.]*[@]{1}[a-z]+[.]{1}[a-z]{2,}$")
+    @Pattern(regexp = "^[A-Za-z][A-Za-z0-9.]+[@]{1}[a-z]+[.]{1}[a-z]{2,}$")
     private String username;
 
     @Column(name = "password")
