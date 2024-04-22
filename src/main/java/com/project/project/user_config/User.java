@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,66 +19,89 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements Serializable, UserDetails {
 // REGISTRATION INFO:
 
-    @Column(name = "username")
+    @Column(name = "email")
     @Id
     @Pattern(regexp = "^[A-Za-z][A-Za-z0-9.]*[@]{1}[a-z]+[.]{1}[a-z]{2,}$")
-    private String username;
+    private String email;
 
     @Column(name = "password")
 //    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z@$!%*?&]{8,}$")
     private String password;
 
-    @Column(name = "user_role")
+    @Column(name = "userRole")
     @Getter
     @Setter
     private UserRole role;
 
-    @Column(name = "confirmed")
+    @Column(name = "isConfirm")
     @Getter
     @Setter
-    private boolean confirmed;
+    private boolean isConfirm;
 
-    @Column(name = "featureId")
-    private String featureId;
-
-    @Column(name = "likedUsersId")
-    private String likedUsersId;
+    @Column(name = "isActive")
+    @Getter
+    @Setter
+    private boolean isActive;
 // ###################################################################################################
 // GENERAL INFO:
 
     @Column(name = "firstname")
+    @Getter
     @Pattern(regexp = "^[A-ZА-Я][a-zа-я]*$")
+    @Setter
     private String firstname;
 
     @Column(name = "lastname")
+    @Getter
     @Pattern(regexp = "^[A-ZА-Я][a-zа-я]*$")
+    @Setter
     private String lastname;
 
     @Column(name = "birthday")
+    @Getter
+    @Setter
     private LocalDate birthday;
+
+    @Column(name = "isPrivate")
+    @Getter
+    @Setter
+    private boolean isPrivate;
+
+    @Column(name = "likedUsersId")
+    @Getter
+    private String likedUsersId;
+
+    @Column(name = "blackListId")
+    @Getter
+    private String blackListId;
+
+//    @Column(name = "photoListId")
+//    @Getter
+//    private String photoListId;
+// ###################################################################################################
 
     public User() {
         this.role = UserRole.ROLE_USER;
     }
 
-    public User(String username, String password, UserRole role) {
-        this.username  = username;
+    public User(String email, String password, UserRole role) {
+        this.email     = email;
         this.password  = password;
         this.role      =  (role != null) ? role : UserRole.ROLE_USER;
-        this.confirmed = false;
-        GenerateUniqueIds();
+        this.isConfirm = false;
+        this.isPrivate = false;
     }
 
-    public User(String username, String password, UserRole role, boolean confirmed) {
-        this.username  = username;
+    public User(String email, String password, UserRole role, boolean isConfirm, boolean isPrivate) {
+        this.email     = email;
         this.password  = password;
         this.role      =  (role != null) ? role : UserRole.ROLE_USER;
-        this.confirmed = confirmed;
-        GenerateUniqueIds();
+        this.isConfirm = isConfirm;
+        this.isPrivate = isPrivate;
     }
 
     public User(User user) {
-        this.username = user.getUsername();
+        this.email = user.getUsername();
         this.password = user.getPassword();
         this.role     = (user.getRole() != null) ? role : UserRole.ROLE_USER;
     }
@@ -96,7 +118,7 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
@@ -117,18 +139,5 @@ public class User implements Serializable, UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    private void GenerateUniqueIds() {
-        this.featureId = "FEATURES_" + getUsername();
-        this.likedUsersId = "LIKED_USERS_" + getUsername();
-        CreateUniqueDBs();
-    }
-
-    private void CreateUniqueDBs() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + featureId + " (height, weight);");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + likedUsersId + " (liked_users_id);");
-
     }
 }

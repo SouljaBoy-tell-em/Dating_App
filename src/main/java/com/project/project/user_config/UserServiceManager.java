@@ -14,6 +14,16 @@ public class UserServiceManager {
     @Autowired
     private UserRepository userRepository;
 
+    public boolean IsAccess(String email) {
+        if(GetAuthorizedUser()
+                .getUsername()
+                .equals(email) ||
+           GetAuthorizedUser()
+                   .getRole() == UserRole.ROLE_ADMIN)
+            return true;
+        return false;
+    }
+
     /**
      * The Add(User) adds a new user in the DB.
      * @param user user.
@@ -36,7 +46,9 @@ public class UserServiceManager {
         Authentication authentication = SecurityContextHolder
                 .getContext()
                 .getAuthentication();
-        return GetById(authentication.getName());
+        if(GetById(authentication.getName()) != null)
+            return GetById(authentication.getName());
+        return null;
     }
 
     /**
