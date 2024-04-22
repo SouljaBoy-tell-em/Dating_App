@@ -123,7 +123,7 @@ public class JwtService {
         Map<String, Object> additionalDataMap = new HashMap<>();
         if(userDetails instanceof User user) {
             additionalDataMap.put("role", user.getRole());
-            additionalDataMap.put("confirmed", user.isConfirmed());
+            additionalDataMap.put("confirmed", user.isConfirm());
         }
 
         return GenerateToken(additionalDataMap, userDetails);
