@@ -21,7 +21,7 @@ public class ConfirmEmailConfig {
 
     private static final long CONFIRM_CODE_MIN_VALUE = 100000;
     private static final long CONFIRM_CODE_MAX_VALUE = 999999;
-    private static final long CONFIRM_TIME = 600 * 1000;
+    private static final long CONFIRM_TIME = 30 * 1000;
     public static final String CONFIRM_SUBJECT_MESSAGE = "Confirm your account.";
     public static final String CONFIRM_BODY_MESSAGE = "Your confirm code: ";
     public static final String MAIL = "phystechdate@gmail.com";

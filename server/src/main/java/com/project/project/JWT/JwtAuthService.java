@@ -11,6 +11,7 @@ import com.project.project.user_config.UserServiceManager;
 import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +24,10 @@ import org.springframework.stereotype.Service;
 public class JwtAuthService {
 
     @Autowired
-    private UserServiceManager userServiceManager;
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private JwtService jwtService;
@@ -32,7 +36,7 @@ public class JwtAuthService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private UserServiceManager userServiceManager;
 
     /**
      * The Login(LoginRequest) authorizes the user.
@@ -42,12 +46,12 @@ public class JwtAuthService {
     public JwtAuthResponse Login(AuthorizationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
+                        request.getEmail(),
                         request.getPassword()
                 ));
         UserDetails user = userServiceManager
                 .UserDetailsService()
-                .loadUserByUsername(request.getUsername());
+                .loadUserByUsername(request.getEmail());
 
         return new JwtAuthResponse(jwtService.GenerateTokenValue(user),
                                    jwtService.GenerateRefreshToken(user),
@@ -77,15 +81,27 @@ public class JwtAuthService {
      */
     public JwtAuthResponse Register(RegisterRequest request) throws AuthException {
 
-        if(userServiceManager.IsExist(request.getUsername()))
+        if(userServiceManager.IsExist(request.getEmail()))
             throw new AuthException("So user already exists.");
 
+        int size = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users", Integer.class);
         User user = User
                 .builder()
-                .username(request.getUsername())
+                .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(UserRole.ROLE_USER)
+                .isConfirm(false)
+                .isActive(true)
+                .firstname(null)
+                .lastname(null)
+                .birthday(null)
+                .isPrivate(false)
+                .likedUsersId("LIKED_USERS_ID_" + size)
+                .blackListId("BLACKLIST_ID_" + size)
                 .build();
+
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + user.getLikedUsersId() + "(liked_users_id LONG);");
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + user.getBlackListId() + "(black_list_id LONG);");
         userServiceManager.Add(user);
 
         return new JwtAuthResponse(jwtService.GenerateTokenValue(user),
