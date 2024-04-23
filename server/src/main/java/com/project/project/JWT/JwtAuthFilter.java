@@ -44,6 +44,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
         String header = request.getHeader(AUTHORIZATION);
+
+        //For WebSocket
+        if (header == null) {
+            try {
+                header = request.getParameter("Authorization");
+            } catch (Exception e) {
+
+            }
+        }
+
         if(StringUtils.isEmpty(header) ||
                 !StringUtils.startsWith(header, BEARER)) {
             filterChain.doFilter(request, response);
