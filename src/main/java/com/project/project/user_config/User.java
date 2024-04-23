@@ -42,6 +42,14 @@ public class User implements Serializable, UserDetails {
     @Getter
     @Setter
     private boolean isActive;
+
+    @Column(name = "likedUsersId")
+    @Getter
+    private String likedUsersId;
+
+    @Column(name = "blackListId")
+    @Getter
+    private String blackListId;
 // ###################################################################################################
 // GENERAL INFO:
 
@@ -66,14 +74,6 @@ public class User implements Serializable, UserDetails {
     @Getter
     @Setter
     private boolean isPrivate;
-
-    @Column(name = "likedUsersId")
-    @Getter
-    private String likedUsersId;
-
-    @Column(name = "blackListId")
-    @Getter
-    private String blackListId;
 
 //    @Column(name = "photoListId")
 //    @Getter
