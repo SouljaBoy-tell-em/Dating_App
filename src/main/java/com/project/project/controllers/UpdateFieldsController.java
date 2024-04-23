@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+import java.util.function.Function;
 
 
 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
@@ -58,7 +59,22 @@ public class UpdateFieldsController {
     };
 
     @PostMapping("/field")
-    public ResponseEntity<String> AccessProfileUpdate(@RequestBody GeneralUpdateRequest request) {
+    public ResponseEntity<String> FieldUpdate(@RequestBody GeneralUpdateRequest request) {
         return STATUS_UPDATE.apply(request.getField(), request.getEmail(), request.getType());
+    }
+
+    @PostMapping("/general")
+    public ResponseEntity<String> FullUpdate(@RequestBody SecondaryInfoUserUpdateRequest request) {
+        if(!userRepository.existsById(request.getEmail()))
+            return new ResponseEntity<>("So user doesn't exist.",
+                                               HttpStatus.BAD_REQUEST);
+        if(userServiceManager.IsAccess(request.getEmail())) {
+            userRepository.FirstnameUpdate(request.getFirstname(), request.getEmail());
+            userRepository.LastnameUpdate(request.getLastname(), request.getEmail());
+            userRepository.BirthdayUpdate(request.getBirthday(), request.getEmail());
+            userRepository.ProfileAccessUpdate(request.isPrivate(), request.getEmail());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Not enough rights.", HttpStatus.BAD_GATEWAY);
     }
 }
