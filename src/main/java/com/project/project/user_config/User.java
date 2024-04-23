@@ -50,6 +50,10 @@ public class User implements Serializable, UserDetails {
     @Column(name = "blackListId")
     @Getter
     private String blackListId;
+
+    @Column(name = "photosId")
+    @Getter
+    private String photosId;
 // ###################################################################################################
 // GENERAL INFO:
 
@@ -74,6 +78,11 @@ public class User implements Serializable, UserDetails {
     @Getter
     @Setter
     private boolean isPrivate;
+
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "photo")
+    @Lob
+    private byte[] photo;
 
 //    @Column(name = "photoListId")
 //    @Getter
