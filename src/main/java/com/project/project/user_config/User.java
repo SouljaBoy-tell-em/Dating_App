@@ -1,6 +1,7 @@
 package com.project.project.user_config;
 
 
+import com.project.project.user_config.black_list.BlackList;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -43,17 +44,10 @@ public class User implements Serializable, UserDetails {
     @Setter
     private boolean isActive;
 
-    @Column(name = "likedUsersId")
     @Getter
-    private String likedUsersId;
-
-    @Column(name = "blackListId")
-    @Getter
-    private String blackListId;
-
-    @Column(name = "photosId")
-    @Getter
-    private String photosId;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "email")
+    private List<BlackList> blackList;
 // ###################################################################################################
 // GENERAL INFO:
 

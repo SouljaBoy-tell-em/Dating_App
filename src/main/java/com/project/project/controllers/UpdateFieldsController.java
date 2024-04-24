@@ -2,9 +2,12 @@ package com.project.project.controllers;
 
 
 import com.project.project.requests.admin.*;
+import com.project.project.user_config.User;
 import com.project.project.user_config.UserRepository;
 import com.project.project.user_config.UserRole;
 import com.project.project.user_config.UserServiceManager;
+import com.project.project.user_config.black_list.BlackList;
+import com.project.project.user_config.black_list.BlackListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
-import java.util.function.Function;
 
 
 @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
@@ -21,6 +23,9 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 @RestController
 public class UpdateFieldsController {
+
+    @Autowired
+    private BlackListRepository blackListRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,11 +44,9 @@ public class UpdateFieldsController {
             switch (way) {
                 case CASE_ACTIVE_UPDATE          -> userRepository.ActiveUpdate(Boolean.parseBoolean((String) changeField), email);
                 case CASE_BIRTHDAY_UPDATE        -> userRepository.BirthdayUpdate((LocalDate) changeField, email);
-                case CASE_BLACK_LIST_ID_UPDATE   -> userRepository.BlackListIdUpdate((String) changeField, email);
                 case CASE_CONFIRM_UPDATE         -> userRepository.ConfirmUpdate(Boolean.parseBoolean((String) changeField), email);
                 case CASE_FIRSTNAME_UPDATE       -> userRepository.FirstnameUpdate((String) changeField, email);
                 case CASE_LASTNAME_UPDATE        -> userRepository.LastnameUpdate((String) changeField, email);
-                case CASE_LIKED_USERS_ID_UPDATE  -> userRepository.LikedUsersIdUpdate((String) changeField, email);
                 case CASE_PASSWORD_UPDATE        -> userRepository.PasswordUpdate(passwordEncoder.encode((CharSequence) changeField), email);
                 case CASE_PROFILE_ACCESS_UPDATE  -> userRepository.ProfileAccessUpdate((Boolean) changeField, email);
                 case CASE_ROLE_UPDATE            -> {
@@ -51,6 +54,13 @@ public class UpdateFieldsController {
                         case UserRole.ROLE_USER  -> userRepository.RoleUpdate(UserRole.ROLE_USER,  email);
                         case UserRole.ROLE_ADMIN -> userRepository.RoleUpdate(UserRole.ROLE_ADMIN, email);
                     }
+                }
+
+                // BLACKLIST REQUESTS:
+                case CASE_ADD_TO_BLACKLIST -> blackListRepository.save(new BlackList(email, (String)changeField));
+                case CASE_GET_BLACKLIST -> {
+                    User user = userServiceManager.GetAuthorizedUser();
+                    System.out.println(user.getBlackList());
                 }
             }
             return new ResponseEntity<>(HttpStatus.OK);

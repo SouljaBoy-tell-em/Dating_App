@@ -9,6 +9,8 @@ import com.project.project.security.mail.ConfirmEmailConfig;
 import com.project.project.security.mail.ConfirmEmailRepository;
 import com.project.project.user_config.User;
 import com.project.project.user_config.UserServiceManager;
+import com.project.project.user_config.black_list.BlackList;
+import com.project.project.user_config.black_list.BlackListRepository;
 import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,9 @@ import java.util.Date;
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
+
+    @Autowired
+    private BlackListRepository blackListRepository;
 
     @Autowired
     private JwtAuthService authenticationService;
@@ -161,6 +166,9 @@ public class AuthController {
     @GetMapping("/test")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public String TEST() {
+//        User user = userServiceManager.GetAuthorizedUser();
+//        blackListRepository.save(new BlackList(user.getUsername(), "ggg@mail.com"));
+//        System.out.println(user.getBlackList());
         return "TEST";
     }
 
@@ -178,7 +186,6 @@ public class AuthController {
                     currentUser.getUsername(),
                     currentUser.getRole(),
                     currentUser.isConfirm(),
-                    currentUser.getLikedUsersId(),
                     currentUser.getFirstname(),
                     currentUser.getLastname(),
                     currentUser.getBirthday()),
