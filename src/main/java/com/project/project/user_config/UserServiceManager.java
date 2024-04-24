@@ -42,6 +42,7 @@ public class UserServiceManager {
     public void ConfirmUser(String username) {
         userRepository.Confirmed(username);
     }
+
     public User GetAuthorizedUser() {
         Authentication authentication = SecurityContextHolder
                 .getContext()

@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
+
 @AllArgsConstructor
 @Builder
 @Entity
@@ -48,6 +49,7 @@ public class User implements Serializable, UserDetails {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "email")
     private List<BlackList> blackList;
+
 // ###################################################################################################
 // GENERAL INFO:
 
