@@ -89,15 +89,15 @@ public class JwtAuthService {
         if(userServiceManager.IsExist(request.getEmail()))
             throw new AuthException("So user already exists.");
 
-        byte[] bytes = new byte[0];
-        try(FileInputStream outputStream = new FileInputStream("images.png")) {
-            bytes = outputStream.readAllBytes();
-            System.out.println(bytes.length);
-            for(int i = 0; i < bytes.length; i++)
-                System.out.print(bytes[i]);
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-        }
+//        byte[] bytes = new byte[0];
+//        try(FileInputStream outputStream = new FileInputStream("images.png")) {
+//            bytes = outputStream.readAllBytes();
+//            System.out.println(bytes.length);
+//            for(int i = 0; i < bytes.length; i++)
+//                System.out.print(bytes[i]);
+//        } catch (Exception exception) {
+//            System.out.println(exception.getMessage());
+//        }
 
         int size = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users", Integer.class);
         User user = User
@@ -111,15 +111,8 @@ public class JwtAuthService {
                 .lastname(null)
                 .birthday(null)
                 .isPrivate(false)
-                .likedUsersId("LIKED_USERS_ID_" + size)
-                .blackListId("BLACKLIST_ID_" + size)
-                .photosId("PHOTOS_ID_" + size)
-                .photo(bytes)
+//                .photo(bytes)
                 .build();
-
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + user.getLikedUsersId() + "(liked_users_id LONG);");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + user.getBlackListId() + "(black_list_id LONG);");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + user.getPhotosId() + "(photo_id LONG, photo TINYBLOB, photo_status VARCHAR(20));");
         userServiceManager.Add(user);
 
         return new JwtAuthResponse(jwtService.GenerateTokenValue(user),

@@ -12,7 +12,6 @@ public class MainUserInfoRepsonse {
     private String username;
     private UserRole role;
     private boolean confirmed;
-    private String likedUsersId;
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
