@@ -1,6 +1,8 @@
 package com.project.project.user_config;
 
 
+import com.project.project.user_config.black_list.BlackList;
+import com.project.project.user_config.photos.Photo;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,6 +12,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 
 
 @AllArgsConstructor
@@ -43,13 +46,6 @@ public class User implements Serializable, UserDetails {
     @Setter
     private boolean isActive;
 
-    @Column(name = "likedUsersId")
-    @Getter
-    private String likedUsersId;
-
-    @Column(name = "blackListId")
-    @Getter
-    private String blackListId;
 // ###################################################################################################
 // GENERAL INFO:
 
@@ -68,16 +64,22 @@ public class User implements Serializable, UserDetails {
     @Column(name = "birthday")
     @Getter
     @Setter
-    private Date birthday;
+    private LocalDate birthday;
 
     @Column(name = "isPrivate")
     @Getter
     @Setter
     private boolean isPrivate;
 
-//    @Column(name = "photoListId")
-//    @Getter
-//    private String photoListId;
+    @Getter
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "email")
+    private List<BlackList> blackList;
+
+    @Getter
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "email")
+    private List<Photo> photos;
 // ###################################################################################################
 
     public User() {
@@ -138,6 +140,13 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
+        return true;
+    }
+
+    public static boolean CheckUniqueBlacklist(List<BlackList> blockedUsers, String email) {
+        for(int iBlockedUsers = 0; iBlockedUsers < blockedUsers.size(); iBlockedUsers++)
+            if(blockedUsers.get(iBlockedUsers).getBlockedEmail().equals(email))
+                return false;
         return true;
     }
 }

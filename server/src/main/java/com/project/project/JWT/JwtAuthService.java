@@ -18,6 +18,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.zip.Deflater;
+
 
 @RequiredArgsConstructor
 @Service
@@ -79,10 +84,20 @@ public class JwtAuthService {
      * @param request request for registration.
      * @return response, that contains jwt token.
      */
-    public JwtAuthResponse Register(RegisterRequest request) throws AuthException {
+    public JwtAuthResponse Register(RegisterRequest request) throws AuthException, IOException {
 
         if(userServiceManager.IsExist(request.getEmail()))
             throw new AuthException("So user already exists.");
+
+//        byte[] bytes = new byte[0];
+//        try(FileInputStream outputStream = new FileInputStream("images.png")) {
+//            bytes = outputStream.readAllBytes();
+//            System.out.println(bytes.length);
+//            for(int i = 0; i < bytes.length; i++)
+//                System.out.print(bytes[i]);
+//        } catch (Exception exception) {
+//            System.out.println(exception.getMessage());
+//        }
 
         int size = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users", Integer.class);
         User user = User
@@ -96,16 +111,30 @@ public class JwtAuthService {
                 .lastname(null)
                 .birthday(null)
                 .isPrivate(false)
-                .likedUsersId("LIKED_USERS_ID_" + size)
-                .blackListId("BLACKLIST_ID_" + size)
+//                .photo(bytes)
                 .build();
-
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + user.getLikedUsersId() + "(liked_users_id LONG);");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + user.getBlackListId() + "(black_list_id LONG);");
         userServiceManager.Add(user);
 
         return new JwtAuthResponse(jwtService.GenerateTokenValue(user),
                                    jwtService.GenerateRefreshToken(user),
                                    user.getUsername());
+    }
+
+    public byte[] compressImage(byte[] data) throws IOException {
+        Deflater deflater = new Deflater();
+        deflater.setLevel(Deflater.BEST_COMPRESSION);
+        deflater.setInput(data);
+        deflater.finish();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] tmp = new byte[6000];
+
+        while(!deflater.finished()) {
+            int size = deflater.deflate(tmp);
+            outputStream.write(tmp,0, size);
+        }
+
+        outputStream.close();
+        return outputStream.toByteArray();
     }
 }
