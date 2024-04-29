@@ -8,6 +8,8 @@ import com.project.project.user_config.UserRole;
 import com.project.project.user_config.UserServiceManager;
 import com.project.project.user_config.black_list.BlackList;
 import com.project.project.user_config.black_list.BlackListRepository;
+import com.project.project.user_config.photos.Photo;
+import com.project.project.user_config.photos.UserPhotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,12 +33,15 @@ public class UpdateFieldsController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private UserPhotoRepository userPhotoRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private UserServiceManager userServiceManager;
 
-    private GeneralUsernameRequest<Object, String, UserUpdateField, ResponseEntity<String>> STATUS_UPDATE = (changeField, email, way) -> {
+    private GeneralUsernameRequest<Object, String, UserUpdateField, ResponseEntity<?>> STATUS_UPDATE = (changeField, email, way) -> {
         if(!userRepository.existsById(email))
             return new ResponseEntity<>("So user doesn't exist.",
                                                HttpStatus.BAD_REQUEST);
@@ -57,10 +62,53 @@ public class UpdateFieldsController {
                 }
 
                 // BLACKLIST REQUESTS:
-                case CASE_ADD_TO_BLACKLIST -> blackListRepository.save(new BlackList(email, (String)changeField));
+                case CASE_ADD_TO_BLACKLIST -> {
+                    String blockedEmail = (String) changeField;
+                    if(userServiceManager.IsExist(blockedEmail) &&
+                            User.CheckUniqueBlacklist(userServiceManager.GetAuthorizedUser().getBlackList(), blockedEmail))
+                        return new ResponseEntity<>(blackListRepository.save(new BlackList(email, (String)changeField)), HttpStatus.OK);
+                    return new ResponseEntity<>("Blockable user doesn't exist", HttpStatus.BAD_REQUEST);
+                }
+                case CASE_CHECK_IN_BLACKLIST -> {
+                    return new ResponseEntity<>(!User
+                            .CheckUniqueBlacklist(userServiceManager
+                                    .GetAuthorizedUser()
+                                    .getBlackList(), (String) changeField), HttpStatus.OK);
+                }
+                // TODO: доделать удаление из BLACKLIST и отладить данное лямбда-выражение
+                case CASE_DELETE_FROM_BLACKLIST -> {
+
+                }
                 case CASE_GET_BLACKLIST -> {
                     User user = userServiceManager.GetAuthorizedUser();
-                    System.out.println(user.getBlackList());
+                    return new ResponseEntity<>(user.getBlackList(), HttpStatus.OK);
+                }
+
+                // PHOTO REQUESTS:
+                case CASE_ADD_PHOTO -> {
+                    boolean isAvatar = Boolean.parseBoolean((String) changeField);
+                    if(isAvatar && userPhotoRepository.count() > 0) {
+                        try {
+                            long id = userPhotoRepository.GetAvatarPhotoId(userServiceManager
+                                    .GetAuthorizedUser()
+                                    .getUsername());
+                            userPhotoRepository
+                                    .SetAvatarPhotoId(id);
+                        } catch (NullPointerException exception) {
+                            System.out.println("avatar is null");
+                        }
+                    }
+                    userPhotoRepository
+                            .save(new Photo(
+                                    userServiceManager.GetAuthorizedUser().getUsername(),
+                                    isAvatar,
+                                    Photo.Convert("images.png")));
+                }
+                case CASE_DELETE_PHOTO -> userPhotoRepository.deleteById(Long.parseLong((String) changeField));
+                case CASE_GET_PHOTOS -> {
+                    return new ResponseEntity<>(userServiceManager
+                            .GetAuthorizedUser()
+                            .getPhotos(), HttpStatus.OK);
                 }
             }
             return new ResponseEntity<>(HttpStatus.OK);
@@ -69,7 +117,7 @@ public class UpdateFieldsController {
     };
 
     @PostMapping("/field")
-    public ResponseEntity<String> FieldUpdate(@RequestBody GeneralUpdateRequest request) {
+    public ResponseEntity<?> FieldUpdate(@RequestBody GeneralUpdateRequest request) {
         return STATUS_UPDATE.apply(request.getField(), request.getEmail(), request.getType());
     }
 
