@@ -2,6 +2,7 @@ package com.project.project.user_config;
 
 
 import com.project.project.user_config.black_list.BlackList;
+import com.project.project.user_config.photos.Photo;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -45,11 +46,6 @@ public class User implements Serializable, UserDetails {
     @Setter
     private boolean isActive;
 
-    @Getter
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "email")
-    private List<BlackList> blackList;
-
 // ###################################################################################################
 // GENERAL INFO:
 
@@ -75,14 +71,15 @@ public class User implements Serializable, UserDetails {
     @Setter
     private boolean isPrivate;
 
-    @Basic(fetch = FetchType.LAZY)
-    @Column(name = "photo")
-    @Lob
-    private byte[] photo;
+    @Getter
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "email")
+    private List<BlackList> blackList;
 
-//    @Column(name = "photoListId")
-//    @Getter
-//    private String photoListId;
+    @Getter
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "email")
+    private List<Photo> photos;
 // ###################################################################################################
 
     public User() {
@@ -143,6 +140,13 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
+        return true;
+    }
+
+    public static boolean CheckUniqueBlacklist(List<BlackList> blockedUsers, String email) {
+        for(int iBlockedUsers = 0; iBlockedUsers < blockedUsers.size(); iBlockedUsers++)
+            if(blockedUsers.get(iBlockedUsers).getBlockedEmail().equals(email))
+                return false;
         return true;
     }
 }
