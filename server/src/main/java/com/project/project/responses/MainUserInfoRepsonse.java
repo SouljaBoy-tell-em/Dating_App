@@ -1,7 +1,7 @@
 package com.project.project.responses;
 
 
-import com.project.project.user_config.UserRole;
+import com.project.project.user_config.main.UserRole;
 import lombok.*;
 import java.time.LocalDate;
 

@@ -24,7 +24,7 @@ public class Photo {
 
     @Basic(fetch = FetchType.LAZY)
     @Lob
-    @Column(name = "content")
+    @Column(name = "content", length = 1073741824) // LENGTH: 1GB
     private byte[] content;
 
     public Photo(String email, boolean isAvatar, byte[] content) {
