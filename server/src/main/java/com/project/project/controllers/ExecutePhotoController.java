@@ -18,9 +18,6 @@ import java.io.IOException;
 public class ExecutePhotoController {
 
     @Autowired
-    private UserPhotoRepository userPhotoRepository;
-
-    @Autowired
     private UserServiceManager userServiceManager;
 
 //    @PostMapping("/add")
