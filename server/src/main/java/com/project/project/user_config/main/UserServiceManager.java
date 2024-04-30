@@ -1,8 +1,8 @@
 package com.project.project.user_config.main;
 
 
-import com.project.project.user_config.black_list.BlackList;
-import com.project.project.user_config.black_list.BlackListRepository;
+import com.project.project.user_config.blacklist.BlackList;
+import com.project.project.user_config.blacklist.BlackListRepository;
 import com.project.project.user_config.photos.Photo;
 import com.project.project.user_config.photos.UserPhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -126,6 +127,12 @@ public class UserServiceManager {
         userRepository.ActiveUpdate(Boolean.parseBoolean(changeField), email);
     }
 
+    public void Ban(String email) {
+        userRepository.getById(email).setRole(UserRole.DELETED_USER);
+        userRepository.ActiveUpdate(false,   email);
+        userRepository.ConfirmUpdate(false, email);
+    }
+
     public void BirthdayUpdate(LocalDate changeField) { // ACCESS: USER;
         userRepository.BirthdayUpdate(changeField, GetEmail());
     }
@@ -222,5 +229,12 @@ public class UserServiceManager {
 
     public ResponseEntity<?> GetAllPhoto() {
         return new ResponseEntity<>(GetAuthorizedUser().getPhotos(), HttpStatus.OK);
+    }
+
+    public List<String> GetAllPhotoIds() {
+        List<String> photoIds = new ArrayList<>();
+        for(Photo photo : GetAuthorizedUser().getPhotos())
+            photoIds.add("http://localhost:8080/photo/" + photo.getId() + "?avatar=" + ((photo.isAvatar() == true) ? "true" : "false"));
+        return photoIds;
     }
 }

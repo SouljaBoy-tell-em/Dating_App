@@ -1,7 +1,7 @@
 package com.project.project.user_config.main;
 
 
-import com.project.project.user_config.black_list.BlackList;
+import com.project.project.user_config.blacklist.BlackList;
 import com.project.project.user_config.photos.Photo;
 import jakarta.persistence.*;
 import java.io.Serializable;

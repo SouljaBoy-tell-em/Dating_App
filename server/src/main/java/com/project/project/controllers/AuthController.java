@@ -9,7 +9,7 @@ import com.project.project.security.mail.ConfirmEmailConfig;
 import com.project.project.security.mail.ConfirmEmailRepository;
 import com.project.project.user_config.main.User;
 import com.project.project.user_config.main.UserServiceManager;
-import com.project.project.user_config.black_list.BlackListRepository;
+import com.project.project.user_config.blacklist.BlackListRepository;
 import com.project.project.user_config.photos.UserPhotoRepository;
 import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
@@ -169,9 +169,6 @@ public class AuthController {
     @GetMapping("/test")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public String TEST() {
-//        User user = userServiceManager.GetAuthorizedUser();
-//        blackListRepository.save(new BlackList(user.getUsername(), "ggg@mail.com"));
-//        System.out.println(user.getBlackList());
         return "TEST";
     }
 

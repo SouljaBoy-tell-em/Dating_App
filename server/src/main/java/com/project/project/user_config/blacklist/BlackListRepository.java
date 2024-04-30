@@ -1,4 +1,4 @@
-package com.project.project.user_config.black_list;
+package com.project.project.user_config.blacklist;
 
 
 import jakarta.transaction.Transactional;

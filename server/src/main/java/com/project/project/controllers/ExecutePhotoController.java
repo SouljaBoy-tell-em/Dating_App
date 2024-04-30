@@ -40,12 +40,17 @@ public class ExecutePhotoController {
         return userServiceManager.DeletePhoto(id);
     }
 
-    @GetMapping("/get")
+    @GetMapping
     public ResponseEntity<?> GetAllPhotos() {
         return userServiceManager.GetAllPhoto();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/ids")
+    public ResponseEntity<?> GetAllPhotoIds() {
+        return new ResponseEntity<>(userServiceManager.GetAllPhotoIds(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<?> GetPhotoById(@PathVariable long id) {
         Photo photo = userPhotoRepository.getReferenceById(id);
         return new ResponseEntity<>(photo.getContent(), HttpStatus.OK);

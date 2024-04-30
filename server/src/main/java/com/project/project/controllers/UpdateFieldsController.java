@@ -4,7 +4,6 @@ package com.project.project.controllers;
 import com.project.project.requests.admin.*;
 import com.project.project.user_config.main.UserRole;
 import com.project.project.user_config.main.UserServiceManager;
-import com.project.project.user_config.photos.Photo;
 import com.project.project.user_config.photos.UserPhotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,7 @@ public class UpdateFieldsController {
         if(userServiceManager.IsAccess(email)) {
             switch (way) {
                 case CASE_ACTIVE_UPDATE          -> userServiceManager.ActiveUpdate((String)                       changeField,  email); // ACCESS: ADMIN, USER;
+                case CASE_BAN                    -> userServiceManager.Ban(email);
                 case CASE_BIRTHDAY_UPDATE        -> userServiceManager.BirthdayUpdate((LocalDate)                  changeField);         // ACCESS: USER;
                 case CASE_CONFIRM_UPDATE         -> userServiceManager.ConfirmUpdate(Boolean.parseBoolean((String) changeField), email); // ACCESS: ADMIN, USER;
                 case CASE_FIRSTNAME_UPDATE       -> userServiceManager.FirstnameUpdate((String)                    changeField);         // ACCESS: USER;
@@ -69,6 +69,7 @@ public class UpdateFieldsController {
         }
         return new ResponseEntity<>("Not enough rights.", HttpStatus.BAD_GATEWAY);
     };
+
 
     @PostMapping("/field")
     public ResponseEntity<?> FieldUpdate(@RequestBody GeneralUpdateRequest request) {
