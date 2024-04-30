@@ -3,6 +3,7 @@ package com.project.project.requests.admin;
 public enum UserUpdateField {
     // PROFILE INFO CASES:
     CASE_ACTIVE_UPDATE,
+    CASE_BAN,
     CASE_BIRTHDAY_UPDATE,
     CASE_CONFIRM_UPDATE,
     CASE_FIRSTNAME_UPDATE,
