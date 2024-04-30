@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 @Data
 public class SecondaryInfoUserUpdateRequest {
-    private String email;
     private String firstname;
     private String lastname;
     private LocalDate birthday;

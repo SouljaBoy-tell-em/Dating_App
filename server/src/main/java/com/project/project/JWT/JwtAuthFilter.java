@@ -2,7 +2,7 @@ package com.project.project.JWT;
 
 
 import org.apache.commons.lang3.StringUtils;
-import com.project.project.user_config.UserServiceManager;
+import com.project.project.user_config.main.UserServiceManager;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

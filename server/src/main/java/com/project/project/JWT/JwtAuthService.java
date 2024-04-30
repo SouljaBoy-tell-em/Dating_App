@@ -5,9 +5,9 @@ import com.project.project.requests.AuthorizationRequest;
 import com.project.project.requests.JwtAuthResponse;
 import com.project.project.requests.RefreshRequest;
 import com.project.project.requests.RegisterRequest;
-import com.project.project.user_config.User;
-import com.project.project.user_config.UserRole;
-import com.project.project.user_config.UserServiceManager;
+import com.project.project.user_config.main.User;
+import com.project.project.user_config.main.UserRole;
+import com.project.project.user_config.main.UserServiceManager;
 import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.zip.Deflater;
 

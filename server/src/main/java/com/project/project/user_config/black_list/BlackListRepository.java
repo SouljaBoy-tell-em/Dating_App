@@ -12,4 +12,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BlackListRepository extends CrudRepository<BlackList, Long>,
                                               JpaRepository<BlackList, Long> {
+
+    @Modifying
+    @Query(value = "delete from black_list where id = ?1", nativeQuery = true)
+    @Transactional
+    void DeleteById(Long id);
 }

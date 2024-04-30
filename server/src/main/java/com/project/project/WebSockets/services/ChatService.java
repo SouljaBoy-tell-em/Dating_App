@@ -6,7 +6,7 @@ package com.project.project.WebSockets.services;
 
 import com.project.project.WebSockets.models.Chat;
 import com.project.project.WebSockets.repositories.ChatRepository;
-import com.project.project.user_config.User;
+import com.project.project.user_config.main.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

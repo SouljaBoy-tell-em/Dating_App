@@ -1,7 +1,7 @@
 package com.project.project.JWT;
 
 
-import com.project.project.user_config.User;
+import com.project.project.user_config.main.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

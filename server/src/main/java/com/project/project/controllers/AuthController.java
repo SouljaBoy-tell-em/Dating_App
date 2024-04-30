@@ -7,10 +7,10 @@ import com.project.project.responses.MainUserInfoRepsonse;
 import com.project.project.security.mail.ConfirmCode;
 import com.project.project.security.mail.ConfirmEmailConfig;
 import com.project.project.security.mail.ConfirmEmailRepository;
-import com.project.project.user_config.User;
-import com.project.project.user_config.UserServiceManager;
-import com.project.project.user_config.black_list.BlackList;
+import com.project.project.user_config.main.User;
+import com.project.project.user_config.main.UserServiceManager;
 import com.project.project.user_config.black_list.BlackListRepository;
+import com.project.project.user_config.photos.UserPhotoRepository;
 import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +38,9 @@ public class AuthController {
 
     @Autowired
     private ConfirmEmailRepository confirmEmailRepository;
+
+    @Autowired
+    private UserPhotoRepository userPhotoRepository;
 
     @Autowired
     private UserServiceManager userServiceManager;
