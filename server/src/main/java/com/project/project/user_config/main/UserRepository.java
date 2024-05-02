@@ -14,6 +14,12 @@ import java.util.List;
 @Repository
 public interface UserRepository extends CrudRepository<User, String>,
                                          JpaRepository<User, String> {
+    @Query(value = "select max(id) from users;", nativeQuery = true)
+    long FindMaxId();
+
+    @Query(value = "select id from users where email = ?1", nativeQuery = true)
+    long GetIdByEmail(String email);
+
     @Modifying
     @Query(value = "update users set is_active = ?1 where email = ?2", nativeQuery = true)
     @Transactional
@@ -73,8 +79,8 @@ public interface UserRepository extends CrudRepository<User, String>,
     @Query(value = "select liked_email from likes where email = ?1 order by grade_time desc limit 1;", nativeQuery = true)
     String GetLastLikedEmail(String email);
 
-    @Query(value = "SELECT * from users where id > (select id from likes where liked_email = ?1 order by id desc limit 1) order by id limit 3;", nativeQuery = true)
-    List<User> GetNext3Users(String lastLikedEmail);
+    @Query(value = "SELECT * from users where id > (select graded_user_id from likes where liked_email = ?1 and email = ?2 order by id desc limit 1) order by id limit 3;", nativeQuery = true)
+    List<User> GetNext3Users(String lastLikedEmail, String email);
 
     @Query(value = "SELECT * from users order by id limit 3;", nativeQuery = true)
     List<User> GetStart3Initialization();

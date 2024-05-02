@@ -4,7 +4,6 @@ package com.project.project.responses;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDate;
 
 
 @AllArgsConstructor
@@ -12,9 +11,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class SwiperFormResponse {
     private String email;
+    private long id;
     private String firstname;
     private String lastname;
-    private LocalDate birthday;
+    private int age;
     private String imageAvatarUrl;
     private String description;
 }

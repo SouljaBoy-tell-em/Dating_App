@@ -1,6 +1,8 @@
 package com.project.project.user_config.main;
 
 
+import com.project.project.security.mail.ConfirmCode;
+import com.project.project.security.mail.ConfirmEmailRepository;
 import com.project.project.user_config.blacklist.BlackList;
 import com.project.project.user_config.blacklist.BlackListRepository;
 import com.project.project.user_config.photos.Photo;
@@ -8,7 +10,6 @@ import com.project.project.user_config.photos.UserPhotoRepository;
 import com.project.project.user_config.swiper_config.like_config.Grade;
 import com.project.project.user_config.swiper_config.like_config.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -57,13 +56,8 @@ public class UserServiceManager {
         userRepository.save(user);
     }
 
-    /**
-     * The GetAuthorizedUser() is a method, that checks user authorization.
-     * @return link to the UserDetailsService method.
-     */
-
-    public void ConfirmUser(String username) {
-        userRepository.Confirmed(username);
+    public long FindMaxId() {
+        return userRepository.FindMaxId();
     }
 
     public User GetAuthorizedUser() {
@@ -90,6 +84,10 @@ public class UserServiceManager {
         if(GetAuthorizedUser() == null)
             return null;
         return GetAuthorizedUser().getUsername();
+    }
+
+    public long GetIdByEmail(String email) {
+        return userRepository.GetIdByEmail(email);
     }
 
     public boolean IsAccess(String email) {
@@ -128,6 +126,20 @@ public class UserServiceManager {
     public UserDetailsService UserDetailsService() {
         return this::GetById;
     }
+
+
+
+    // CONFIRMATION:
+    /**
+     * The GetAuthorizedUser() is a method, that checks user authorization.
+     * @return link to the UserDetailsService method.
+     */
+
+    public void ConfirmUser(String username) {
+        userRepository.Confirmed(username);
+    }
+
+
 
     // UPDATE USER FIELDS:
     public void ActiveUpdate(String changeField, String email) { // ACCESS: ADMIN, USER;
@@ -168,6 +180,8 @@ public class UserServiceManager {
         userRepository.RoleUpdate(role, email);
     }
 
+
+
     // BLACKLIST:
     public ResponseEntity<?> AddToBlackList(String blockedEmail) {
         if(IsExist(blockedEmail)) {
@@ -195,6 +209,8 @@ public class UserServiceManager {
     public List<BlackList> GetBlackList() {
         return GetAuthorizedUser().getBlackList();
     }
+
+
 
     // PHOTOS:
     public ResponseEntity<?> AddPhoto(MultipartFile multipartFile, boolean isAvatar) throws IOException {
@@ -255,8 +271,11 @@ public class UserServiceManager {
         return photoIds;
     }
 
+
+
     // SWIPER:
-    public void Grade(String likedEmail, boolean isLike) {
-        gradeRepository.save(new Grade(GetEmail(), likedEmail, isLike, LocalDateTime.now()));
+    public void Grade(String likedEmail, long gradedUserId, boolean isLike) {
+        System.out.println("LIKED EMAIL: " + likedEmail);
+        gradeRepository.save(new Grade(GetEmail(), likedEmail, gradedUserId, isLike, LocalDateTime.now()));
     }
 }
