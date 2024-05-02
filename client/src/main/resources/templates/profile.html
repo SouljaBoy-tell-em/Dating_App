@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:vertical-align="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Mobile Cloud</title>
+</head>
+<body>
+<div align="center">
+    <p th:text="${user.username}"></p>
+    <a href = "/register">Register new user</a>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign out">
+    </form>
+</div>
+</body>
+</html>
