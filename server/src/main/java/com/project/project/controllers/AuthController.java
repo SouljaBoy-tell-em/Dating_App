@@ -3,23 +3,33 @@ package com.project.project.controllers;
 
 import com.project.project.JWT.JwtAuthService;
 import com.project.project.requests.*;
+import com.project.project.requests.admin.SecondaryInfoUserUpdateRequest;
 import com.project.project.responses.MainUserInfoRepsonse;
 import com.project.project.security.mail.ConfirmCode;
 import com.project.project.security.mail.ConfirmEmailConfig;
 import com.project.project.security.mail.ConfirmEmailRepository;
 import com.project.project.user_config.main.User;
+import com.project.project.user_config.main.UserRepository;
 import com.project.project.user_config.main.UserServiceManager;
 import com.project.project.user_config.blacklist.BlackListRepository;
 import com.project.project.user_config.photos.UserPhotoRepository;
+import com.project.project.utilits.RandomStringGenerator;
 import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @RequestMapping("/auth")
@@ -41,6 +51,9 @@ public class AuthController {
 
     @Autowired
     private UserPhotoRepository userPhotoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserServiceManager userServiceManager;
@@ -154,7 +167,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> Register(@RequestBody @Valid RegisterRequest request) {
         try {
-            confirmEmailConfig.GenerateCode(request.getEmail());
+//            confirmEmailConfig.GenerateCode(request.getEmail());
             return new ResponseEntity<>(authenticationService.Register(request),
                                                                  HttpStatus.OK);
         } catch (AuthException exception) {
@@ -166,9 +179,28 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/register/{size}")
+    public ResponseEntity<?> RegisterNUsers(@PathVariable("size") int size) throws IOException {
+        RestTemplate restTemplate = new RestTemplate();
+        for(int iRequest = 0; iRequest < size; iRequest++) {
+            String email = RandomStringGenerator.GenerateRandomMail(10);
+            RegisterRequest registerRequest =
+                    new RegisterRequest(email, "p");
+            restTemplate.postForEntity("http://localhost:8081/auth/register", registerRequest, RegisterRequest.class);
+
+            userRepository.FirstnameUpdate(RandomStringGenerator.GenerateRandomFirstname(), email);
+            userRepository.LastnameUpdate(RandomStringGenerator.GenerateRandomLastname(), email);
+            userRepository.BirthdayUpdate(LocalDate.now(), email);
+            userRepository.ProfileAccessUpdate(false, email);
+            userServiceManager.TestAddPhoto(true, email, "photo" + RandomStringGenerator.GenerateRandomInteger(1, 10) + ".jpg");
+        }
+        return new ResponseEntity<>("Generated successfully", HttpStatus.OK);
+    }
+
     @GetMapping("/test")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public String TEST() {
+        System.out.println(userServiceManager.GetAuthorizedUser().getGrades());
         return "TEST";
     }
 

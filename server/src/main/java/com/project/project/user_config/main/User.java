@@ -3,6 +3,7 @@ package com.project.project.user_config.main;
 
 import com.project.project.user_config.blacklist.BlackList;
 import com.project.project.user_config.photos.Photo;
+import com.project.project.user_config.swiper_config.like_config.Grade;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -26,6 +27,10 @@ public class User implements Serializable, UserDetails {
     @Id
     @Pattern(regexp = "^[A-Za-z][A-Za-z0-9.]*[@]{1}[a-z]+[.]{1}[a-z]{2,}$")
     private String email;
+
+    @Column(name = "id")
+    @Getter
+    private int id;
 
     @Column(name = "password")
 //    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z@$!%*?&]{8,}$")
@@ -51,13 +56,13 @@ public class User implements Serializable, UserDetails {
 
     @Column(name = "firstname")
     @Getter
-    @Pattern(regexp = "^[A-ZА-Я][a-zа-я]*$")
+//    @Pattern(regexp = "^[A-ZА-Я][a-zа-я]*$")
     @Setter
     private String firstname;
 
     @Column(name = "lastname")
     @Getter
-    @Pattern(regexp = "^[A-ZА-Я][a-zа-я]*$")
+//    @Pattern(regexp = "^[A-ZА-Я][a-zа-я]*$")
     @Setter
     private String lastname;
 
@@ -80,6 +85,15 @@ public class User implements Serializable, UserDetails {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "email")
     private List<Photo> photos;
+
+    @Getter
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "email")
+    private List<Grade> grades;
+
+    @Column(name = "description", length = 4096)
+    @Getter
+    private String description;
 // ###################################################################################################
 
     public User() {

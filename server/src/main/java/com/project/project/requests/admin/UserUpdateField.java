@@ -21,5 +21,8 @@ public enum UserUpdateField {
     // PHOTO CASES:
     CASE_ADD_PHOTO,
     CASE_DELETE_PHOTO,
-    CASE_GET_PHOTOS
+    CASE_GET_PHOTOS,
+
+    // GRADE CASES:
+    CASE_GRADE
 }

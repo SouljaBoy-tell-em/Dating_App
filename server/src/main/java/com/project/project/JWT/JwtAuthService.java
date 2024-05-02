@@ -88,20 +88,11 @@ public class JwtAuthService {
         if(userServiceManager.IsExist(request.getEmail()))
             throw new AuthException("So user already exists.");
 
-//        byte[] bytes = new byte[0];
-//        try(FileInputStream outputStream = new FileInputStream("images.png")) {
-//            bytes = outputStream.readAllBytes();
-//            System.out.println(bytes.length);
-//            for(int i = 0; i < bytes.length; i++)
-//                System.out.print(bytes[i]);
-//        } catch (Exception exception) {
-//            System.out.println(exception.getMessage());
-//        }
-
         int size = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users", Integer.class);
         User user = User
                 .builder()
                 .email(request.getEmail())
+                .id(size + 1)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(UserRole.ROLE_USER)
                 .isConfirm(false)
@@ -110,7 +101,7 @@ public class JwtAuthService {
                 .lastname(null)
                 .birthday(null)
                 .isPrivate(false)
-//                .photo(bytes)
+                .description("Я страстный разработчик и любитель технологий. В свободное время участвую в хакатонах и играю в шахматы. Люблю интеллектуальные вызовы и ищу партнершу, которая разделяет мою страсть к инновациям.")
                 .build();
         userServiceManager.Add(user);
 

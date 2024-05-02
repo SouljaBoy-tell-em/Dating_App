@@ -9,13 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 
 @RequestMapping("/photo")
 @RestController
 public class ExecutePhotoController {
+
+    @Autowired
+    private UserPhotoRepository userPhotoRepository;
 
     @Autowired
     private UserServiceManager userServiceManager;
@@ -32,7 +34,7 @@ public class ExecutePhotoController {
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> AddPhoto(@RequestParam(value = "avatar", required = false) boolean isAvatar)
             throws IOException {
-        return userServiceManager.TestAddPhoto(isAvatar);
+        return userServiceManager.TestAddPhoto(isAvatar, userServiceManager.GetEmail(), "image.png");
     }
 
     @DeleteMapping("/delete/{id}")

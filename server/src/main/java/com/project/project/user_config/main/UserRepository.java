@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Repository
@@ -67,4 +68,14 @@ public interface UserRepository extends CrudRepository<User, String>,
     @Query(value = "update users set user_role = ?1 where email = ?2", nativeQuery = true)
     @Transactional
     void RoleUpdate(UserRole userRole, String email);
+
+    // SWIPER
+    @Query(value = "select liked_email from likes where email = ?1 order by grade_time desc limit 1;", nativeQuery = true)
+    String GetLastLikedEmail(String email);
+
+    @Query(value = "SELECT * from users where id > (select id from likes where liked_email = ?1 order by id desc limit 1) order by id limit 3;", nativeQuery = true)
+    List<User> GetNext3Users(String lastLikedEmail);
+
+    @Query(value = "SELECT * from users order by id limit 3;", nativeQuery = true)
+    List<User> GetStart3Initialization();
 }
