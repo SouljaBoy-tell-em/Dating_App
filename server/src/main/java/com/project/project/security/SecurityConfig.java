@@ -86,7 +86,9 @@ public class SecurityConfig {
                 ))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/confirm").permitAll()
+                        .requestMatchers("/photo/**").permitAll()
 //                        .requestMatchers("/auth/refresh").permitAll()
+                        .requestMatchers("/auth/register/**").permitAll()
                         .requestMatchers("/profile/update/photo/**").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/profile").permitAll()

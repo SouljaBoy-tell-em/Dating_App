@@ -5,7 +5,10 @@ import com.project.project.user_config.blacklist.BlackList;
 import com.project.project.user_config.blacklist.BlackListRepository;
 import com.project.project.user_config.photos.Photo;
 import com.project.project.user_config.photos.UserPhotoRepository;
+import com.project.project.user_config.swiper_config.like_config.Grade;
+import com.project.project.user_config.swiper_config.like_config.GradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +37,9 @@ public class UserServiceManager {
 
     @Autowired
     private BlackListRepository blackListRepository;
+
+    @Autowired
+    private GradeRepository gradeRepository;
 
     @Autowired
     private UserPhotoRepository userPhotoRepository;
@@ -204,19 +211,18 @@ public class UserServiceManager {
         return new ResponseEntity<>("Added successfully.", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> TestAddPhoto(boolean isAvatar) throws IOException {
+    public ResponseEntity<?> TestAddPhoto(boolean isAvatar, String email, String imageName) throws IOException {
         if(isAvatar && userPhotoRepository.count() > 0) {
             try {
-                long id = userPhotoRepository.GetAvatarPhotoId(GetEmail());
+                long id = userPhotoRepository.GetAvatarPhotoId(email);
                 userPhotoRepository.SetAvatarPhotoId(id);
             } catch (NullPointerException exception) {
                 System.out.println(exception.fillInStackTrace());
             }
         }
-
-        FileInputStream fis = new FileInputStream(new File("image.jpg"));
+        FileInputStream fis = new FileInputStream(new File(imageName));
         byte[] content = fis.readAllBytes();
-        userPhotoRepository.save(new Photo(GetEmail(), isAvatar, content));
+        userPhotoRepository.save(new Photo(email, isAvatar, content));
         return new ResponseEntity<>("Added successfully.", HttpStatus.OK);
     }
 
@@ -231,10 +237,26 @@ public class UserServiceManager {
         return new ResponseEntity<>(GetAuthorizedUser().getPhotos(), HttpStatus.OK);
     }
 
+    public String GetAvatarUrl(String email) {
+        String avatarUrl = "";
+        for(Photo photo : userRepository.getById(email).getPhotos()) {
+            if(photo.isAvatar()) {
+                avatarUrl = "http://localhost:8081/photo/" + photo.getId();
+                break;
+            }
+        }
+        return avatarUrl;
+    }
+
     public List<String> GetAllPhotoIds() {
         List<String> photoIds = new ArrayList<>();
         for(Photo photo : GetAuthorizedUser().getPhotos())
             photoIds.add("http://localhost:8080/photo/" + photo.getId() + "?avatar=" + ((photo.isAvatar() == true) ? "true" : "false"));
         return photoIds;
+    }
+
+    // SWIPER:
+    public void Grade(String likedEmail, boolean isLike) {
+        gradeRepository.save(new Grade(GetEmail(), likedEmail, isLike, LocalDateTime.now()));
     }
 }
