@@ -9,7 +9,7 @@ const variants = {
     transition: {
       y: { stiffness: 1000, velocity: -100 },
     },
-    visibility: "visible"
+    visibility: "visible",
   },
   closed: {
     y: 50,
@@ -17,15 +17,39 @@ const variants = {
     transition: {
       y: { stiffness: 1000 },
     },
-    visibility: "hidden"
-
+    visibility: "hidden",
   },
 };
 
-const colors = ["#FF008C", "#D309E1", "#9C1AFF", "#7700FF", "#4400FF", "#6600ff"];
+const colors = [
+  "#FF008C",
+  "#D309E1",
+  "#9C1AFF",
+  "#7700FF",
+  "#4400FF",
+  "#6600ff",
+];
 
-const routes = ["/", "/NoSecChat", "/confirmEmail", "/newChat", "/NotFound", "/createProfile"];
-const text = ["Main Page", "Gray chat", "Confirm email", "Color chat", "Not found", "Create profile"];
+const routes = [
+  "/",
+  "/grayChat",
+  "/confirmEmail",
+  "/newChat",
+  "/NotFound",
+  "/createProfile",
+  "/profile",
+  "/swiper",
+];
+const text = [
+  "Main Page",
+  "Gray chat",
+  "Confirm email",
+  "Color chat",
+  "Not found",
+  "Create profile",
+  "Profile",
+  "Swiper",
+];
 
 export const MenuItem = ({ i }) => {
   const style = { border: `2px solid ${colors[1]}` };
@@ -38,7 +62,9 @@ export const MenuItem = ({ i }) => {
         whileTap={{ scale: 0.95 }}
       >
         <div className="icon-placeholder" style={style} />
-        <div className="text-placeholder" style={style} >{text[i]}</div>
+        <div className="text-placeholder" style={style}>
+          {text[i]}
+        </div>
       </motion.li>
     </Link>
   );

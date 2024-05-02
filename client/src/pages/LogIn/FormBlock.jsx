@@ -18,7 +18,7 @@ const LabelLogIn = styled.h2`
 `;
 
 const LogInForm = styled.form`
-  background-color: #e4e4e4;
+  background-color: #f1e2ff; 
   display: flex;
   flex-direction: column;
   padding: 49px 44px;

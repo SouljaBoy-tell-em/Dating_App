@@ -15,7 +15,7 @@ const ChatPage = () => {
 
   const handleLogOut = async () => {
     await store.logout();
-  }
+  };
 
   return <Container>
     <Menu/>
