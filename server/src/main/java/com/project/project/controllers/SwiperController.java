@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +42,7 @@ public class SwiperController {
     public ResponseEntity<String> Grade(@RequestBody GradeRequest request) {
         if(!userServiceManager.IsExist(request.getLikedEmail()))
             return new ResponseEntity<>("Liked user with email "+ request.getLikedEmail() + " doesn't exist.", HttpStatus.BAD_REQUEST);
-
-        userServiceManager.Grade(request.getLikedEmail(), request.isLike().toString().equals(TRUE_VALUE));
+        userServiceManager.Grade(request.getLikedEmail(), userServiceManager.GetIdByEmail(request.getLikedEmail()), request.isLike().toString().equals(TRUE_VALUE));
         return new ResponseEntity<>("Successfully.", HttpStatus.OK);
     }
 
@@ -61,20 +62,33 @@ public class SwiperController {
 //            return new ResponseEntity<>("This users pair already exists.", HttpStatus.BAD_REQUEST);
 
         if(next3Users == null)
-            next3Users = userRepository.GetNext3Users(lastLikedUser);
+            next3Users = userRepository.GetNext3Users(lastLikedUser, userServiceManager.GetEmail());
+
+        if(next3Users.size() == 0)
+            return new ResponseEntity<>("You liked all users.", HttpStatus.NO_CONTENT);
+
         swiperFormResponses = new ArrayList<>();
         for(int iUser = 0; iUser < next3Users.size(); iUser++) {
             User currentUser = next3Users.get(iUser);
             swiperFormResponses.add(new SwiperFormResponse(
                     currentUser.getUsername(),
+                    currentUser.getId(),
                     currentUser.getFirstname(),
                     currentUser.getLastname(),
-                    currentUser.getBirthday(),
+//                    currentUser.getBirthday().getYear() - LocalDateTime.now().getYear(),
+                    0,
                     userServiceManager.GetAvatarUrl(
                             currentUser.getUsername()
                     ),
                     currentUser.getDescription()));
         }
+
+        System.out.println("CURRENT USER: " + userServiceManager.GetEmail());
+        System.out.println("LAST LIKED USER: " + lastLikedUser);
+
+        for(int i = 0; i < next3Users.size(); i++)
+            System.out.printf("!!! %d: %s", (i+1), next3Users.get(i).getUsername());
+
         return new ResponseEntity<>(swiperFormResponses, HttpStatus.OK);
     }
 }

@@ -8,6 +8,7 @@ import com.project.project.requests.RegisterRequest;
 import com.project.project.user_config.main.User;
 import com.project.project.user_config.main.UserRole;
 import com.project.project.user_config.main.UserServiceManager;
+import com.project.project.utilits.RandomFieldGenerator;
 import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,11 +89,17 @@ public class JwtAuthService {
         if(userServiceManager.IsExist(request.getEmail()))
             throw new AuthException("So user already exists.");
 
-        int size = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users", Integer.class);
+        long id = 0;
+        try {
+            id = userServiceManager.FindMaxId() + 1;
+        } catch (Exception exception) {
+            id = 1;
+        }
+
         User user = User
                 .builder()
                 .email(request.getEmail())
-                .id(size + 1)
+                .id(id)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(UserRole.ROLE_USER)
                 .isConfirm(false)
@@ -101,7 +108,7 @@ public class JwtAuthService {
                 .lastname(null)
                 .birthday(null)
                 .isPrivate(false)
-                .description("Я страстный разработчик и любитель технологий. В свободное время участвую в хакатонах и играю в шахматы. Люблю интеллектуальные вызовы и ищу партнершу, которая разделяет мою страсть к инновациям.")
+                .description(RandomFieldGenerator.GenerateRandomDescription())
                 .build();
         userServiceManager.Add(user);
 

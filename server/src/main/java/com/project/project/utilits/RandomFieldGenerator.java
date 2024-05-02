@@ -4,7 +4,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 
-public class RandomStringGenerator {
+public class RandomFieldGenerator {
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final String[] firstNames = {"Александр", "Иван", "Михаил", "Дмитрий", "Кирилл", "Никита", "Алексей", "Артём", "Олег",
             "Сергей", "Владимир", "Юрий", "Павел", "Максим", "Роман", "Егор", "Артур", "Тимур",
@@ -30,6 +30,13 @@ public class RandomStringGenerator {
             "Аксенов", "Гаврилов", "Родионов", "Котов", "Горбунов", "Кудрявцев", "Быков", "Зуев", "Третьяков", "Савельев",
             "Панов", "Рыбаков", "Суворов", "Абрамов", "Воронов", "Мухин", "Архипов", "Трофимов", "Мартынов", "Емельянов"
     };
+
+    private static final String[] descriptions = {"Я страстный разработчик и любитель технологий. В свободное время участвую в хакатонах и играю в шахматы. Люблю интеллектуальные вызовы и ищу партнершу, которая разделяет мою страсть к инновациям.",
+                                                  "Путешественник и творец, стремящийся зафиксировать каждый момент своего путешествия. Мои работы отражают красоту природы и городских огней. Ищу партнершу, готовую исследовать мир со мной.",
+                                                  "Серьезный и целеустремленный в профессии, но легкий и веселый в жизни. Увлекаюсь историей права и музыкой. Желаю найти человека, который разделяет мои интересы к искусству и культуре.",
+                                                  "Активно занимаюсь созданием новых бизнес-идей и всегда в поиске новых возможностей. Люблю спортзал и экспериментировать на кухне. Ищу партнершу, готовую разделять со мной динамичный образ жизни и интерес к здоровому питанию.",
+                                                  "Живу в течение момента, пропуская через себя эмоции и переживания разных жизней на сцене. Люблю поэзию и уютные вечера с книгами. Ищу человека, который ценит искусство и готов открывать новые горизонты творчества."};
+
     private static final Random random = new Random();
 
     public static String GenerateRandomMail(int length) {
@@ -52,5 +59,9 @@ public class RandomStringGenerator {
 
     public static int GenerateRandomInteger(int min, int max) {
         return random.nextInt(max - min + 1) + min;
+    }
+
+    public static String GenerateRandomDescription() {
+        return descriptions[random.nextInt(descriptions.length)];
     }
 }

@@ -30,7 +30,7 @@ public class User implements Serializable, UserDetails {
 
     @Column(name = "id")
     @Getter
-    private int id;
+    private long id;
 
     @Column(name = "password")
 //    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z@$!%*?&]{8,}$")

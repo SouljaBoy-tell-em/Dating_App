@@ -3,7 +3,6 @@ package com.project.project.controllers;
 
 import com.project.project.JWT.JwtAuthService;
 import com.project.project.requests.*;
-import com.project.project.requests.admin.SecondaryInfoUserUpdateRequest;
 import com.project.project.responses.MainUserInfoRepsonse;
 import com.project.project.security.mail.ConfirmCode;
 import com.project.project.security.mail.ConfirmEmailConfig;
@@ -13,32 +12,21 @@ import com.project.project.user_config.main.UserRepository;
 import com.project.project.user_config.main.UserServiceManager;
 import com.project.project.user_config.blacklist.BlackListRepository;
 import com.project.project.user_config.photos.UserPhotoRepository;
-import com.project.project.utilits.RandomStringGenerator;
 import jakarta.security.auth.message.AuthException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
-
-    @Autowired
-    private BlackListRepository blackListRepository;
 
     @Autowired
     private JwtAuthService authenticationService;
@@ -48,12 +36,6 @@ public class AuthController {
 
     @Autowired
     private ConfirmEmailRepository confirmEmailRepository;
-
-    @Autowired
-    private UserPhotoRepository userPhotoRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private UserServiceManager userServiceManager;
@@ -90,10 +72,10 @@ public class AuthController {
             confirmEmailConfig.Send(currentUser.getUsername(),
                     ConfirmEmailConfig.WELCOME_MESSAGE_SUBJECT,
                     ConfirmEmailConfig.WELCOME_MESSAGE_BODY);
-            return new ResponseEntity<>("You have been verified",
+            return new ResponseEntity<>("You have been verified.",
                                                         HttpStatus.OK);
         } catch (Exception exception) {
-            return new ResponseEntity<>("Incorrect code",
+            return new ResponseEntity<>("Incorrect code.",
                                        HttpStatus.BAD_REQUEST);
         }
     }
@@ -109,13 +91,13 @@ public class AuthController {
             if(userServiceManager
                     .GetById(request.getEmail())
                     .isConfirm() == false)
-                confirmEmailConfig.GenerateCode(request.getEmail());
+//                confirmEmailConfig.GenerateCode(request.getEmail());
             return new ResponseEntity<>(authenticationService.Login(request),
                                                               HttpStatus.OK);
         } catch (Throwable exception) {
-            return new ResponseEntity<>("Incorrect email",
-                                        HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Incorrect email.", HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>("Incorrect email.", HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -174,34 +156,9 @@ public class AuthController {
             return new ResponseEntity<>(exception.getMessage(),
                                        HttpStatus.BAD_REQUEST);
         } catch (Exception exception) {
-            return new ResponseEntity<>("Incorrect email",
+            return new ResponseEntity<>("Incorrect email.",
                                         HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @PostMapping("/register/{size}")
-    public ResponseEntity<?> RegisterNUsers(@PathVariable("size") int size) throws IOException {
-        RestTemplate restTemplate = new RestTemplate();
-        for(int iRequest = 0; iRequest < size; iRequest++) {
-            String email = RandomStringGenerator.GenerateRandomMail(10);
-            RegisterRequest registerRequest =
-                    new RegisterRequest(email, "p");
-            restTemplate.postForEntity("http://localhost:8081/auth/register", registerRequest, RegisterRequest.class);
-
-            userRepository.FirstnameUpdate(RandomStringGenerator.GenerateRandomFirstname(), email);
-            userRepository.LastnameUpdate(RandomStringGenerator.GenerateRandomLastname(), email);
-            userRepository.BirthdayUpdate(LocalDate.now(), email);
-            userRepository.ProfileAccessUpdate(false, email);
-            userServiceManager.TestAddPhoto(true, email, "photo" + RandomStringGenerator.GenerateRandomInteger(1, 10) + ".jpg");
-        }
-        return new ResponseEntity<>("Generated successfully", HttpStatus.OK);
-    }
-
-    @GetMapping("/test")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public String TEST() {
-        System.out.println(userServiceManager.GetAuthorizedUser().getGrades());
-        return "TEST";
     }
 
     @GetMapping(value = "/info")

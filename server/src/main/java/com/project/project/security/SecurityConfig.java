@@ -88,7 +88,7 @@ public class SecurityConfig {
                         .requestMatchers("/confirm").permitAll()
                         .requestMatchers("/photo/**").permitAll()
 //                        .requestMatchers("/auth/refresh").permitAll()
-                        .requestMatchers("/auth/register/**").permitAll()
+                        .requestMatchers("/test/register/**").permitAll()
                         .requestMatchers("/profile/update/photo/**").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/profile").permitAll()
