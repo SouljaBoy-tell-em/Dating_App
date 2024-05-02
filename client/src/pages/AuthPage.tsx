@@ -1,9 +1,13 @@
-import {useContext, useEffect} from 'react'
+import {useContext, useEffect} from "react";
 import styled from "styled-components";
-import AuthForm from '../widgets/AuthForm';
-import { Navigate, useLocation } from 'react-router-dom';
-import Context from '..';
-import { observer } from 'mobx-react-lite';
+
+import { Navigate, useLocation } from "react-router-dom";
+
+import { observer } from "mobx-react-lite";
+
+import AuthForm from "../widgets/AuthForm";
+import Context from "..";
+
 
 const Container = styled.div`
   height: 100vh;
@@ -32,7 +36,7 @@ const AuthPage = () => {
     <Container>
       <AuthForm/>
     </Container>
-  )
-}
+  );
+};
 
 export default observer(AuthPage);

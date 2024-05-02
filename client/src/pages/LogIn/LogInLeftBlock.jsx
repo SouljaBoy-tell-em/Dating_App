@@ -14,7 +14,7 @@ const OutBlock = styled.div`
     height: 390px;
     width: 290px;
     border-top-right-radius: 15px;
-    background-color: #E4E4E4;
+    background-color: #f1e2ff;
     position: absolute;
     bottom:0;
     z-index: 2;

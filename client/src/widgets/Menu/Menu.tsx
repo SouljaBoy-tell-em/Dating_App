@@ -1,12 +1,19 @@
 import { Outlet } from "react-router-dom";
 import * as React from "react";
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import { motion, sync, useCycle } from "framer-motion";
+
+import { observer } from "mobx-react-lite";
+
+import Context from "../..";
+
 import { useDimensions } from "./use-dimensions";
 import { MenuToggle } from "./MenuToggle";
 import { Navigation } from "./Navigation";
 
 import "./style.css";
+import Loading from "./Loading/Loading";
+
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -28,10 +35,11 @@ const sidebar = {
   },
 };
 
-export const Menu = () => {
+export const Menu = observer(() => {
   const [isOpen, toggleOpen] = useCycle(false, true);
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
+  const { store } = useContext(Context);
 
   return (
     <>
@@ -46,7 +54,8 @@ export const Menu = () => {
         <Navigation />
         <MenuToggle toggle={() => toggleOpen()} />
       </motion.nav>
-      <Outlet/>
+      {store.isLoading && <Loading />}
+      <Outlet />
     </>
   );
-};
+});

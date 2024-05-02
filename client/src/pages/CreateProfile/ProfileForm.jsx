@@ -5,7 +5,7 @@ import {observer} from "mobx-react-lite";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./style.css";
-
+import UploadPhoto from "./UploadPhoto";
 import Context from "../..";
 
 const Container = styled.div`
@@ -17,9 +17,7 @@ const Container = styled.div`
   gap: 10px;
   padding: 10px;
   background-color: #f1e2ff;
-  margin-top: 20%;
-  margin-left: 40%;
-  position: absolute;
+
 `;
 
 const Input = styled.input`
@@ -36,6 +34,9 @@ const Button = styled.button`
   width: fit-content;
   padding: 0 10px;
   cursor: pointer;
+  border-radius: 15px;
+  border:1px;
+  background-color: #e884ff;
   &:active {
     transform: scale(1.05);
   }
@@ -117,6 +118,8 @@ const ProfileForm = () => {
         </label>
       </RadioContainer>
       <Button onClick={handleFormSubmit}>Send</Button>
+      <UploadPhoto/>
+
     </Container>
   );
 };

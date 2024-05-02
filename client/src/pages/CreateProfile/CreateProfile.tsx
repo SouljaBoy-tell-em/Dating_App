@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+
 import Header from "../Main1/Header";
+
 import ProfileForm from "./ProfileForm";
+import ProfilePhoto from "./ProfilePhoto";
 
 const Container = styled.div`
   height: 100vh;
@@ -17,11 +20,26 @@ const Container = styled.div`
   margin-right: auto;
 `;
 
+const Wrapper = styled.div`
+  height: min-content;
+  background-color: #ffffff;
+  position: absolute;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  top:300px;
+`;
+
 const CreateProfile = () => {
   return (
     <Container>
-      <Header color="#D9D9D9" />
-      <ProfileForm/>
+      <Header color="#f1e2ff" />
+      <Wrapper>
+        <ProfileForm/>
+        <ProfilePhoto/>
+      </Wrapper>
     </Container>
   );
 };

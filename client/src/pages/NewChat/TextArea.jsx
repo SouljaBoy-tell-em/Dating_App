@@ -32,7 +32,7 @@ const TextArea = () => {
   return (
     <Container
       rows={rows}
-      style={{ height: `${rows * 20}px` }} // высота строки - 20px (можно настраивать)
+      style={{ height: `${rows * 20}px` }}
       onKeyDown={handleKeyDown}
       onInput={handleInput}
     />
