@@ -164,6 +164,10 @@ public class UserServiceManager {
         userRepository.FirstnameUpdate(changeField, GetEmail());
     }
 
+    public void GenderUpdate(boolean changeField) {
+        userRepository.GenderUpdate(changeField, GetEmail());
+    }
+
     public void LastnameUpdate(String changeField) { // ACCESS: USER;
         userRepository.LastnameUpdate(changeField, GetEmail());
     }

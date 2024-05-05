@@ -106,6 +106,7 @@ public class JwtAuthService {
                 .isActive(true)
                 .firstname(null)
                 .lastname(null)
+                .isMan(true)
                 .birthday(null)
                 .isPrivate(false)
                 .description(RandomFieldGenerator.GenerateRandomDescription())

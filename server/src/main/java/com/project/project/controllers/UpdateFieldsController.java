@@ -21,9 +21,6 @@ import java.time.LocalDate;
 public class UpdateFieldsController {
 
     @Autowired
-    private UserPhotoRepository userPhotoRepository;
-
-    @Autowired
     private UserServiceManager userServiceManager;
 
     private GeneralUsernameRequest<Object, String, UserUpdateField, ResponseEntity<?>> STATUS_UPDATE = (changeField, email, way) -> {
@@ -38,6 +35,7 @@ public class UpdateFieldsController {
                 case CASE_BIRTHDAY_UPDATE        -> userServiceManager.BirthdayUpdate((LocalDate)                  changeField);         // ACCESS: USER;
                 case CASE_CONFIRM_UPDATE         -> userServiceManager.ConfirmUpdate(Boolean.parseBoolean((String) changeField), email); // ACCESS: ADMIN, USER;
                 case CASE_FIRSTNAME_UPDATE       -> userServiceManager.FirstnameUpdate((String)                    changeField);         // ACCESS: USER;
+                case CASE_GENDER                 -> userServiceManager.GenderUpdate(Boolean.parseBoolean((String) changeField));         // ACCESS: USER;
                 case CASE_LASTNAME_UPDATE        -> userServiceManager.LastnameUpdate((String)                     changeField);         // ACCESS: USER;
                 case CASE_PASSWORD_UPDATE        -> userServiceManager.PasswordUpdate((String)                     changeField);         // ACCESS: USER;
                 case CASE_PROFILE_ACCESS_UPDATE  -> userServiceManager.ProfileAccessUpdate((Boolean)               changeField,  email); // ACCESS: ADMIN, USER;

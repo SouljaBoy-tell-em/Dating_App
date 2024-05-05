@@ -66,6 +66,11 @@ public class User implements Serializable, UserDetails {
     @Setter
     private String lastname;
 
+    @Column(name = "gender")
+    @Getter
+    @Setter
+    private boolean isMan;
+
     @Column(name = "birthday")
     @Getter
     @Setter
