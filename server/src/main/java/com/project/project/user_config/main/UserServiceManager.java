@@ -261,7 +261,7 @@ public class UserServiceManager {
         String avatarUrl = "";
         for(Photo photo : userRepository.getById(email).getPhotos()) {
             if(photo.isAvatar()) {
-                avatarUrl = "http://localhost:8081/photo/" + photo.getId();
+                avatarUrl = "http://localhost:8081/src/resources/static/images/photo/" + photo.getId();
                 break;
             }
         }
@@ -271,7 +271,7 @@ public class UserServiceManager {
     public List<String> GetAllPhotoIds() {
         List<String> photoIds = new ArrayList<>();
         for(Photo photo : GetAuthorizedUser().getPhotos())
-            photoIds.add("http://localhost:8080/photo/" + photo.getId() + "?avatar=" + ((photo.isAvatar() == true) ? "true" : "false"));
+            photoIds.add("http://localhost:8080/src/resources/static/images/photo/" + photo.getId() + "?avatar=" + ((photo.isAvatar() == true) ? "true" : "false"));
         return photoIds;
     }
 

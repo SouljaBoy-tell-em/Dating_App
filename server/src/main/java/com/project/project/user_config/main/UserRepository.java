@@ -80,13 +80,26 @@ public interface UserRepository extends CrudRepository<User, String>,
     @Transactional
     void RoleUpdate(UserRole userRole, String email);
 
+
     // SWIPER
     @Query(value = "select liked_email from likes where email = ?1 order by grade_time desc limit 1;", nativeQuery = true)
     String GetLastLikedEmail(String email);
 
-    @Query(value = "SELECT * from users where id > (select graded_user_id from likes where liked_email = ?1 and email = ?2 order by id desc limit 1) order by id limit 3;", nativeQuery = true)
-    List<User> GetNext3Users(String lastLikedEmail, String email);
+    @Query(value = "SELECT * from users where email != ?1 and " +
+            "not exists (select * from likes  where likes.liked_email = ?2 and users.email = likes.email) " +
+            "order by id limit ?2 offset ?3", nativeQuery = true)
+    List<User> GetStartNUsers(String email, int quantity, int offset);
 
-    @Query(value = "SELECT * from users order by id limit 3;", nativeQuery = true)
-    List<User> GetStart3Initialization();
+
+    @Query(value = "select * from users " +
+            "where exists (select * from likes  where likes.liked_email = ?1 and users.email = likes.email) and " +
+            "not exists (select * from likes  where likes.email = ?1 and users.email = likes.liked_email) limit ?2 offset ?3", nativeQuery = true)
+    List<User> GetOwnLikedNUsers(String email, int quantity, int offset);
+
+    @Query(value = "select * from users where id > " +
+            "(select graded_user_id from likes where liked_email = ?1 and " +
+            "email =  ?2  order by id desc limit 1) and " +
+            "not exists (select * from likes  where likes.liked_email = ?2 and users.email = likes.email) " +
+            "order by id limit ?3 offset ?4", nativeQuery = true)
+    List<User> GetNextNUsers(String lastLikedEmail, String email, int quantity, int offset);
 }
