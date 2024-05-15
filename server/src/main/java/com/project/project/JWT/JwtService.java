@@ -1,7 +1,7 @@
 package com.project.project.JWT;
 
 
-import com.project.project.user_config.User;
+import com.project.project.user_config.main.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +20,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private final Long ACCESS_EXPIRED_IN = (long) (1000 * 10000);
+    private final Long ACCESS_EXPIRED_IN = (long) (1000 * 1000);
     private final Long REFRESH_EXPIRED_IN = ACCESS_EXPIRED_IN * 10;
 
     @Value("${jwt.access.key}")
@@ -123,7 +123,7 @@ public class JwtService {
         Map<String, Object> additionalDataMap = new HashMap<>();
         if(userDetails instanceof User user) {
             additionalDataMap.put("role", user.getRole());
-            additionalDataMap.put("confirmed", user.isConfirmed());
+            additionalDataMap.put("confirmed", user.isConfirm());
         }
 
         return GenerateToken(additionalDataMap, userDetails);
@@ -172,6 +172,4 @@ public class JwtService {
     public String UsernameExtraction(String token, String jwtKey) {
         return ExtractClaim(token, Claims::getSubject, jwtKey);
     }
-
-
 }

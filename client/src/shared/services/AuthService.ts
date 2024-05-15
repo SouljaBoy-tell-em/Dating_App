@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 
 import $api from "../http";
 import { AuthResponse } from "../models/response/AuthResponse";
+import { UserInf } from "../models/UserInf";
 export default class AuthService {
   static async login(
     email: string,
@@ -20,8 +21,8 @@ export default class AuthService {
     });
   }
 
-  static async checkAuth() {
-    return $api.get<string>("/example");
+  static async checkAuth() : Promise<AxiosResponse<UserInf>> {
+    return $api.get<UserInf>("/auth/info");
   }
 
   static async confirmEmail(confirmCode: string) {

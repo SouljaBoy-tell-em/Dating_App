@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 
 import Context from "../../";
@@ -41,6 +41,26 @@ const Input = styled.input`
   border: 0;
 `;
 
+const Button = styled.button`
+  width: fit-content;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 25px;
+  color: white;
+  font-weight: 600;
+  background-color: #c58afc;
+  border: 0px;
+  &:hover {
+    transform: scale(1.03);
+  }
+  &:active {
+    transform: scale(1.1);
+  }
+`;
+
+const LicenseP = styled.p`
+  font-size: 20px;
+`;
 const FormBlock = () => {
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || "/";
@@ -105,6 +125,11 @@ const FormBlock = () => {
           onChange={(e) => setConfPassword(e.target.value)}
           required
         />
+
+        <Button onClick={handleSubmit}>Sign up</Button>
+        <LicenseP>
+          By registering, you agree to the <Link to="/license">license agreement</Link>
+        </LicenseP>
       </LogInForm>
     </Container>
   );

@@ -1,36 +1,44 @@
-import { React, useContext, useState } from "react";
+import { React, useContext, useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-
-import { ChatContext } from "../../pages/NoSecPage/NoSecPage";
 
 import { observer } from "mobx-react-lite";
 
+import { ChatContext } from "../../pages/GrayChat/GrayChat";
+
+import Context from "../..";
+
+import BottomBlock from "./BottomBlock";
+import Message from "./Message";
+
 const Container = styled.div`
-  width: 50%;
-  height: 100vh;
+  width: 700px;
+  height: 750px;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
 `;
 
 const MessegeBlock = styled.div`
-  height: 50%;
-  background-color: #dfdfdf;
-  border-radius: 10px;
+  background-image: url("/images/ChatBackGround.png");
+  box-shadow: 0 0 2px 2px #eac3ff;
+
+  height: 500px;
+
   overflow-y: scroll;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  padding: 10px;
-  width: 70%;
+  padding: 10px 6px;
+  width: 650px;
   gap: 10px;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #999;
+  }
 `;
 
 const Messege = styled.div`
@@ -40,6 +48,14 @@ const Messege = styled.div`
   width: min-content;
   display: flex;
   flex-direction: column;
+  position: relative;
+`;
+
+const MessageContainer = styled.div`
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+  position: relative;
 `;
 
 const MessegeWrapper = styled.div`
@@ -54,73 +70,55 @@ const Name = styled.p`
   font-weight: 800;
 `;
 
-const ChatName = styled.p`
-  font-size: medium;
-  font-weight: 800;
-`;
-const Chat = () => {
-  const [message, setMessage] = useState("");
-  const [name, setName] = useState("");
+const ChatNameBlock = styled.div`
+  width: 642px;
+  padding: 10px;
+  background-color: #fff5ff;
 
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0 0 2px 2px #eac3ff;
+`;
+
+const ChatName = styled.p`
+  font-size: 25px;
+  font-weight: 800;
+  z-index: 100;
+`;
+
+const Chat = () => {
   const { chatStore } = useContext(ChatContext);
+  const { store } = useContext(Context);
+
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(scrollToBottom, [chatStore.isScrolling]);
 
   return (
     <Container>
-      <ChatName>
-        {chatStore.chatName}
-      </ChatName>
+      <ChatNameBlock>
+        <ChatName>
+          {chatStore.chatUsers.length === 0
+            ? "Выберите чат"
+            : chatStore.chatUsers[0] === store.userInfo.username
+            ? chatStore.chatUsers[1]
+            : chatStore.chatUsers[0]}
+        </ChatName>
+      </ChatNameBlock>
+
       <MessegeBlock>
         {chatStore.messages.map(
           (value, index) =>
-            value.chatId == chatStore.chatId && (
-              <Messege key={value.id} style={{ display: "flex", gap: "10px" }}>
-                <Name>{value.sender}</Name>
-                <MessegeWrapper>
-                  <p>{value.content}</p>
-                  <button
-                    onClick={() => {
-                      chatStore.delete(value);
-                    }}
-                  >
-                    Delete
-                  </button>
-                </MessegeWrapper>
-              </Messege>
-            )
+            value.chatId === chatStore.chatId && <Message value={value} />
         )}
+        <div ref={messagesEndRef}></div>
       </MessegeBlock>
 
-      <button onClick={chatStore.getAll}>Get All</button>
-      <Wrapper>
-        <input
-          placeholder="Введите имя"
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        />
-        <button
-          onClick={() => {
-            chatStore.join(name);
-          }}
-        >
-          Join
-        </button>
-      </Wrapper>
-      <Wrapper>
-        <input
-          placeholder="Введите сообщение"
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        />
-        <button
-          onClick={() => {
-            chatStore.send(message);
-          }}
-        >
-          Send
-        </button>
-      </Wrapper>
+      <BottomBlock />
     </Container>
   );
 };

@@ -1,7 +1,7 @@
 package com.project.project.requests;
 
 
-import com.project.project.user_config.User;
+import com.project.project.user_config.main.User;
 import lombok.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

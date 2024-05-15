@@ -1,11 +1,10 @@
 package com.project.project.security;
 
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import com.project.project.JWT.JwtAuthFilter;
-import com.project.project.user_config.UserServiceManager;
+import com.project.project.user_config.main.UserServiceManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import java.util.List;
-import org.springframework.security.messaging.access.intercept.MessageMatcherDelegatingAuthorizationManager;
+
 
 @Configuration
 @EnableWebSecurity
@@ -57,17 +56,8 @@ public class SecurityConfig {
     public AuthenticationProvider AuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userServiceManager.UserDetailsService());
-        provider.setPasswordEncoder(PasswordEncoder());
+        provider.setPasswordEncoder(userServiceManager.PasswordEncoder());
         return provider;
-    }
-
-    /**
-     * The PasswordEncoder() creates bean that contains cryptographic key(BCrypt).
-     * @return cryptographic key for password encoding.
-     */
-    @Bean
-    public PasswordEncoder PasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     /**
@@ -96,10 +86,15 @@ public class SecurityConfig {
                 ))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/confirm").permitAll()
+                        .requestMatchers("/photo/**").permitAll()
 //                        .requestMatchers("/auth/refresh").permitAll()
+                        .requestMatchers("/test/register/**").permitAll()
+                        .requestMatchers("/profile/update/photo/**").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/profile").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/chat/files/{id}").permitAll()
+
                         .requestMatchers("/swagger-ui/**",
                                          "/swagger-resources/*",
                                          "/v3/api-docs/**").permitAll()
@@ -112,6 +107,4 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-
 }

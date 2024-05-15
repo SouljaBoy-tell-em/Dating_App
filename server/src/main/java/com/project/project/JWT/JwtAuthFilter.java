@@ -1,9 +1,8 @@
 package com.project.project.JWT;
 
 
-import com.project.project.services.ChatService;
 import org.apache.commons.lang3.StringUtils;
-import com.project.project.user_config.UserServiceManager;
+import com.project.project.user_config.main.UserServiceManager;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 
 
@@ -41,16 +38,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private UserServiceManager userServiceManager;
 
-    @Autowired
-    private ChatService chatService;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
         String header = request.getHeader(AUTHORIZATION);
-
 
         //For WebSocket
         if (header == null) {
@@ -90,7 +83,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         .buildDetails(request));
                 context.setAuthentication(token);
                 SecurityContextHolder.setContext(context);
-
             }
 
             else {
@@ -99,5 +91,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
 }
