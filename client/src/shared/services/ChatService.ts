@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
+
 import $api from "../http";
-import { ChatDTO } from "../models/ChatDTO";
+import { ChatDTO } from "../models/chat/ChatDTO";
 
 export default class ChatService {
   static async getAllChat(): Promise<ChatDTO[]> {

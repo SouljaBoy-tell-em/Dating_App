@@ -51,7 +51,7 @@ const LogIn = () => {
   
   return (
     <Container>
-      <Header color="#D9D9D9" />
+      <Header color="#f1e2ff" />
       <Wrapper>
         <LogInLeftBlock />
         <FormBlock/>
