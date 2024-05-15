@@ -81,12 +81,35 @@ public interface UserRepository extends CrudRepository<User, String>,
     void RoleUpdate(UserRole userRole, String email);
 
     // SWIPER
-    @Query(value = "select liked_email from likes where email = ?1 order by grade_time desc limit 1;", nativeQuery = true)
-    String GetLastLikedEmail(String email);
 
-    @Query(value = "SELECT * from users where id > (select graded_user_id from likes where liked_email = ?1 and email = ?2 order by id desc limit 1) order by id limit 3;", nativeQuery = true)
-    List<User> GetNext3Users(String lastLikedEmail, String email);
+    @Query(value = "select * from users " +
+            "where exists (select * from likes  where likes.liked_email = ?1 and users.email = likes.email " +
+            "and is_like = true) " +
+            "and not exists (select * from likes  where likes.email = ?1 and users.email = likes.liked_email) " +
+            "and DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birthday)), '%Y') between ?4 and ?5 " +
+            "and users.gender != ?6 " +
+            "limit ?2 offset ?3", nativeQuery = true)
+    List<User> GetFilteredOwnLikedNUsers(String email, int quantity, int offset, int minage, int maxage, boolean gender);
 
-    @Query(value = "SELECT * from users order by id limit 3;", nativeQuery = true)
-    List<User> GetStart3Initialization();
+    @Query(value = "select * from users " +
+            "where not exists (select * from likes  where likes.email = ?1 and users.email = likes.liked_email)  " +
+            "and DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birthday)), '%Y') between ?4 and ?5 " +
+            "and users.gender != ?6 " +
+            "limit ?2 offset ?3 ", nativeQuery = true)
+    List<User> GetFilteredNextNUsers(String email, int quantity, int offset, int minage, int maxage, boolean gender);
+
+    @Query(value = "select * from users " +
+            "where exists (select * from likes  where likes.liked_email = ?1 and users.email = likes.email " +
+            "and is_like = true) " +
+            "and not exists (select * from likes  where likes.email = ?1 and users.email = likes.liked_email) " +
+            "and users.gender != ?4 " +
+            "limit ?2 offset ?3", nativeQuery = true)
+    List<User> GetOwnLikedNUsers(String email, int quantity, int offset, boolean gender);
+
+    @Query(value = "select * from users " +
+            "where not exists (select * from likes  where likes.email = ?1 and users.email = likes.liked_email)" +
+            "and users.gender != ?4 " +
+            "limit ?2 offset ?3 ", nativeQuery = true)
+    List<User> GetNextNUsers(String email, int quantity, int offset, boolean gender);
+
 }

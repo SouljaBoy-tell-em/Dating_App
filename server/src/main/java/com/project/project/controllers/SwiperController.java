@@ -1,6 +1,7 @@
 package com.project.project.controllers;
 
 
+import com.project.project.requests.swiper.FilterRequest;
 import com.project.project.requests.swiper.GradeRequest;
 import com.project.project.responses.SwiperFormResponse;
 import com.project.project.user_config.main.User;
@@ -14,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +26,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/swiper")
 public class SwiperController {
-
+    private static final int ANKET_LIST_SIZE = 3;
+    private static final int ROW_LIST_SIZE = ANKET_LIST_SIZE * 2;
     private static final String TRUE_VALUE = "true";
 
     @Autowired
@@ -46,49 +50,94 @@ public class SwiperController {
         return new ResponseEntity<>("Successfully.", HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<?> GetNext3Forms() {
-        List<User> next3Users = null;
+    @GetMapping("/get-next-users")
+    public ResponseEntity<?> GetNextNNonFilteredForms() {
+        User curUser;
+        try {
+            curUser = userRepository.findById(userServiceManager.GetEmail()).get();
+        } catch (Exception e) {
+            return new ResponseEntity<>("User doesn't exist.", HttpStatus.BAD_REQUEST);
+        }
+
+        List<User> nextNUsers = null;
+        List<User> nextOwnLikedNUsers = null;
         List<SwiperFormResponse> swiperFormResponses;
-        String lastLikedUser = userRepository.GetLastLikedEmail(userServiceManager.GetEmail());
-
-        if(lastLikedUser == null)
-            next3Users = userRepository.GetStart3Initialization();
-
-
-        if(lastLikedUser != null && !userServiceManager.IsExist(lastLikedUser))
-            return new ResponseEntity<>("Last liked user with email " + lastLikedUser + " doesn't exist.", HttpStatus.BAD_REQUEST);
-//        if(lastLikedUser != null && gradeRepository.ExistsPair(userServiceManager.GetEmail(), lastLikedUser) > 0)
-//            return new ResponseEntity<>("This users pair already exists.", HttpStatus.BAD_REQUEST);
-
-        if(next3Users == null)
-            next3Users = userRepository.GetNext3Users(lastLikedUser, userServiceManager.GetEmail());
-
-        if(next3Users.size() == 0)
-            return new ResponseEntity<>("You liked all users.", HttpStatus.NO_CONTENT);
-
         swiperFormResponses = new ArrayList<>();
-        for(int iUser = 0; iUser < next3Users.size(); iUser++) {
-            User currentUser = next3Users.get(iUser);
-            swiperFormResponses.add(new SwiperFormResponse(
+        try {
+            nextOwnLikedNUsers = userRepository.GetOwnLikedNUsers(userServiceManager.GetEmail(),
+                    ANKET_LIST_SIZE, 0, curUser.isMan());
+            addUsersToResponse(swiperFormResponses, nextOwnLikedNUsers);
+            if (swiperFormResponses.size() < ANKET_LIST_SIZE) {
+                nextNUsers = userRepository.GetNextNUsers(userServiceManager.GetEmail(),
+                        ANKET_LIST_SIZE - swiperFormResponses.size(), 0, curUser.isMan());
+                addUsersToResponse(swiperFormResponses, nextNUsers);
+            }
+            if (swiperFormResponses.isEmpty())
+                return new ResponseEntity<>("You liked all users.", HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Cannot find ankets.", HttpStatus.BAD_REQUEST);
+        }
+        System.out.println("CURRENT USER: " + userServiceManager.GetEmail());
+
+        for(int i = 0; i < swiperFormResponses.size(); i++)
+            System.out.printf("!!! %d: %s", (i+1), swiperFormResponses.get(i).getEmail());
+
+        return new ResponseEntity<>(swiperFormResponses, HttpStatus.OK);
+    }
+    @PostMapping("/get-next-filtered-users")
+    public ResponseEntity<?> GetNextNFilteredForms(@RequestBody FilterRequest filterRequest) {
+        User curUser;
+        try {
+            curUser = userRepository.findById(userServiceManager.GetEmail()).get();
+        } catch (Exception e) {
+            return new ResponseEntity<>("User doesn't exist.", HttpStatus.BAD_REQUEST);
+        }
+
+        List<User> nextNUsers = null;
+        List<User> nextOwnLikedNUsers = null;
+        List<SwiperFormResponse> swiperFormResponses;
+        swiperFormResponses = new ArrayList<>();
+
+        int minAge = filterRequest.getMinAge() < filterRequest.MAX_AGE ||
+                filterRequest.getMinAge() > filterRequest.MAX_AGE ? filterRequest.MIN_AGE : filterRequest.getMinAge();
+        int maxAge = filterRequest.getMaxAge() < filterRequest.MIN_AGE ||
+                filterRequest.getMaxAge() > filterRequest.MAX_AGE ? filterRequest.MAX_AGE : filterRequest.getMaxAge();
+        try {
+            nextOwnLikedNUsers = userRepository.GetFilteredOwnLikedNUsers(userServiceManager.GetEmail(),
+                    ANKET_LIST_SIZE, 0, minAge, maxAge, curUser.isMan());
+            addUsersToResponse(swiperFormResponses, nextOwnLikedNUsers);
+            if (swiperFormResponses.size() < ANKET_LIST_SIZE) {
+                nextNUsers = userRepository.GetFilteredNextNUsers(userServiceManager.GetEmail(),
+                        ANKET_LIST_SIZE - swiperFormResponses.size(), 0, minAge, maxAge, curUser.isMan());
+                addUsersToResponse(swiperFormResponses, nextNUsers);
+            }
+            if (swiperFormResponses.isEmpty())
+                return new ResponseEntity<>("You liked all users.", HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Cannot find ankets.", HttpStatus.BAD_REQUEST);
+        }
+        System.out.println("CURRENT USER: " + userServiceManager.GetEmail());
+
+        for(int i = 0; i < swiperFormResponses.size(); i++)
+            System.out.printf("!!! %d: %s", (i+1), swiperFormResponses.get(i).getEmail());
+
+        return new ResponseEntity<>(swiperFormResponses, HttpStatus.OK);
+    }
+
+    private void addUsersToResponse(List<SwiperFormResponse> responseList, List<User> listToMerge) {
+        for(int iUser = 0; iUser < listToMerge.size() && responseList.size() < ANKET_LIST_SIZE; iUser++) {
+            User currentUser = listToMerge.get(iUser);
+            responseList.add(new SwiperFormResponse(
                     currentUser.getUsername(),
                     currentUser.getId(),
                     currentUser.getFirstname(),
                     currentUser.getLastname(),
-//                    currentUser.getBirthday().getYear() - LocalDateTime.now().getYear(),
-                    0,
+                    Period.between(currentUser.getBirthday(), LocalDate.now()).getYears(),
                     userServiceManager.GetAvatarUrl(
                             currentUser.getUsername()
                     ),
                     currentUser.getDescription()));
         }
-
-        System.out.println("CURRENT USER: " + userServiceManager.GetEmail());
-        System.out.println("LAST LIKED USER: " + lastLikedUser);
-
-        for(int i = 0; i < next3Users.size(); i++)
-            System.out.printf("!!! %d: %s", (i+1), next3Users.get(i).getUsername());
-
-        return new ResponseEntity<>(swiperFormResponses, HttpStatus.OK);
     }
+
 }
