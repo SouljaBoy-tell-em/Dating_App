@@ -93,6 +93,8 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/profile").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/chat/files/{id}").permitAll()
+
                         .requestMatchers("/swagger-ui/**",
                                          "/swagger-resources/*",
                                          "/v3/api-docs/**").permitAll()

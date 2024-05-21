@@ -17,6 +17,15 @@ public class ChatService {
     @Autowired
     private ChatRepository chatRepository;
 
+    public void CreateChat(String username1, String username2) {
+        Chat chat = new Chat();
+        chat.setUser1(username1);
+        chat.setUser2(username2);
+        chat.generateChatKey();
+
+        chatRepository.save(chat);
+    }
+
     public List<Chat> getAllChatsByUser(User user) {
         return chatRepository.findAllByUser1OrUser2(user.getUsername(), user.getUsername());
     }
@@ -40,6 +49,6 @@ public class ChatService {
             chat = chatRepository.findByUser1AndUser2(email2, email1);
         }
 
-        return  chat;
-    };
+        return chat;
+    }
 }

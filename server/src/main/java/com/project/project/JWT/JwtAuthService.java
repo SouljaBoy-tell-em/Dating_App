@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.zip.Deflater;
 
 
@@ -107,7 +108,7 @@ public class JwtAuthService {
                 .firstname(null)
                 .lastname(null)
                 .isMan(true)
-                .birthday(null)
+                .birthday(LocalDate.of(1924 + RandomFieldGenerator.GenerateRandomInteger(0, 100), 11, 11))
                 .isPrivate(false)
                 .description(RandomFieldGenerator.GenerateRandomDescription())
                 .build();

@@ -2,10 +2,13 @@ package com.project.project.WebSockets.controllers;
 
 import com.project.project.WebSockets.models.Chat;
 import com.project.project.WebSockets.models.ChatMessage;
+import com.project.project.WebSockets.models.MessageFile;
 import com.project.project.WebSockets.models.MessageType;
 import com.project.project.WebSockets.repositories.ChatRepository;
 import com.project.project.WebSockets.repositories.MessageRepository;
 import com.project.project.WebSockets.services.ChatService;
+import com.project.project.WebSockets.services.MessageFileService;
+import com.project.project.WebSockets.services.MessageService;
 import com.project.project.user_config.main.User;
 import com.project.project.user_config.main.UserServiceManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +18,13 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RestController
 public class ChatController {
@@ -33,7 +37,10 @@ public class ChatController {
     UserServiceManager userServiceManager;
     @Autowired
     ChatService chatService;
-
+    @Autowired
+    MessageService messageService;
+    @Autowired
+    MessageFileService messageFileService;
     private SimpMessagingTemplate template;
 
     @Autowired
@@ -43,28 +50,61 @@ public class ChatController {
 
     @PostMapping("/chat/send/{chatId}")
     @CrossOrigin
-    public ResponseEntity<?> sendMessage(@PathVariable Long chatId, @RequestBody ChatMessage message, Principal principal) {
-
+    public ResponseEntity<?> sendMessage(@PathVariable Long chatId, @RequestParam("content") String content,
+                                         Principal principal, @RequestParam(value = "file", required = false) List<MultipartFile> files) {
 
         Optional<Chat> chatOptional = chatRepository.findById(chatId);
 
+        ChatMessage savedMessage;
         if (chatOptional.isPresent()) {
             Chat chat = chatOptional.get();
 
             if (chatService.isUserInChat(principal.getName(), chatId)) {
 
+                ChatMessage message = new ChatMessage();
+
+                LocalDateTime currentTime = LocalDateTime.now();
+
+                message.setContent(content);
                 message.setChatId(chat.getId());
                 message.setSender(principal.getName());
+                message.setTime(currentTime);
                 message.setType(MessageType.CHAT);
-                ChatMessage savedMessage = messageRepository.save(message);
 
-                this.template.convertAndSend("/user/" + chat.getUser1() + "/queue/position-updates", savedMessage);
-                this.template.convertAndSend("/user/" + chat        .getUser2() + "/queue/position-updates", savedMessage);
+                // Проверка на пустой список файлов
+                if (files != null && !files.isEmpty()) {
+                    List<MessageFile> messageFiles = new ArrayList<>();
+                    for (MultipartFile file : files) {
+                        MessageFile messageFile = new MessageFile();
+                        messageFile.setFileName(file.getOriginalFilename());
+                        messageFile.setFileType(file.getContentType());
+                        try {
+                            messageFile.setFileContent(file.getBytes());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        messageFiles.add(messageFile);
+                    }
 
+                    message.setFiles(messageFiles);
+                    savedMessage = messageRepository.save(message);
+
+                    for (MessageFile file : messageFiles) {
+                        file.setMessage(savedMessage);
+                        messageFileService.saveFile(file);
+                    }
+                } else {
+                    savedMessage = messageRepository.save(message);
+                }
+
+                this.template.convertAndSend("/user/" + chat.getUser1() + "/queue/position-updates",
+                        messageService.getMessageDTO(savedMessage));
+                this.template.convertAndSend("/user/" + chat.getUser2() + "/queue/position-updates",
+                        messageService.getMessageDTO(savedMessage));
 
                 return ResponseEntity.ok().build();
             } else {
-                return ResponseEntity.badRequest().body("You don not consist in this chat");
+                return ResponseEntity.badRequest().body("You do not consist in this chat");
             }
 
         } else {
@@ -72,6 +112,7 @@ public class ChatController {
         }
 
     }
+
 
     @PostMapping("/chat/delete/{messageId}")
     @CrossOrigin
@@ -87,8 +128,8 @@ public class ChatController {
             } else {
                 String receiverEmail;
                 message.setType(MessageType.DELETE);
-                this.template.convertAndSend("/user/" + message.getChat().getUser1() + "/queue/position-updates", message);
-                this.template.convertAndSend("/user/" + message.getChat().getUser2() + "/queue/position-updates", message);
+                this.template.convertAndSend("/user/" + message.getChat().getUser1() + "/queue/position-updates", messageService.getMessageDTO(message));
+                this.template.convertAndSend("/user/" + message.getChat().getUser2() + "/queue/position-updates", messageService.getMessageDTO(message));
                 messageRepository.deleteById(messageId);
                 return ResponseEntity.ok().build();
             }
@@ -109,7 +150,7 @@ public class ChatController {
             Chat chat = chatOptional.get();
 
             if (chatService.isUserInChat(principal.getName(), chatId)) {
-                return ResponseEntity.ok(messageRepository.findAllByChatId(chatId));
+                return ResponseEntity.ok(messageService.getMessageDTO(messageRepository.findAllByChatId(chatId)));
             } else {
                 return ResponseEntity.badRequest().body("You don not consist in this chat");
             }
