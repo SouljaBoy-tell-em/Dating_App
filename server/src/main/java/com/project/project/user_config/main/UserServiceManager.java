@@ -1,6 +1,9 @@
 package com.project.project.user_config.main;
 
 
+import com.project.project.WebSockets.controllers.ChatController;
+import com.project.project.WebSockets.repositories.ChatRepository;
+import com.project.project.WebSockets.services.ChatService;
 import com.project.project.security.mail.ConfirmCode;
 import com.project.project.security.mail.ConfirmEmailRepository;
 import com.project.project.user_config.blacklist.BlackList;
@@ -36,6 +39,9 @@ public class UserServiceManager {
 
     @Autowired
     private BlackListRepository blackListRepository;
+
+    @Autowired
+    private ChatService chatService;
 
     @Autowired
     private GradeRepository gradeRepository;
@@ -279,7 +285,8 @@ public class UserServiceManager {
 
     // SWIPER:
     public void Grade(String likedEmail, long gradedUserId, boolean isLike) {
-        System.out.println("LIKED EMAIL: " + likedEmail);
         gradeRepository.save(new Grade(GetEmail(), likedEmail, gradedUserId, isLike, LocalDateTime.now()));
+        if(gradeRepository.ExistsPair(likedEmail, GetEmail()) > 0 && isLike == true)
+            chatService.CreateChat(likedEmail, GetEmail());
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 
 
@@ -22,20 +24,20 @@ public class ExecutePhotoController {
     @Autowired
     private UserServiceManager userServiceManager;
 
-//    @PostMapping("/add")
-//    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-//    public ResponseEntity<?> AddPhoto(@RequestParam("file") MultipartFile multipartFile,
-//                                      @RequestParam(value = "avatar", required = false) boolean isAvatar)
-//                                      throws IOException {
-//        return userServiceManager.AddPhoto(multipartFile, isAvatar);
-//    }
-
     @PostMapping("/add")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> AddPhoto(@RequestParam(value = "avatar", required = false) boolean isAvatar)
-            throws IOException {
-        return userServiceManager.TestAddPhoto(isAvatar, userServiceManager.GetEmail(), "image.png");
+    public ResponseEntity<?> AddPhoto(@RequestParam("file") MultipartFile multipartFile,
+                                      @RequestParam(value = "avatar", required = false) boolean isAvatar)
+                                      throws IOException {
+        return userServiceManager.AddPhoto(multipartFile, isAvatar);
     }
+
+//    @PostMapping("/add")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+//    public ResponseEntity<?> AddPhoto(@RequestParam(value = "avatar", required = false) boolean isAvatar)
+//            throws IOException {
+//        return userServiceManager.TestAddPhoto(isAvatar, userServiceManager.GetEmail(), "image.png");
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> DeletePhotoById(@PathVariable("id") long id) {
