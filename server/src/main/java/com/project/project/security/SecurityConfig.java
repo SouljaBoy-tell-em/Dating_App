@@ -91,10 +91,11 @@ public class SecurityConfig {
                         .requestMatchers("/test/register/**").permitAll()
                         .requestMatchers("/profile/update/photo/**").permitAll()
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/post/**").permitAll()
                         .requestMatchers("/profile").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/chat/files/{id}").permitAll()
-
+                        .requestMatchers("/post/files/{id}").permitAll()
                         .requestMatchers("/swagger-ui/**",
                                          "/swagger-resources/*",
                                          "/v3/api-docs/**").permitAll()
