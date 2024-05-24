@@ -1,5 +1,6 @@
 package com.project.project.page.dto;
 
+import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,4 +15,14 @@ public class PostDTO {
     private String email;
     private LocalDateTime time;
     private List<PostFileDTO> files;
+    private long likeNumber;
+
+    private boolean isLiked;
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
 }

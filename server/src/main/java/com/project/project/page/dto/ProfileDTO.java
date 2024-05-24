@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -14,6 +15,7 @@ public class ProfileDTO {
     private boolean isMan;
     private LocalDate birthday;
     private String description;
+    private String photoURL;
 
     public boolean isMan() {
         return isMan;
