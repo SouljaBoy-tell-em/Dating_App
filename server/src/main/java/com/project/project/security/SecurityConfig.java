@@ -95,7 +95,7 @@ public class SecurityConfig {
                         .requestMatchers("/profile").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/chat/files/{id}").permitAll()
-                        .requestMatchers("/post/files/{id}").permitAll()
+                        //.requestMatchers("/post/files/{id}").permitAll()
                         .requestMatchers("/swagger-ui/**",
                                          "/swagger-resources/*",
                                          "/v3/api-docs/**").permitAll()
