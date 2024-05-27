@@ -4,18 +4,22 @@ import styled from "styled-components";
 import Chat from "../../widgets/Chat/Chat";
 import ChatStore from "../../shared/store/chatStore";
 import ChatService from "../../shared/services/ChatService";
-import { ChatDTO } from "../../shared/models/ChatDTO";
+import { ChatDTO } from "../../shared/models/chat/ChatDTO";
 
 import Context from "../..";
 
 import ListOfChats from "./ListOfChats";
 
 import CreateNewChat from "./CreateNewChat";
+import { observer } from "mobx-react-lite";
 
-const Container = styled.div`
+const Container = styled.div<{colorTheme:boolean}>`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${(props) => (!props.colorTheme ? "#white" : "#202020")}  ;
+  transition: 0.2s background-color;
+
 `;
 
 const Wrapper = styled.div`
@@ -45,29 +49,30 @@ const ChatContext = createContext<State>({
   chatStore,
 });
 
-chatStore.connect();
 
 export { ChatContext };
 
-const GrayChat = () => {
+const GrayChat = observer(() => {
   const { store } = useContext(Context);
 
   useEffect(() => {
     chatStore.reconnect();
+    store.checkAuth();
+    chatStore.getAllChat();
   }, []);
 
-  return (
-    <Container>
+  return (  
+    <Container colorTheme={store.colorTheme}>
       <Username>{store.user.email}</Username>
       <ChatContext.Provider value={{ chatStore }}>
         <Wrapper>
           <ListOfChats />
-          <CreateNewChat />
+          {/* <CreateNewChat /> */}
         </Wrapper>
         <Chat />
       </ChatContext.Provider>
     </Container>
   );
-};
+});
 
 export default GrayChat;

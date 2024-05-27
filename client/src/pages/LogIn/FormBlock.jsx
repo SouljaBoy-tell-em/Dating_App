@@ -18,7 +18,7 @@ const LabelLogIn = styled.h2`
 `;
 
 const LogInForm = styled.form`
-  background-color: #f1e2ff; 
+  background-color: #f1e2ff;
   display: flex;
   flex-direction: column;
   padding: 49px 44px;
@@ -41,8 +41,24 @@ const Input = styled.input`
   border: 0;
 `;
 
+const Button = styled.button`
+  width: fit-content;
+  padding: 5px;
+  border-radius: 10px;
+  font-size:25px;
+  color:white;
+  font-weight: 600;
+  background-color: #c58afc;
+  border: 0px;
+  &:hover{
+    transform: scale(1.03);
+  }
+  &:active{
+    transform: scale(1.1);
+  }
+`;
+
 const FormBlock = () => {
-    
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || "/";
   const { store } = useContext(Context);
@@ -71,7 +87,12 @@ const FormBlock = () => {
   return (
     <Container>
       <LabelLogIn>Log in</LabelLogIn>
-      <LogInForm onSubmit={(e)=>{handleSubmit(e)}} onKeyPress={handleKeyPress}>
+      <LogInForm
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
+        onKeyPress={handleKeyPress}
+      >
         <Label htmlFor="login">Email</Label>
         <Input
           type="text"
@@ -89,6 +110,7 @@ const FormBlock = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        <Button onClick={handleSubmit}>Log in</Button>
       </LogInForm>
     </Container>
   );

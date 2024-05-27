@@ -13,7 +13,7 @@ import { Navigation } from "./Navigation";
 
 import "./style.css";
 import Loading from "./Loading/Loading";
-
+import styled from "styled-components";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -35,6 +35,16 @@ const sidebar = {
   },
 };
 
+const MenuBackground = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  background: ${(props) => (!props.colorTheme ? "#f1e2ff" : "black")};
+  opacity: 0.95;
+`;
+
 export const Menu = observer(() => {
   const [isOpen, toggleOpen] = useCycle(false, true);
   const containerRef = useRef(null);
@@ -50,8 +60,8 @@ export const Menu = observer(() => {
         custom={height}
         ref={containerRef}
       >
-        <motion.div className="menu-background" variants={sidebar} />
-        <Navigation />
+        <MenuBackground colorTheme={store.colorTheme} variants={sidebar} />
+        <Navigation  />
         <MenuToggle toggle={() => toggleOpen()} />
       </motion.nav>
       {store.isLoading && <Loading />}

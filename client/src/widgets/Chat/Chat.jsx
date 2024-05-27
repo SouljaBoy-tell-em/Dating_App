@@ -1,4 +1,4 @@
-import { React, useContext, useState } from "react";
+import { React, useContext, useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 import { observer } from "mobx-react-lite";
@@ -8,6 +8,7 @@ import { ChatContext } from "../../pages/GrayChat/GrayChat";
 import Context from "../..";
 
 import BottomBlock from "./BottomBlock";
+import Message from "./Message";
 
 const Container = styled.div`
   width: 700px;
@@ -18,14 +19,11 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-
-
 const MessegeBlock = styled.div`
   background-image: url("/images/ChatBackGround.png");
   box-shadow: 0 0 2px 2px #eac3ff;
 
-  height: 50%;
-
+  height: 500px;
 
   overflow-y: scroll;
   overflow-x: hidden;
@@ -36,10 +34,10 @@ const MessegeBlock = styled.div`
   gap: 10px;
 
   &::-webkit-scrollbar {
-    width: 10px; /* Ширина полосы прокрутки */
+    width: 10px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #999; /* Цвет бегунка */
+    background-color: #999;
   }
 `;
 
@@ -89,9 +87,16 @@ const ChatName = styled.p`
 `;
 
 const Chat = () => {
-
   const { chatStore } = useContext(ChatContext);
   const { store } = useContext(Context);
+
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(scrollToBottom, [chatStore.isScrolling]);
 
   return (
     <Container>
@@ -100,51 +105,20 @@ const Chat = () => {
           {chatStore.chatUsers.length === 0
             ? "Выберите чат"
             : chatStore.chatUsers[0] === store.userInfo.username
-              ? chatStore.chatUsers[1]
-              : chatStore.chatUsers[0]}
+            ? chatStore.chatUsers[1]
+            : chatStore.chatUsers[0]}
         </ChatName>
       </ChatNameBlock>
 
       <MessegeBlock>
         {chatStore.messages.map(
           (value, index) =>
-            value.chatId == chatStore.chatId && (
-              <MessageContainer
-                style={{
-                  justifyContent:
-                    value.sender === store.userInfo.username ? "right" : "left",
-                }}
-              >
-                <Messege
-                  key={value.id}
-                  style={{
-                    display: "flex",
-                    gap: "10px",
-                    background:
-                      value.sender === store.userInfo.username
-                        ? "#ffffff"
-                        : "#e9bdf7",
-                  }}
-                >
-                  <Name>{value.sender}</Name>
-                  <MessegeWrapper>
-                    <p>{value.content}</p>
-                    <button
-                      onClick={() => {
-                        chatStore.delete(value);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </MessegeWrapper>
-                </Messege>
-              </MessageContainer>
-            )
+            value.chatId === chatStore.chatId && <Message value={value} />
         )}
+        <div ref={messagesEndRef}></div>
       </MessegeBlock>
 
-      <BottomBlock/>
-
+      <BottomBlock />
     </Container>
   );
 };
