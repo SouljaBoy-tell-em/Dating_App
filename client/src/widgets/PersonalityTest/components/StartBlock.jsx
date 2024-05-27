@@ -40,7 +40,7 @@ const StartBlock = (props) => {
           interact with others. It can be a valuable tool for personal
           development, career counseling, and team-building activities.
         </span>
-        <img src="/images/c9727b6c89fab8ff726fbd0515bbe53c.png" alt="MBTI Image" />
+        <img src="images/c9727b6c89fab8ff726fbd0515bbe53c.png" alt="MBTI Image" />
       </p>
     </div>
   );

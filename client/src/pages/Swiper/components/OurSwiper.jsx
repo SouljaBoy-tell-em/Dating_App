@@ -38,7 +38,7 @@ const OurSwiper = observer(() => {
               )}
               id={0}
               name={swiperStore.users[swiperStore.order[0]].firstname}
-              age={swiperStore.users[swiperStore.order[0]].lastname}
+              age={swiperStore.users[swiperStore.order[0]].age}
             />
           </SwiperSlide>
 
@@ -49,7 +49,7 @@ const OurSwiper = observer(() => {
               )}
               id={1}
               name={swiperStore.users[swiperStore.order[1]].firstname}
-              age={swiperStore.users[swiperStore.order[1]].lastname}
+              age={swiperStore.users[swiperStore.order[1]].age}
             />
           </SwiperSlide>
 
@@ -60,7 +60,7 @@ const OurSwiper = observer(() => {
               )}
               id={2}
               name={swiperStore.users[swiperStore.order[2]].firstname}
-              age={swiperStore.users[swiperStore.order[2]].lastname}
+              age={swiperStore.users[swiperStore.order[2]].age}
             />
           </SwiperSlide>
         </Swiper>

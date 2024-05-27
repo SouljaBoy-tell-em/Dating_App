@@ -8,6 +8,8 @@ import { ChatContext } from "../../pages/GrayChat/GrayChat";
 import { MessageDTO } from "../../shared/models/chat/MessageDTO";
 import Context from "../..";
 import VideoPlayer from "./VideoPlayer";
+import ChatService from "../../shared/services/ChatService";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   padding: 5px;
@@ -184,10 +186,15 @@ const Message: React.FC<MessageInterface> = ({ value }) => {
                   : "row-reverse",
             }}
           >
-            <Name>{value.sender.email}</Name>
-            {value.sender.avatarURL !== "" && (
+            <Link
+              style={{ textDecoration: "none", color: "inherit" }}
+              to={`/user/${value.sender.email}`}
+            >
+              <Name>{value.sender.email}</Name>
+            </Link>
+            {/* {value.sender.avatarURL !== "" && (
               <AvatarImage src={value.sender.avatarURL} />
-            )}
+            )} */}
           </div>
         </TopContainer>
 
@@ -195,10 +202,14 @@ const Message: React.FC<MessageInterface> = ({ value }) => {
           {value.files?.map((file) => (
             <ImageContainer>
               {file.fileType === "video/mp4" && (
-                <VideoPlayer url={file.fileURL} />
+                <VideoPlayer url={ChatService.getImageUrl(file.fileURL)} />
               )}
-              {file.fileType === "image/jpeg" && (
-                <Image src={file.fileURL} alt={file.id.toString()} />
+              {(file.fileType === "image/jpeg" ||
+                file.fileType === "image/jpg") && (
+                <Image
+                  src={ChatService.getImageUrl(file.fileURL)}
+                  alt={file.id.toString()}
+                />
               )}
             </ImageContainer>
           ))}

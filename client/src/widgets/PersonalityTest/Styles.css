@@ -1,7 +1,6 @@
 @media (min-width: 768px) {
     .button-54 {
       padding: 0.25em 0.75em;
-      
     }
 }
 
@@ -10,7 +9,7 @@
     margin-top: 10px; 
     font-size: 3vw; 
     background-size: 100% 100%; 
-    background-image: url('b4b47856de229a1a83ffc66b9860d943.webp');
+    background-image: url('purple-ocean-minimal-art.jpg');
     background-position: center top;
     color: white;
     text-align: center;
@@ -90,18 +89,16 @@
     background-color: #ff9a98;
 }
 
-body {
-    font-family: 'Bodoni MT', Arial, sans-serif;
-}
 
 #start-container h1 {
     margin-top: 50px;
 }
 
 #start-btn {
-    font-size: 60px;
+    font-size: 24px;
     margin-top: 40px;
-    font-weight: 600;
+    font-family: "Bodoni MT";
+    font-size: 50px;
     letter-spacing: 2px;
     text-decoration: none;
     text-transform: uppercase;

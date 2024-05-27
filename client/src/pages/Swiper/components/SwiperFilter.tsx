@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
+import { observer } from "mobx-react-lite";
+import { SwiperContext } from "../SwiperPage";
+import { SexType } from "../../../shared/models/swiper/SexType";
 
 const Container = styled.div`
+  background-color: #e6e6e6;
   height: auto; // изменено для учета новой кнопки
   width: 294px;
   border: 8px solid gray;
@@ -84,14 +88,23 @@ const ApplyButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   width: 100%;
-    transform: 0.3s;
+  transform: 0.3s;
   &:active {
     transform: scaleY(1.05);
   }
 `;
 
-const SwiperFilter = () => {
+const SwiperFilter = observer(() => {
   const [isOpen, setOpen] = useState(false);
+  const { swiperStore } = useContext(SwiperContext);
+
+  const [ageFrom, setAgeFrom] = useState(18);
+  const [ageTo, setAgeTo] = useState(70);
+  const [sex, setSex] = useState("man");
+
+  const handleApply = () => {
+    swiperStore.setFilter({ ageFrom, ageTo, sex });
+  };
 
   return (
     <Menu
@@ -138,7 +151,7 @@ const SwiperFilter = () => {
         <Wrapper>
           <InputContainer>
             <Label>Gender:</Label>
-            <Select>
+            <Select value={sex} onChange={(e) => setSex(e.target.value)}>
               <option value="man">Man</option>
               <option value="woman">Woman</option>
               <option value="any">Any</option>
@@ -146,17 +159,29 @@ const SwiperFilter = () => {
           </InputContainer>
           <InputContainer>
             <Label>Age from:</Label>
-            <Input type="number" min="18" max="70" />
+            <Input
+              type="number"
+              min="18"
+              max="70"
+              value={ageFrom}
+              onChange={(e) => setAgeFrom(Number(e.target.value))}
+            />
           </InputContainer>
           <InputContainer>
             <Label>Age to:</Label>
-            <Input type="number" min="18" max="70" />
+            <Input
+              type="number"
+              min="18"
+              max="70"
+              value={ageTo}
+              onChange={(e) => setAgeTo(Number(e.target.value))}
+            />
           </InputContainer>
         </Wrapper>
-        <ApplyButton>Apply</ApplyButton>
+        <ApplyButton onClick={handleApply}>Apply</ApplyButton>
       </Container>
     </Menu>
   );
-};
+});
 
 export default SwiperFilter;

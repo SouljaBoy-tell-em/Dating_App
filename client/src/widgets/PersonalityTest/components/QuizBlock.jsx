@@ -2,31 +2,109 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Container = styled.div`
-  width: calc(100% - 350px);
-  margin-left: 20px;
-  display: flex;
-  align-items: center;
-`;
-const QuestionsBlock = styled.div``;
-const ResultBlock = styled.div`
+import PersonalityTypeSelector from "./PersonalityTypeSelector";
+import ENFJ from "./ENFJ";
+import ENFP from "./ENFP";
+import ENTJ from "./ENTJ";
+import ENTP from "./ENTP";
+import ESFJ from "./ESFJ";
+import ESFP from "./ESFP";
+import ESTJ from "./ESTJ";
+import ESTP from "./ESTP";
+import INFJ from "./INFJ";
+import INFP from "./INFP";
+import INTJ from "./INTJ";
+import INTP from "./INTP";
+import ISFJ from "./ISFJ";
+import ISFP from "./ISFP";
+import ISTJ from "./ISTJ";
+import ISTP from "./ISTP";
 
-  background-color: #f0f0f0;
+const Container = styled.div`
+`;
+const QuestionsBlock = styled.div`
+  height: fit-content;
+`;
+const AnswerButton = styled.label`
+  display: inline-block;
+  border: 1px solid #000;
+  padding: 10px;
+  cursor: pointer;
+  background-color: ${({ checked }) => (checked ? "#74B72E" : "transparent")};
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #00ff00;
+  }
+
+  input {
+    display: none;
+  }
+`;
+const ResultBlock = styled.div`
+  position: relative;
+  flex: 1;
+  top: 13vw;
+  left: 0.5vw;
+  background-color: white;
   color: black;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 1vw;
+  border-radius: 1vw;
+  max-width: 32.5vw;
+`;
+const InformationBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  bottom: 3vw;
+`;
+
+const Image = styled.img`
+  max-width: 45%;
+  object-fit: cover;
+  position: relative;
+  left: 46.5vw;
+  bottom: 21vw;
+`;
+
+const Text = styled.div`
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2vw;
+  border-radius: 1vw;
+  max-width: 65%;
+  position: relative;
+  left: -3vw;
+  text-align: left;
+  overflow: auto;
+  max-height: 10vw;
+  scrollbar-width: thin;
+  scrollbar-color: #d6dee1 transparent;
+  &::-webkit-scrollbar {
+    width: 20px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: black;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: black;
+  }
 `;
 const QuestionsContainer = styled.div`
-  width: 100%;
-  min-height:500px;
   position: relative;
-  background-color: #dabfde;
-  padding: 20px;
-  border-radius: 10px;
+  background-color: #e0b0ff;
+  padding: 1vw;
+  border-radius: 1vw;
   text-align: center;
   font-family: "Bodoni MT";
-  font-size: 150%; /* Увеличение размера шрифта на 150% */
-
+  font-size: 150%;
+  height: fit-content ;
+  width: 97vw;
 
   .question-block {
     background-color: #f0f0f0;
@@ -45,18 +123,23 @@ const QuestionsContainer = styled.div`
   .answer-container {
     display: flex;
     justify-content: space-around;
-    font-weight: bold; /* Надписи Yes и No жирными */
+    font-weight: bold;
   }
 `;
 
 const QuizBlock = () => {
+  const [selectedType, setSelectedType] = useState(null);
   const questionsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
   const [answers, setAnswers] = useState(
     new Array(questions.length).fill(null)
   );
   const [isFinished, setFinished] = useState(false);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState("");
+
+  const handleTypeChange = (type) => {
+    setSelectedType(type);
+  };
 
   const handlePrev = () => {
     if (currentPage > 0) {
@@ -80,7 +163,9 @@ const QuizBlock = () => {
       setCurrentPage(nextPage);
     } else {
       setFinished(true);
-      setResult(calculateMBTI(answers));
+      const calculatedResult = calculateMBTI(answers);
+      setResult(calculatedResult);
+      setSelectedType(calculatedResult);
     }
   };
 
@@ -96,7 +181,9 @@ const QuizBlock = () => {
       }
     }
     setFinished(true);
-    setResult(calculateMBTI(answers));
+    const calculatedResult = calculateMBTI(answers);
+    setResult(calculatedResult);
+    setSelectedType(calculatedResult);
   };
 
   const handleAnswer = (index, answer) => {
@@ -115,7 +202,9 @@ const QuizBlock = () => {
       <div key={startIndex + index} className="question-block">
         <div className="question">{question}</div>
         <div className="answer-container">
-          <label>
+          <AnswerButton
+            checked={answers[currentPage * questionsPerPage + index] === "Yes"}
+          >
             <input
               type="radio"
               name={`answer-${startIndex + index}`}
@@ -126,8 +215,10 @@ const QuizBlock = () => {
               onChange={() => handleAnswer(index, "Yes")}
             />
             Yes
-          </label>
-          <label>
+          </AnswerButton>
+          <AnswerButton
+            checked={answers[currentPage * questionsPerPage + index] === "No"}
+          >
             <input
               type="radio"
               name={`answer-${startIndex + index}`}
@@ -136,10 +227,14 @@ const QuizBlock = () => {
               onChange={() => handleAnswer(index, "No")}
             />
             No
-          </label>
+          </AnswerButton>
         </div>
       </div>
     ));
+  };
+
+  const handleButtonClick = (type) => {
+    setSelectedType(type);
   };
 
   return (
@@ -175,76 +270,133 @@ const QuizBlock = () => {
                 Next
               </button>
             )}
-            <div id="progress-bar">
-              {`Progress: ${currentPage + 1}/${Math.ceil(
-                questions.length / questionsPerPage
-              )}`}
-            </div>
+            <div id="progress-bar">{`Progress: ${currentPage + 1}/${Math.ceil(
+              questions.length / questionsPerPage
+            )}`}</div>
           </QuestionsBlock>
         ) : (
-          <ResultBlock>
-            <div
-              id="result"
-              style={{
-                border: "1px solid #000",
-                padding: "10px",
-                marginBottom: "10px",
-              }}
-            >
-              Your MBTI type is {result}!
-            </div>
-            <div
-              id="description"
-              style={{
-                border: "1px solid #000",
-                padding: "10px",
-                marginBottom: "10px",
-              }}
-            >
-              {result === "ISTJ" &&
-                "ISTJ (Introverted, Sensing, Thinking, Judging) - ISTJs are responsible organizers, known for their practicality and attention to detail. They are focused on traditions and loyalty, and are often seen as dependable and dedicated individuals."}
-              {result === "ISFJ" &&
-                "ISFJ (Introverted, Sensing, Feeling, Judging) - ISFJs are warm and conscientious individuals, often placing the needs of others above their own. They are reliable, hardworking, and have a strong sense of duty."}
-              {result === "INFJ" &&
-                "INFJ (Introverted, Intuitive, Feeling, Judging) - INFJs are compassionate and insightful, often driven by their desire to help others and make a positive impact on the world. They are creative, idealistic, and value deep, meaningful connections."}
-              {result === "INTJ" &&
-                "INTJs are analytical and innovative thinkers, known for their strategic approach to problem-solving. They are independent, determined, and have a strong drive to achieve their goals."}
-              {result === "ISTP" &&
-                "ISTP (Introverted, Sensing, Thinking, Perceiving) - ISTPs are practical and adaptable, often drawn to hands-on activities and a desire for freedom. They are logical, resourceful, and enjoy exploring new experiences."}
-              {result === "ISFP" &&
-                "ISFP (Introverted, Sensing, Feeling, Perceiving) - ISFPs are gentle and sensitive individuals, often expressing themselves through artistic and creative pursuits. They are empathetic, adaptable, and value harmony and personal growth."}
-              {result === "INFP" &&
-                "INFP (Introverted, Intuitive, Feeling, Perceiving) - INFPs are idealistic and compassionate, driven by their desire to find meaning and authenticity in life. They are creative, empathetic, and value personal integrity and individuality."}
-              {result === "INTP" &&
-                "INTP (Introverted, Intuitive, Thinking, Perceiving) - INTPs are logical and curious thinkers, known for their love of exploration and analysis. They are independent, inventive, and enjoy delving into complex ideas and theories."}
-              {result === "ESTP" &&
-                "ESTP (Extraverted, Sensing, Thinking, Perceiving) - ESTPs are energetic and action-oriented individuals, often seeking excitement and new experiences. They are adaptable, pragmatic, and enjoy living in the present moment."}
-              {result === "ESFP" &&
-                "ESFP (Extraverted, Sensing, Feeling, Perceiving) - ESFPs are spontaneous and fun-loving, often bringing joy and enthusiasm to those around them. They are sociable, supportive, and value living life to the fullest."}
-              {result === "ENFP" &&
-                "ENFP (Extraverted, Intuitive, Feeling, Perceiving) - ENFPs are imaginative and empathetic, driven by their passion for exploring new possibilities and connecting with others. They are enthusiastic, creative, and value authenticity and personal growth."}
-              {result === "ENTP" &&
-                "ENTP (Extraverted, Intuitive, Thinking, Perceiving) - ENTPs are innovative and resourceful thinkers, often drawn to intellectual challenges and debate. They are independent, curious, and enjoy exploring new ideas and opportunities."}
-              {result === "ESTJ" &&
-                "ESTJ (Extraverted, Sensing, Thinking, Judging) - ESTJs are practical and decisive individuals, often taking charge and organizing others to achieve their goals. They are responsible, direct, and value efficiency and productivity."}
-              {result === "ESFJ" &&
-                "ESFJ (Extraverted, Sensing, Feeling, Judging) - ESFJs are warm and caring, often taking on the role of nurturer and supporter within their communities. They are sociable, conscientious, and value harmony and cooperation.."}
-              {result === "ENFJ" &&
-                "ENFJ (Extraverted, Intuitive, Feeling, Judging) - ENFJs are charismatic and compassionate, often inspiring and guiding others toward personal growth and positive change. They are empathetic, diplomatic, and value meaningful connections and teamwork."}
-              {result === "ENTJ" &&
-                "ENTJ (Extraverted, Intuitive, Thinking, Judging) - ENTJs are strategic and assertive leaders, known for their ability to take charge and implement long-term plans. They are decisive, ambitious, and value competence and achievement."}
-            </div>
-            <div
-              id="link"
-              style={{ border: "1px solid #000", padding: "10px" }}
-            >
-              Want to learn more about what this means? You can consider
-              visiting this source for more information:{" "}
-              <a href="https://www.choosingtherapy.com/mbti-types/">
-                https://www.choosingtherapy.com/mbti-types/
-              </a>
-            </div>
-          </ResultBlock>
+          <div>
+            <PersonalityTypeSelector
+              result={selectedType}
+              handleButtonClick={handleTypeChange}
+            />
+            <ResultBlock>
+              <div
+                id="result"
+                style={{
+                  border: "1px solid #000",
+                  padding: "10px",
+                  marginBottom: "10px",
+                }}
+              >
+                Your MBTI type is {result}!
+              </div>
+              <div
+                id="description"
+                style={{
+                  border: "1px solid #000",
+                  padding: "10px",
+                  marginBottom: "10px",
+                }}
+              >
+                {result === "ISTJ" &&
+                  "ISTJ (Introverted, Sensing, Thinking, Judging) - ISTJs are responsible organizers, known for their practicality and attention to detail. They are focused on traditions and loyalty, and are often seen as dependable and dedicated individuals."}
+                {result === "ISFJ" &&
+                  "ISFJ (Introverted, Sensing, Feeling, Judging) - ISFJs are warm and conscientious individuals, often placing the needs of others above their own. They are reliable, hardworking, and have a strong sense of duty."}
+                {result === "INFJ" &&
+                  "INFJ (Introverted, Intuitive, Feeling, Judging) - INFJs are compassionate and insightful, often driven by their desire to help others and make a positive impact on the world. They are creative, idealistic, and value deep, meaningful connections."}
+                {result === "INTJ" &&
+                  "INTJs are analytical and innovative thinkers, known for their strategic approach to problem-solving. They are independent, determined, and have a strong drive to achieve their goals."}
+                {result === "ISTP" &&
+                  "ISTP (Introverted, Sensing, Thinking, Perceiving) - ISTPs are practical and adaptable, often drawn to hands-on activities and a desire for freedom. They are logical, resourceful, and enjoy exploring new experiences."}
+                {result === "ISFP" &&
+                  "ISFP (Introverted, Sensing, Feeling, Perceiving) - ISFPs are gentle and sensitive individuals, often expressing themselves through artistic and creative pursuits. They are empathetic, adaptable, and value harmony and personal growth."}
+                {result === "INFP" &&
+                  "INFP (Introverted, Intuitive, Feeling, Perceiving) - INFPs are idealistic and compassionate, driven by their desire to find meaning and authenticity in life. They are creative, empathetic, and value personal integrity and individuality."}
+                {result === "INTP" &&
+                  "INTP (Introverted, Intuitive, Thinking, Perceiving) - INTPs are logical and curious thinkers, known for their love of exploration and analysis. They are independent, inventive, and enjoy delving into complex ideas and theories."}
+                {result === "ESTP" &&
+                  "ESTP (Extraverted, Sensing, Thinking, Perceiving) - ESTPs are energetic and action-oriented individuals, often seeking excitement and new experiences. They are adaptable, pragmatic, and enjoy living in the present moment."}
+                {result === "ESFP" &&
+                  "ESFP (Extraverted, Sensing, Feeling, Perceiving) - ESFPs are spontaneous and fun-loving, often bringing joy and enthusiasm to those around them. They are sociable, supportive, and value living life to the fullest."}
+                {result === "ENFP" &&
+                  "ENFP (Extraverted, Intuitive, Feeling, Perceiving) - ENFPs are imaginative and empathetic, driven by their passion for exploring new possibilities and connecting with others. They are enthusiastic, creative, and value authenticity and personal growth."}
+                {result === "ENTP" &&
+                  "ENTP (Extraverted, Intuitive, Thinking, Perceiving) - ENTPs are innovative and resourceful thinkers, often drawn to intellectual challenges and debate. They are independent, curious, and enjoy exploring new ideas and opportunities."}
+                {result === "ESTJ" &&
+                  "ESTJ (Extraverted, Sensing, Thinking, Judging) - ESTJs are practical and decisive individuals, often taking charge and organizing others to achieve their goals. They are responsible, direct, and value efficiency and productivity."}
+                {result === "ESFJ" &&
+                  "ESFJ (Extraverted, Sensing, Feeling, Judging) - ESFJs are warm and caring, often taking on the role of nurturer and supporter within their communities. They are sociable, conscientious, and value harmony and cooperation."}
+                {result === "ENFJ" &&
+                  "ENFJ (Extraverted, Intuitive, Feeling, Judging) - ENFJs are charismatic and compassionate, often inspiring and guiding others toward personal growth and positive change. They are empathetic, diplomatic, and value meaningful connections and teamwork."}
+                {result === "ENTJ" &&
+                  "ENTJ (Extraverted, Intuitive, Thinking, Judging) - ENTJs are strategic and assertive leaders, known for their ability to take charge and implement long-term plans. They are decisive, ambitious, and value competence and achievement."}
+              </div>
+              <div
+                id="link"
+                style={{ border: "1px solid #000", padding: "10px" }}
+              >
+                Want to learn more about what this means? You can consider
+                visiting this source for more information:{" "}
+                <a href="https://www.16personalities.com/">
+                  https://www.16personalities.com/
+                </a>
+              </div>
+            </ResultBlock>
+            <InformationBlock>
+              <Image src={`images/PersonaTest/${selectedType}.png`} alt={selectedType} />
+              <Text>
+                {selectedType === "INTJ" && (
+                  <div dangerouslySetInnerHTML={{ __html: INTJ }} />
+                )}
+                {selectedType === "INTP" && (
+                  <div dangerouslySetInnerHTML={{ __html: INTP }} />
+                )}
+                {selectedType === "ENTJ" && (
+                  <div dangerouslySetInnerHTML={{ __html: ENTJ }} />
+                )}
+                {selectedType === "ENTP" && (
+                  <div dangerouslySetInnerHTML={{ __html: ENTP }} />
+                )}
+                {selectedType === "INFJ" && (
+                  <div dangerouslySetInnerHTML={{ __html: INFJ }} />
+                )}
+                {selectedType === "INFP" && (
+                  <div dangerouslySetInnerHTML={{ __html: INFP }} />
+                )}
+                {selectedType === "ENFJ" && (
+                  <div dangerouslySetInnerHTML={{ __html: ENFJ }} />
+                )}
+                {selectedType === "ENFP" && (
+                  <div dangerouslySetInnerHTML={{ __html: ENFP }} />
+                )}
+                {selectedType === "ISTJ" && (
+                  <div dangerouslySetInnerHTML={{ __html: ISTJ }} />
+                )}
+                {selectedType === "ISFJ" && (
+                  <div dangerouslySetInnerHTML={{ __html: ISFJ }} />
+                )}
+                {selectedType === "ESTJ" && (
+                  <div dangerouslySetInnerHTML={{ __html: ESTJ }} />
+                )}
+                {selectedType === "ESFJ" && (
+                  <div dangerouslySetInnerHTML={{ __html: ESFJ }} />
+                )}
+                {selectedType === "ISTP" && (
+                  <div dangerouslySetInnerHTML={{ __html: ISTP }} />
+                )}
+                {selectedType === "ISFP" && (
+                  <div dangerouslySetInnerHTML={{ __html: ISFP }} />
+                )}
+                {selectedType === "ESTP" && (
+                  <div dangerouslySetInnerHTML={{ __html: ESTP }} />
+                )}
+                {selectedType === "ESFP" && (
+                  <div dangerouslySetInnerHTML={{ __html: ESFP }} />
+                )}
+              </Text>
+            </InformationBlock>
+          </div>
         )}
       </QuestionsContainer>
     </Container>

@@ -25,7 +25,7 @@ const LogInButton = styled.button`
 
 const SignUpButton = styled.button`
   background-color: rgba(255, 255, 255);
-  border: 5px solid #d9d9d9;
+  border: 5px solid #f1e2ff;
   border-radius: 15px;
   height: 90px;
   font-size: 45px;
@@ -38,7 +38,7 @@ const SignUpButton = styled.button`
 
 const LogOutButton = styled.button`
   background-color: rgba(255, 255, 255);
-  border: 5px solid #d9d9d9;
+  border: 5px solid #f1e2ff;
   border-radius: 15px;
   height: 90px;
   font-size: 45px;

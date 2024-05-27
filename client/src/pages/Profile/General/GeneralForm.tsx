@@ -68,6 +68,30 @@ const AddressButton = styled.button`
   }
 `;
 
+const SaveButton = styled.button`
+  background-color: #007bff;
+  font-size: 25px;
+
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    background-color: #ccc;
+  }
+`;
+
 interface GeneralForimInterface{
   setABOpen: (isOpen:boolean) => void;
 }
@@ -163,8 +187,11 @@ const GeneralForm:React.FC<GeneralForimInterface> = ({setABOpen}) => {
         <Label>Address</Label>
         <AddressButton onClick={()=>{setABOpen(true)}}>Choosee Address</AddressButton>
       </Wrapper>
-      <hr></hr>
+      <hr/>
       <UploadPhoto />
+      <hr/>
+
+      <SaveButton onClick={handleFormSubmit}>Save</SaveButton>
     </Container>
   );
 };

@@ -13,7 +13,7 @@ const Container = styled.div`
   width: calc(100% - 350px);
   display: flex;
   justify-content: left;
-  height: 700px;
+  min-height: 720px;
 `;
 
 const Wrapper = styled.div`

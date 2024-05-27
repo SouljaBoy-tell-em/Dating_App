@@ -24,6 +24,7 @@ import SwiperPage from "./pages/Swiper/SwiperPage";
 
 import Context from ".";
 import License from "./pages/License/License";
+import UserPage from "./pages/UserPage/UserPage";
 
 const Container = styled.div`
   position: relative;
@@ -39,7 +40,7 @@ function App() {
   return (
     <Container>
       <Routes>
-        <Route path="/" element={<Menu/>}>
+        <Route path="/" element={<Menu />}>
           <Route path="auth" element={<AuthPage />} />
           <Route path="logIn" element={<LogIn />} />
           <Route path="signUp" element={<SignUp />} />
@@ -58,7 +59,7 @@ function App() {
             path="profile"
             element={
               <RequireAuth>
-                <Profile/>
+                <Profile />
               </RequireAuth>
             }
           />
@@ -66,7 +67,7 @@ function App() {
             path="createProfile"
             element={
               <RequireAuth>
-                <CreateProfile/>
+                <CreateProfile />
               </RequireAuth>
             }
           />
@@ -79,9 +80,18 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="newChat" element={<NewChat/>} />
-          <Route path="swiper" element={<SwiperPage/>} />
-          <Route path="license" element={<License/>}/>
+          <Route path="newChat" element={<NewChat />} />
+          <Route path="swiper" element={<SwiperPage />} />
+          <Route path="license" element={<License />} />
+
+          <Route
+            path="/user/:email"
+            element={
+              <RequireAuth>
+                <UserPage />
+              </RequireAuth>
+            }
+          />
         </Route>
       </Routes>
     </Container>

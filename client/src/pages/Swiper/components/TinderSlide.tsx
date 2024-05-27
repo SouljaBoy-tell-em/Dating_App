@@ -9,7 +9,8 @@ import { observer } from "mobx-react-lite";
 import { SwiperContext } from "../SwiperPage";
 
 const Container = styled.div`
-  background-color: 0;
+  background-color: white;
+  border-radius: 10px;
   position: relative;
   width: min-content;
 `;
@@ -43,6 +44,7 @@ const LikeButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  box-shadow: 0 0 2px 2px #afafaf;
   &:active {
     transform: scale(1.05);
   }
@@ -51,6 +53,8 @@ const LikeButton = styled.button`
 const DisButton = styled.button`
   border: 0;
   background-color: #fbaaaa;
+  box-shadow: 0 0 2px 2px #afafaf;
+
   padding: 10px;
   border-radius: 50%;
   display: flex;
@@ -77,6 +81,7 @@ const Name = styled.p`
   padding: 5px;
   z-index: 10;
 `;
+
 
 const TinderSlide = observer((props: any) => {
   const { swiperStore } = useContext(SwiperContext);

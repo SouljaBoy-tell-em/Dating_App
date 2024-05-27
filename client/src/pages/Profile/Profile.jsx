@@ -83,9 +83,9 @@ const Profile = () => {
         <Block name="Personality Test">
           <PersonalityTest/>
         </Block>
-        <Block name="Zodiac sign">
+        {/* <Block name="Zodiac sign">
           <ZodiacBlock/>
-        </Block>
+        </Block> */}
         <Block name="Privacy" >
           <Privacy/>
         </Block>
