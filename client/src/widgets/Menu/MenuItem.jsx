@@ -1,6 +1,7 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import MenuIcon from "./MenuIcon";
 
 const variants = {
   open: {
@@ -21,6 +22,7 @@ const variants = {
   },
 };
 
+
 const colors = [
   "#FF008C",
   "#D309E1",
@@ -33,26 +35,26 @@ const colors = [
 const routes = [
   "/",
   "/grayChat",
-  "/confirmEmail",
-  "/newChat",
-  "/NotFound",
-  "/createProfile",
-  "/profile",
   "/swiper",
+  "/profile",
+
 ];
 const text = [
   "Main Page",
-  "Gray chat",
-  "Confirm email",
-  "Color chat",
-  "Not found",
-  "Create profile",
-  "Profile",
+  "Chat",
   "Swiper",
+  "Edit Profile",
 ];
 
+const iconType = ["", "chat" , "swiper", "profile"];
+
 export const MenuItem = ({ i }) => {
-  const style = { border: `2px solid ${colors[1]}` };
+  const style = {
+    border: `2px solid ${colors[1]}`,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  };
   return (
     <Link to={routes[i]} style={{ textDecoration: "none" }}>
       <motion.li
@@ -61,7 +63,9 @@ export const MenuItem = ({ i }) => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >
-        <div className="icon-placeholder" style={style} />
+        <div className="icon-placeholder" style={style}>
+          <MenuIcon type={iconType[i]} size={30} />
+        </div>
         <div className="text-placeholder" style={style}>
           {text[i]}
         </div>

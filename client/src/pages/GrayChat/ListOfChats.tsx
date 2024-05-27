@@ -3,12 +3,16 @@ import styled from "styled-components";
 
 import { observer } from "mobx-react-lite";
 
-import { ChatDTO } from "../../shared/models/ChatDTO";
+import { ChatDTO } from "../../shared/models/chat/ChatDTO";
 
 import { ChatContext } from "./GrayChat";
 
 
 const Container = styled.div`
+  width: 200px;
+  border-radius: 10px;
+  height: 624px;
+  overflow-y: auto;
   background-color: #f1e2ff;
   display: flex;
   flex-direction: column;
@@ -75,7 +79,8 @@ const ListOfChats = () => {
 
   return (
     <Container>
-      <Name>Список чатов:</Name>
+      <Name>List of chats:</Name>
+      <hr style={{width:"90%", marginLeft:"auto", marginRight:"auto"}}/>
       {chatStore.chats.map((chat, index) => (
         <ChatBlock
           key={chat.chatDTO.id}
@@ -93,7 +98,7 @@ const ListOfChats = () => {
         </ChatBlock>
       ))}
 
-      <Button onClick={chatStore.getAllChat}>Get chats</Button>
+      {/* <Button onClick={chatStore.getAllChat}>Get chats</Button> */}
     </Container>
   );
 };

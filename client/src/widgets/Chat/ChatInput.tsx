@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
+import { ChatContext } from "../../pages/GrayChat/GrayChat";
+import { observer } from "mobx-react-lite";
 
 const TextArea = styled.textarea`
   border-radius: 1px;
@@ -7,15 +9,15 @@ const TextArea = styled.textarea`
   font-size: 18px;
   border: 0;
   box-shadow: 0 0 1px 1px gray;
-  width: 350px;
-  overflow-y: auto; // Убедитесь, что скролл активируется, если содержимое переполняется
-  resize: none; // Отключает возможность изменения размера
+  width: 450px;
+  overflow-y: auto; 
+  resize: none; 
 
   &::-webkit-scrollbar {
-    width: 5px; // Ширина полосы прокрутки
+    width: 5px; 
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #999; // Цвет бегунка
+    background-color: #999; 
   }
 `;
 
@@ -25,10 +27,13 @@ const Container = styled.div`
 `;
 
 interface ChatInputInterface {
-  setMessage: (text: string) => void; // Теперь функция принимает string и возвращает void
+  setMessage: (text: string) => void;
+
 }
 
-const ChatInput: React.FC<ChatInputInterface> = ({ setMessage }) => {
+const ChatInput: React.FC<ChatInputInterface> = observer(({ setMessage}) => {
+
+  const {chatStore} = useContext(ChatContext);
   const [rows, setRows] = useState(1);
   const maxRows = 8;
 
@@ -46,6 +51,7 @@ const ChatInput: React.FC<ChatInputInterface> = ({ setMessage }) => {
       setRows(textareaRows);
     }
     setMessage(event.target.value);
+
   };
 
   return (
@@ -59,6 +65,6 @@ const ChatInput: React.FC<ChatInputInterface> = ({ setMessage }) => {
       />
     </Container>
   );
-};
+});
 
 export default ChatInput;

@@ -10,6 +10,7 @@ import CreateProfile from "../CreateProfile/CreateProfile";
 
 import General from "./General/General";
 import ZodiacBlock from "./Zodiac/ZodiacBlock";
+import Privacy from "./Privacy/Privacy";
 
 
 
@@ -82,11 +83,12 @@ const Profile = () => {
         <Block name="Personality Test">
           <PersonalityTest/>
         </Block>
-        <Block name="Zodiac sign">
+        {/* <Block name="Zodiac sign">
           <ZodiacBlock/>
+        </Block> */}
+        <Block name="Privacy" >
+          <Privacy/>
         </Block>
-        <Block name="Block4" />
-        <Block name="Block5" />
         <Footer />
         <NavigateWrapper sticky={isSticky}>
           <NavigateMenu />

@@ -4,18 +4,18 @@ import Stomp from "stompjs";
 import axios from "axios";
 import { io } from "socket.io-client";
 
-import { MessageDTO } from "../models/MessageDTO";
-import $api from "../http";
-import { ChatDTO } from "../models/ChatDTO";
+import { MessageDTO } from "../models/chat/MessageDTO";
+import $api, { API_URL } from "../http";
+import { ChatDTO } from "../models/chat/ChatDTO";
 import ChatService from "../services/ChatService";
-import { ChatEntity } from "../models/ChatEntity";
+import { ChatEntity } from "../models/chat/ChatEntity";
 
-
-const serverURL = "http://25.47.247.34:8081";
+const serverURL = API_URL;
 
 export default class ChatStore {
   socket = new SockJS(
-    serverURL+"/ws?Authorization=Bearer " +
+    serverURL +
+      "/ws?Authorization=Bearer " +
       localStorage.getItem("AccessToken")
   );
 
@@ -24,8 +24,15 @@ export default class ChatStore {
   messages: MessageDTO[] = [];
   chats: ChatEntity[] = [];
   chatId: number = -1;
-
   chatUsers: string[] = [];
+  isScrolling = false;
+
+  setScrolling(bool:boolean) {
+    this.isScrolling = bool;
+  }
+
+
+
   constructor() {
     makeAutoObservable(this, {
       messages: observable,
@@ -57,7 +64,8 @@ export default class ChatStore {
     }
 
     this.socket = new SockJS(
-      serverURL+"/ws?Authorization=Bearer " +
+      serverURL +
+        "/ws?Authorization=Bearer " +
         localStorage.getItem("AccessToken")
     );
     this.stompClient = Stomp.over(this.socket);
@@ -85,23 +93,34 @@ export default class ChatStore {
             console.log(`in subscribe messege with id ${message.id} added`);
 
             this.addMessage(message);
+            this.setScrolling(!this.isScrolling);
           }
         }
       );
     } catch (error) {}
   };
 
-  async send(message: string) {
+  async send(message: string, files: File[]) {
     try {
+      var formData = new FormData();
+      Array.from(files).map((value) => formData.append("file", value));
+      if (!(files&&files.length>0)){
+        formData.append("file", "");
+      }
+      formData.append("id", "0");
+      formData.append("content", message);
+      formData.append("sender", this.sender);
+      formData.append("type", "CHAT");
       const response = await $api.post(
-        serverURL+"/chat/send/" + this.chatId,
+        serverURL + "/chat/send/" + this.chatId,
+        formData,
         {
-          id: 0,
-          content: message,
-          sender: this.sender,
-          type: "CHAT",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
+
     } catch (error) {}
   }
 
@@ -118,7 +137,7 @@ export default class ChatStore {
   getAll = async () => {
     try {
       const response = await $api.get(
-        serverURL+ "/chat/getAllMessages/" + this.chatId
+        serverURL + "/chat/getAllMessages/" + this.chatId
       );
       const messagesData = response.data;
 
@@ -139,7 +158,7 @@ export default class ChatStore {
   delete = async (message: MessageDTO) => {
     try {
       const response = await $api.post(
-        serverURL+"/chat/delete/" + message.id,
+        serverURL + "/chat/delete/" + message.id,
         {
           id: 0,
           content: message,

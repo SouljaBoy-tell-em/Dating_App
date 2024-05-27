@@ -1,0 +1,20 @@
+/* eslint-disable max-len */
+const ENFJ = `
+  <p><strong>People with the ENFJ personality type (Protagonists) </strong> feel called to serve a greater purpose in life. Thoughtful and idealistic, ENFJs strive to have a positive impact on other people and the world around them. These personalities rarely shy away from an opportunity to do the right thing, even when doing so is far from easy.</p>
+  
+  <h2>ENFJ Strengths</h2>
+  <p><strong>Receptive</strong> – People with the ENFJ personality type (Protagonists) have strong opinions, but they’re far from closed-minded. They recognize the importance of allowing others to express themselves fully. Even when they don’t agree with someone, they recognize that person’s right to voice their truth.</p>
+  <p><strong>Reliable</strong> – Few things bother ENFJs more than the prospect of letting down a person or cause that they believe in. People with this personality type can be counted on to see their promises and responsibilities through – even when it’s difficult to do so.</p>
+  <p><strong>Passionate</strong> – ENFJ personalities brim with interests, and they take great pleasure in pursuing their hobbies – whether that’s hiking, cooking, dancing, growing houseplants, or something else entirely. As a result, they rarely find themselves at a loss for something interesting to do.</p>
+  <p><strong>Altruistic</strong> – ENFJs are known for harboring a deep desire to be a force for positive change in both their personal lives and their professional pursuits. Their unwavering inclination toward fairness often compels people with this personality type to advocate for those who are unable to do so for themselves. Their joy lies in seeing those around them thrive, making their altruism heartfelt and sincere.</p>
+  <p><strong>Charismatic</strong> – Determined and inspiring, ENFJs often find their way into leadership roles. Whether they’re captain of their softball team or a leader on the world stage, they excel at engaging in conversation, captivating people’s attention, and rallying people together behind a common goal. ENFJ personalities also have a profound capacity for empathy that oftentimes causes the people they come across to feel truly seen and valued, further bolstering their natural allure.</p>
+  
+  <h2>ENFJ Weaknesses</h2>
+  <p><strong>Unrealistic</strong> – Many ENFJs put pressure on themselves to right every wrong that they encounter. But no matter how hard these personalities try, it just isn’t realistic for them to solve all of the world’s problems. If they aren’t careful, they can spread themselves too thin – and be left unable to help anyone.</p>
+  <p><strong>Overly Idealistic</strong> – ENFJ personalities tend to have clear ideas about what’s right and what’s wrong. They often think that everyone shares these fundamental principles – or, at least, that everyone should share these principles. So it can come as a genuine shock to ENFJs when people violate their core values, such as truth or justice.</p>
+  <p><strong>Condescending</strong> – People with this personality type enjoy teaching others, particularly about the causes and beliefs that matter so much to them. But at times, ENFJs’ attempts to “enlighten” others may come across as patronizing – not the most effective strategy for persuading other people, unfortunately.</p>
+  <p><strong>Intense</strong> – When it comes to self-improvement, ENFJs are rarely short on energy or determination. But they may not recognize that not everyone shares these qualities. At times, these personalities may push others to make changes that they aren’t ready for – or simply aren’t interested in making in the first place.</p>
+  <p><strong>Overly Empathetic</strong> – Compassion is among this personality type’s greatest strengths. But ENFJs have a tendency to take on other people’s problems as their own – a habit that can leave them emotionally and physically exhausted.</p>
+`;
+
+export default ENFJ;

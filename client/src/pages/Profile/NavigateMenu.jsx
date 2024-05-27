@@ -54,7 +54,7 @@ const Hr = styled.hr`
   border-color: #eaeaea;
 `;
 
-const blockNames = ["General", "Personality Test", "Zodiac sign", "Block4", "Block5"];
+const blockNames = ["General", "Personality Test", "Privacy"];
 
 const NavigateMenu = () => {
   return (
