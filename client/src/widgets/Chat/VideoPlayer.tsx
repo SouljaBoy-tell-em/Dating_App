@@ -13,6 +13,7 @@ const VideoPlayer:React.FC<VideoPlayerInterfece> = ({url}) => {
         controls={true}
         width="100%"
         height="auto"
+        playing={true}
       />
     </div>
   );

@@ -5,12 +5,12 @@ import axios from "axios";
 import { io } from "socket.io-client";
 
 import { MessageDTO } from "../models/chat/MessageDTO";
-import $api from "../http";
+import $api, { API_URL } from "../http";
 import { ChatDTO } from "../models/chat/ChatDTO";
 import ChatService from "../services/ChatService";
 import { ChatEntity } from "../models/chat/ChatEntity";
 
-const serverURL = "http://localhost:8081";
+const serverURL = API_URL;
 
 export default class ChatStore {
   socket = new SockJS(

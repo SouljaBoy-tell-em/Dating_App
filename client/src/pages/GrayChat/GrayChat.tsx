@@ -13,10 +13,13 @@ import ListOfChats from "./ListOfChats";
 import CreateNewChat from "./CreateNewChat";
 import { observer } from "mobx-react-lite";
 
-const Container = styled.div`
+const Container = styled.div<{colorTheme:boolean}>`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${(props) => (!props.colorTheme ? "#white" : "#202020")}  ;
+  transition: 0.2s background-color;
+
 `;
 
 const Wrapper = styled.div`
@@ -55,15 +58,16 @@ const GrayChat = observer(() => {
   useEffect(() => {
     chatStore.reconnect();
     store.checkAuth();
+    chatStore.getAllChat();
   }, []);
 
   return (  
-    <Container>
+    <Container colorTheme={store.colorTheme}>
       <Username>{store.user.email}</Username>
       <ChatContext.Provider value={{ chatStore }}>
         <Wrapper>
           <ListOfChats />
-          <CreateNewChat />
+          {/* <CreateNewChat /> */}
         </Wrapper>
         <Chat />
       </ChatContext.Provider>

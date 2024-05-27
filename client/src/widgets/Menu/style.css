@@ -8,13 +8,7 @@
 }
 
 .menu-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 300px;
-  background: #f1d1fb;
-  opacity: 0.95;
+
 }
 
 .menu-button {

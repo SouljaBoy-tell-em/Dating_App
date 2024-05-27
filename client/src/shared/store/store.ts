@@ -4,11 +4,12 @@ import axios, { AxiosResponse } from "axios";
 
 import { UserDTO } from "../models/UserDTO";
 import AuthService from "../services/AuthService";
-import $api from "../http";
+import $api, { API_URL } from "../http";
 import ProfileService from "../services/ProfileService";
 import { ProfileDTO } from "../models/ProfileDTO";
 
 import { UserInf } from "../models/UserInf";
+
 export default class Store {
   user = {} as UserDTO;
   isAuth = false;
@@ -18,6 +19,20 @@ export default class Store {
   isConfirmEmail = false;
 
   isLoading = false;
+
+  colorTheme = false;
+
+  avatarURL = "";
+
+  getAvatarURL= async () => {
+    try {
+      this.avatarURL = (await $api.get(API_URL+"/photo/avatar/"+this.userInfo.username)).data;
+    } catch (e: any) {}
+  }
+
+  setColorTheme(bool: boolean) {
+    this.colorTheme = bool;
+  }
 
   constructor() {
     makeAutoObservable(this);
@@ -146,11 +161,12 @@ export default class Store {
     }
   }
 
-  async uploadAvatar(file:any) {
+  async uploadAvatar(file: any) {
     try {
       const response = await ProfileService.uploadAvatar(file);
+      this.getAvatarURL();
       console.log(response);
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error?.message);
     }
   }

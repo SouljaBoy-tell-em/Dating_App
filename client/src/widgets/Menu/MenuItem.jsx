@@ -22,6 +22,7 @@ const variants = {
   },
 };
 
+
 const colors = [
   "#FF008C",
   "#D309E1",
@@ -34,25 +35,18 @@ const colors = [
 const routes = [
   "/",
   "/grayChat",
-  "/confirmEmail",
-  "/newChat",
-  "/NotFound",
-  "/createProfile",
-  "/profile",
   "/swiper",
+  "/profile",
+
 ];
 const text = [
   "Main Page",
-  "Gray chat",
-  "Confirm email",
-  "Color chat",
-  "Not found",
-  "Create profile",
-  "Profile",
+  "Chat",
   "Swiper",
+  "Edit Profile",
 ];
 
-const iconType = ["", "chat", "", "", "", "", "profile", "swiper"];
+const iconType = ["", "chat" , "swiper", "profile"];
 
 export const MenuItem = ({ i }) => {
   const style = {
