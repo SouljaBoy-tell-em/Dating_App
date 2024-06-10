@@ -57,7 +57,9 @@ public class SwiperController {
     }
 
     @GetMapping
-    public ResponseEntity<?> GetNext3Forms(@RequestParam(value = "startAge") int startAge, @RequestParam(value = "endAge") int endAge, @RequestParam(value = "gender") boolean gender) {
+    public ResponseEntity<?> GetNext3Forms(@RequestParam(value = "startAge") int startAge,
+                                           @RequestParam(value = "endAge") int endAge,
+                                           @RequestParam(value = "gender") boolean gender) {
         List<User> next3Users;
         List<SwiperFormResponse> swiperFormResponses = new ArrayList<>();
 

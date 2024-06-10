@@ -182,6 +182,10 @@ public class UserServiceManager {
         userRepository.PasswordUpdate(PasswordEncoder().encode(changeField), GetEmail());
     }
 
+    public void PersonalTypeUpdate(PersonalType changeField) {
+        userRepository.PersonalTypeUpdate(changeField, GetEmail());
+    }
+
     public void ProfileAccessUpdate(boolean changeField, String email) { // ACCESS: ADMIN, USER;
         userRepository.ProfileAccessUpdate(changeField, email);
     }
@@ -224,7 +228,7 @@ public class UserServiceManager {
 
     // PHOTOS:
     public ResponseEntity<?> AddPhoto(MultipartFile multipartFile, boolean isAvatar) throws IOException {
-        if(isAvatar && userPhotoRepository.count() > 0) {
+        if(isAvatar && userPhotoRepository.GetAvatarPhotoId(GetEmail()) != null) {
             try {
                 long id = userPhotoRepository.GetAvatarPhotoId(GetEmail());
                 userPhotoRepository.SetAvatarPhotoId(id);

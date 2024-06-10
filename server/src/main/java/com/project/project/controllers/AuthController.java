@@ -91,13 +91,13 @@ public class AuthController {
             if(userServiceManager
                     .GetById(request.getEmail())
                     .isConfirm() == false)
-//                confirmEmailConfig.GenerateCode(request.getEmail());
+                confirmEmailConfig.GenerateCode(request.getEmail());
             return new ResponseEntity<>(authenticationService.Login(request),
                                                               HttpStatus.OK);
         } catch (Throwable exception) {
             return new ResponseEntity<>("Incorrect email.", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Incorrect email.", HttpStatus.BAD_REQUEST);
+//        return new ResponseEntity<>("Incorrect email.", HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -149,7 +149,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> Register(@RequestBody @Valid RegisterRequest request) {
         try {
-//            confirmEmailConfig.GenerateCode(request.getEmail());
+            confirmEmailConfig.GenerateCode(request.getEmail());
             return new ResponseEntity<>(authenticationService.Register(request),
                                                                  HttpStatus.OK);
         } catch (AuthException exception) {
@@ -177,7 +177,8 @@ public class AuthController {
                     currentUser.isConfirm(),
                     currentUser.getFirstname(),
                     currentUser.getLastname(),
-                    currentUser.getBirthday()),
+                    currentUser.getBirthday(),
+                    currentUser.getPersonalType()),
                     HttpStatus.OK);
     }
 }

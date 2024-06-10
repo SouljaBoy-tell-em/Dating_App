@@ -42,7 +42,7 @@ public class TestAppController {
 
             userRepository.FirstnameUpdate(RandomFieldGenerator.GenerateRandomFirstname(), email);
             userRepository.LastnameUpdate(RandomFieldGenerator.GenerateRandomLastname(), email);
-            userRepository.BirthdayUpdate(LocalDate.of(1924 + RandomFieldGenerator.GenerateRandomInteger(0, 100), 11, 11), email);
+            userRepository.BirthdayUpdate(LocalDate.of(1980 + RandomFieldGenerator.GenerateRandomInteger(0, 26), 11, 11), email);
             userRepository.ProfileAccessUpdate(false, email);
             userRepository.GenderUpdate(RandomFieldGenerator.GenerateRandomInteger(0, 1) > 0 ? true : false, email);
             userServiceManager.TestAddPhoto(true, email, "photo" + RandomFieldGenerator.GenerateRandomInteger(1, 10) + ".jpg");

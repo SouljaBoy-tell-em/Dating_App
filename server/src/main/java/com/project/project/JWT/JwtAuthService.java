@@ -5,6 +5,7 @@ import com.project.project.requests.AuthorizationRequest;
 import com.project.project.requests.JwtAuthResponse;
 import com.project.project.requests.RefreshRequest;
 import com.project.project.requests.RegisterRequest;
+import com.project.project.user_config.main.PersonalType;
 import com.project.project.user_config.main.User;
 import com.project.project.user_config.main.UserRole;
 import com.project.project.user_config.main.UserServiceManager;
@@ -108,9 +109,10 @@ public class JwtAuthService {
                 .firstname(null)
                 .lastname(null)
                 .isMan(true)
-                .birthday(LocalDate.of(1924 + RandomFieldGenerator.GenerateRandomInteger(0, 100), 11, 11))
-                .isPrivate(false)
+                .personalType(PersonalType.NONE)
+                .birthday(LocalDate.of(2003, 11, 11))
                 .description(RandomFieldGenerator.GenerateRandomDescription())
+                .isPrivate(false)
                 .build();
         userServiceManager.Add(user);
 

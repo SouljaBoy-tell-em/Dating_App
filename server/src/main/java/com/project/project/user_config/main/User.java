@@ -76,6 +76,15 @@ public class User implements Serializable, UserDetails {
     @Setter
     private LocalDate birthday;
 
+    @Column(name = "personalType")
+    @Getter
+    @Setter
+    private PersonalType personalType;
+
+    @Column(name = "description", length = 4096)
+    @Getter
+    private String description;
+
     @Column(name = "isPrivate")
     @Getter
     @Setter
@@ -95,10 +104,6 @@ public class User implements Serializable, UserDetails {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "email")
     private List<Grade> grades;
-
-    @Column(name = "description", length = 4096)
-    @Getter
-    private String description;
 // ###################################################################################################
 
     public User() {
