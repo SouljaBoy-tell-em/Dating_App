@@ -54,6 +54,11 @@ public class ExecutePhotoController {
         return new ResponseEntity<>(userServiceManager.GetAllPhotoIds(), HttpStatus.OK);
     }
 
+    @GetMapping("/avatar/{email}")
+    public ResponseEntity<?> GetAvatarById(@PathVariable("email") String email) {
+        return new ResponseEntity<>("http://localhost:8081/photo/" + userPhotoRepository.GetAvatarPhotoId(email), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> GetPhotoById(@PathVariable long id) {
         Photo photo = userPhotoRepository.getReferenceById(id);

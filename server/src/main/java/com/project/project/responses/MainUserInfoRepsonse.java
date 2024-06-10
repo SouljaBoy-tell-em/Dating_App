@@ -1,6 +1,7 @@
 package com.project.project.responses;
 
 
+import com.project.project.user_config.main.PersonalType;
 import com.project.project.user_config.main.UserRole;
 import lombok.*;
 import java.time.LocalDate;
@@ -15,4 +16,5 @@ public class MainUserInfoRepsonse {
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
+    private PersonalType personalType;
 }

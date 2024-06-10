@@ -2,6 +2,7 @@ package com.project.project.controllers;
 
 
 import com.project.project.requests.admin.*;
+import com.project.project.user_config.main.PersonalType;
 import com.project.project.user_config.main.UserRole;
 import com.project.project.user_config.main.UserServiceManager;
 import com.project.project.user_config.photos.UserPhotoRepository;
@@ -38,6 +39,7 @@ public class UpdateFieldsController {
                 case CASE_GENDER                 -> userServiceManager.GenderUpdate(Boolean.parseBoolean((String) changeField));         // ACCESS: USER;
                 case CASE_LASTNAME_UPDATE        -> userServiceManager.LastnameUpdate((String)                     changeField);         // ACCESS: USER;
                 case CASE_PASSWORD_UPDATE        -> userServiceManager.PasswordUpdate((String)                     changeField);         // ACCESS: USER;
+                case CASE_PERSONAL_TYPE_UPDATE   -> userServiceManager.PersonalTypeUpdate(PersonalType.valueOf((String) changeField));   // ACCESS: USER;
                 case CASE_PROFILE_ACCESS_UPDATE  -> userServiceManager.ProfileAccessUpdate((Boolean)               changeField,  email); // ACCESS: ADMIN, USER;
                 case CASE_ROLE_UPDATE            -> {
                     switch(UserRole.valueOf(changeField.toString())) {

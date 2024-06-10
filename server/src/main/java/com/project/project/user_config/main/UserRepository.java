@@ -71,6 +71,11 @@ public interface UserRepository extends CrudRepository<User, String>,
     void PasswordUpdate(String password, String email);
 
     @Modifying
+    @Query(value = "update users set personal_type = ?1 where email = ?2", nativeQuery = true)
+    @Transactional
+    void PersonalTypeUpdate(PersonalType personalType, String email);
+
+    @Modifying
     @Query(value = "update users set is_private = ?1 where email = ?2", nativeQuery = true)
     @Transactional
     void ProfileAccessUpdate(boolean isPrivate, String email);
