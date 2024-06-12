@@ -1,24 +1,33 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { ChatContext } from "../../pages/GrayChat/GrayChat";
+
 import { observer } from "mobx-react-lite";
 
+import { ChatContext } from "../../pages/GrayChat/GrayChat";
+
 const TextArea = styled.textarea`
-  border-radius: 1px;
-  padding: 10px 5px;
+  border-radius: 20px;
+  padding: 5px 10px;
   font-size: 18px;
   border: 0;
-  box-shadow: 0 0 1px 1px gray;
   width: 450px;
-  overflow-y: auto; 
-  resize: none; 
+  overflow-y: auto;
+  resize: none;
 
   &::-webkit-scrollbar {
-    width: 5px; 
+    width: 5px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #999; 
+    background-color: #999;
   }
+  cursor: default;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  outline: none;
 `;
 
 const Container = styled.div`
@@ -28,14 +37,13 @@ const Container = styled.div`
 
 interface ChatInputInterface {
   setMessage: (text: string) => void;
-
+  message: string;
 }
 
-const ChatInput: React.FC<ChatInputInterface> = observer(({ setMessage}) => {
-
-  const {chatStore} = useContext(ChatContext);
+const ChatInput: React.FC<ChatInputInterface> = observer(({ setMessage, message }) => {
+  const { chatStore } = useContext(ChatContext);
   const [rows, setRows] = useState(1);
-  const maxRows = 8;
+  const maxRows = 6;
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -51,17 +59,17 @@ const ChatInput: React.FC<ChatInputInterface> = observer(({ setMessage}) => {
       setRows(textareaRows);
     }
     setMessage(event.target.value);
-
   };
 
   return (
     <Container>
       <TextArea
         rows={rows}
-        style={{ height: `${rows * 20}px` }}
+        style={{ height: `${rows * 30}px`, userSelect: "none", border: "0px" }}
         onKeyDown={handleKeyDown}
         onInput={handleInput}
         onChange={(e) => setMessage(e.target.value)}
+        value={message}
       />
     </Container>
   );

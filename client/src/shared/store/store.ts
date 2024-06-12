@@ -28,7 +28,7 @@ export default class Store {
     try {
       this.avatarURL = (await $api.get(API_URL+"/photo/avatar/"+this.userInfo.username)).data;
     } catch (e: any) {}
-  }
+  };
 
   setColorTheme(bool: boolean) {
     this.colorTheme = bool;

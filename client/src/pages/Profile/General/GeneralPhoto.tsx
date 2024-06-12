@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { $avatar_url } from "../../../shared/services/ProfileService";
+
 import { observer } from "mobx-react-lite";
+
+import { $avatar_url } from "../../../shared/services/ProfileService";
 import Context from "../../..";
 import { API_URL } from "../../../shared/http";
 import ChatService from "../../../shared/services/ChatService";

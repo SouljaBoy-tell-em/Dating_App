@@ -4,12 +4,15 @@ import { MdDelete } from "react-icons/md";
 import { MdModeEdit } from "react-icons/md";
 import { FaReply } from "react-icons/fa";
 
+import { Link } from "react-router-dom";
+
 import { ChatContext } from "../../pages/GrayChat/GrayChat";
 import { MessageDTO } from "../../shared/models/chat/MessageDTO";
 import Context from "../..";
-import VideoPlayer from "./VideoPlayer";
+
 import ChatService from "../../shared/services/ChatService";
-import { Link } from "react-router-dom";
+
+import VideoPlayer from "./VideoPlayer";
 
 const Container = styled.div`
   padding: 5px;
@@ -20,9 +23,9 @@ const Container = styled.div`
 `;
 
 const Messege = styled.div`
-  background-color: white;
-  padding: 5px;
-  border-radius: 5px;
+  background-color: #f1e2ff;
+  border-radius: 20px;
+  padding: 10px;
   width: min-content;
   display: flex;
   flex-direction: column;
@@ -163,8 +166,12 @@ const Message: React.FC<MessageInterface> = ({ value }) => {
           gap: "10px",
           background:
             value.sender.email === store.userInfo.username
-              ? "#ffffff"
-              : "#e9bdf7",
+              ? "#F1E2FF"
+              : "#F1E2FF",
+          borderBottomLeftRadius:
+            value.sender.email === store.userInfo.username ? "20px" : "0",
+          borderBottomRightRadius:
+            value.sender.email === store.userInfo.username ? "0" : "20px",
         }}
       >
         <TopContainer

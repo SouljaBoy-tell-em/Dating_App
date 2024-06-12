@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const PersonalityTypeTable = styled.div`
   border: 1px solid #000;
@@ -20,7 +20,7 @@ const PersonalityButton = styled.button`
   padding: 10px 20px;
   border: 1px solid #000;
   border-radius: 5px;
-  background-color: ${({ active }) => (active ? '#00ff00' : '#f0f0f0')};
+  background-color: ${({ active }) => (active ? "#00ff00" : "#f0f0f0")};
   cursor: pointer;
 
   &:hover {
@@ -30,10 +30,10 @@ const PersonalityButton = styled.button`
 
 const PersonalityTypeSelector = ({ result, handleButtonClick }) => {
   const personalityTypes = [
-    'INTJ', 'INTP', 'ENTJ', 'ENTP',
-    'INFJ', 'INFP', 'ENFJ', 'ENFP',
-    'ISTJ', 'ISFJ', 'ESTJ', 'ESFJ',
-    'ISTP', 'ISFP', 'ESTP', 'ESFP'
+    "INTJ", "INTP", "ENTJ", "ENTP",
+    "INFJ", "INFP", "ENFJ", "ENFP",
+    "ISTJ", "ISFJ", "ESTJ", "ESFJ",
+    "ISTP", "ISFP", "ESTP", "ESFP"
   ];
   
   return (
