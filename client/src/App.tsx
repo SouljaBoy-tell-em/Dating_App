@@ -22,9 +22,10 @@ import CreateProfile from "./pages/CreateProfile/CreateProfile";
 import Profile from "./pages/Profile/Profile.jsx";
 import SwiperPage from "./pages/Swiper/SwiperPage";
 
-import Context from ".";
 import License from "./pages/License/License";
 import UserPage from "./pages/UserPage/UserPage";
+
+import Context from ".";
 
 const Container = styled.div`
   position: relative;
@@ -81,7 +82,14 @@ function App() {
             }
           />
           <Route path="newChat" element={<NewChat />} />
-          <Route path="swiper" element={<SwiperPage />} />
+          <Route
+            path="swiper"
+            element={
+              <RequireAuth>
+                <SwiperPage />
+              </RequireAuth>
+            }
+          />
           <Route path="license" element={<License />} />
 
           <Route

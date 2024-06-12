@@ -9,7 +9,7 @@ const Container = styled.div`
 
 const StyledLink = styled(Link)`
     font-size: 30px;
-`
+`;
 const Privacy = () => {
   return (
     <Container>

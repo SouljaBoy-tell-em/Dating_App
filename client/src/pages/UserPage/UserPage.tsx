@@ -1,13 +1,19 @@
 import React, { createContext, useContext, useEffect } from "react";
 import styled from "styled-components";
-import UserImage from "./UserImage";
-import Posts from "./Posts/Posts";
-import UserPageStore from "../../shared/store/userPageStore";
+
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import AddPost from "./Posts/AddPost";
+
+import UserPageStore from "../../shared/store/userPageStore";
+
+
 import Context from "../..";
 import ChatService from "../../shared/services/ChatService";
+
+import AddPost from "./Posts/AddPost";
+
+import Posts from "./Posts/Posts";
+import UserImage from "./UserImage";
 
 const Container = styled.div`
   height: 100vh;

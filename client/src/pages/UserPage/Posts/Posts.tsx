@@ -1,11 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
-import Post from "./Post";
-import { UserPageContext } from "../UserPage";
+
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+
+import { UserPageContext } from "../UserPage";
 import Context from "../../..";
 import ChatService from "../../../shared/services/ChatService";
+
+import Post from "./Post";
 
 const Container = styled.div`
   display: flex;

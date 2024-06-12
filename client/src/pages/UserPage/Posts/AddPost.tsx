@@ -1,9 +1,11 @@
 import React, { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import { UserPageContext } from "../UserPage";
+
 import { LuPaperclip } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
+
+import { UserPageContext } from "../UserPage";
 
 const Container = styled.div`
   width: 100%;
