@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
+import { useMediaQuery } from "react-responsive";
 
 import SwiperStore from "../../shared/store/swiperStore";
 import Context from "../..";
@@ -57,6 +58,8 @@ swiperStore.getUsers();
 
 const SwiperPage = observer(() => {
   const { store } = useContext(Context);
+  swiperStore.getUsers();
+
 
   return (
     <SwiperContext.Provider value={{ swiperStore }}>
@@ -65,7 +68,7 @@ const SwiperPage = observer(() => {
           <SwiperLayout />
           <SwiperContentContainer>
             <SwiperImageBlock />
-            <SwiperInfoBlock /> 
+            <SwiperInfoBlock />
           </SwiperContentContainer>
         </Wrapper>
       </Container>

@@ -32,7 +32,7 @@ const MessegeBlock = styled.div`
   flex-direction: column;
   padding: 10px 6px;
   margin-top: 40px;
-  top:0px;
+  top: 0px;
   width: calc(100% - 12px);
   gap: 10px;
   background-color: white;
@@ -64,8 +64,9 @@ const MessageBlockWrapper = styled.div`
 `;
 
 const BottomBlockWrapper = styled.div`
-  padding: 8px 0;
+  padding: 8px;
 `;
+
 const Chat = () => {
   const { chatStore } = useContext(ChatContext);
   const { store } = useContext(Context);
@@ -82,7 +83,7 @@ const Chat = () => {
     <Container>
       <ChatName>
         {chatStore.chatUsers.length === 0
-          ? "Выберите чат"
+          ? "Choose chat"
           : chatStore.chatUsers[0] === store.userInfo.username
           ? chatStore.chatUsers[1]
           : chatStore.chatUsers[0]}
@@ -91,7 +92,9 @@ const Chat = () => {
         <MessegeBlock>
           {chatStore.messages.map(
             (value, index) =>
-              value.chatId === chatStore.chatId && <Message value={value} />
+              value.chatId === chatStore.chatId && (
+                <Message key={value.id} value={value} />
+              )
           )}
           <div ref={messagesEndRef}></div>
         </MessegeBlock>

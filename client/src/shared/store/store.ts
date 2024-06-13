@@ -62,7 +62,6 @@ export default class Store {
     try {
       this.setLoading(true);
       const response = await AuthService.login(email, password);
-      console.log(response);
 
       localStorage.setItem("AccessToken", response.data.jwtToken);
       localStorage.setItem("refreshToken", response.data.jwtRefreshToken);
@@ -72,7 +71,6 @@ export default class Store {
       this.setLoading(false);
       return "okay";
     } catch (e: any) {
-      console.log(e?.response?.data);
       this.setLoading(false);
       return e;
     }
@@ -82,7 +80,6 @@ export default class Store {
     try {
       this.setLoading(true);
       const response = await AuthService.registration(email, password);
-      console.log(response);
 
       localStorage.setItem("AccessToken", response.data.jwtToken);
       localStorage.setItem("refreshToken", response.data.jwtRefreshToken);
@@ -91,7 +88,6 @@ export default class Store {
       this.setUser(response.data.user);
       this.setLoading(false);
     } catch (e: any) {
-      console.log(e?.response?.data);
       this.setLoading(false);
       return e;
     }
@@ -105,19 +101,16 @@ export default class Store {
       this.setAuth(false);
       this.setUser({} as UserDTO);
     } catch (e) {
-      console.log(e);
-      console.log("Проблема с выходом");
+
     }
   }
 
   async checkAuth() {
     try {
       const response = await AuthService.checkAuth();
-      console.log(response);
 
       this.setUserInf(response.data);
 
-      console.log(this.userInfo);
 
       this.setUser({ email: response.data.username } as UserDTO);
 
@@ -127,17 +120,14 @@ export default class Store {
       this.setUser({} as UserDTO);
       localStorage.removeItem("AccessToken");
       localStorage.removeItem("refreshToken");
-      console.log(error);
     }
   }
 
   async confirmEmail(confirmCode: string) {
     try {
       const response = await AuthService.confirmEmail(confirmCode);
-      console.log(response);
       this.setConfirmEmail(true);
     } catch (error) {
-      console.log(error);
       return error;
     }
   }
@@ -145,9 +135,7 @@ export default class Store {
   async requestNewCode() {
     try {
       const response = await AuthService.requestNewCode();
-      console.log(response);
     } catch (error) {
-      console.log(error);
       return error;
     }
   }
@@ -155,9 +143,7 @@ export default class Store {
   async fieldProfile(profileDTO: ProfileDTO) {
     try {
       const response = await ProfileService.fieldProfile(profileDTO);
-      console.log(response);
     } catch (error: any) {
-      console.log(error?.message);
     }
   }
 
@@ -165,9 +151,7 @@ export default class Store {
     try {
       const response = await ProfileService.uploadAvatar(file);
       this.getAvatarURL();
-      console.log(response);
     } catch (error: any) {
-      console.log(error?.message);
     }
   }
 }

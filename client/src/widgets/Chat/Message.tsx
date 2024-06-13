@@ -20,6 +20,9 @@ const Container = styled.div`
   width: calc(100% - 10px);
   display: flex;
   position: relative;
+  @media (max-width: 1224px) {
+    font-size: 40px;
+  }
 `;
 
 const Messege = styled.div`
@@ -30,17 +33,26 @@ const Messege = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  @media (max-width: 1224px) {
+    max-width: 70%;
+  }
 `;
 
 const Name = styled.p`
   font-size: medium;
   font-weight: 800;
+  @media (max-width: 1224px) {
+    font-size: 40px;
+  }
 `;
 
 const TextMessage = styled.div`
   white-space: pre-wrap;
   word-wrap: break-word;
   max-width: 300px;
+  @media (max-width: 1224px) {
+    max-width: 100%;
+  }
 `;
 
 interface MessageInterface {
@@ -52,6 +64,7 @@ const IconsContainer = styled.div`
   gap: 10px;
   top: 10px;
   position: absolute;
+
 `;
 
 const IconButton = styled.button`
@@ -66,6 +79,9 @@ const IconButton = styled.button`
 const Time = styled.p`
   font-size: 15px;
   font-weight: 500;
+  @media (max-width: 1224px) {
+    font-size: 40px;
+  }
 `;
 
 const TopContainer = styled.div`
@@ -81,7 +97,7 @@ const FileContainer = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  width: 400px;
+  width: 100%;
 `;
 
 const Image = styled.img`
