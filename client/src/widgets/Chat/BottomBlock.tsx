@@ -3,18 +3,21 @@ import styled from "styled-components";
 
 import { MdDelete } from "react-icons/md";
 
-import { IoSend } from "react-icons/io5";
 import { LuPaperclip } from "react-icons/lu";
 
 import { ChatContext } from "../../pages/GrayChat/GrayChat";
 
 import ChatInput from "./ChatInput";
+import { useMediaQuery } from "react-responsive";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
-  width: 642px;
+  width: 100%;
+  @media (max-width:1224px){
+    width: calc(100% - 20px);
+  }
   background-color: 0;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
@@ -28,6 +31,9 @@ const SendButton = styled.button`
   border: 0;
   width: 35px;
   height: 35px;
+  @media (max-width:1224px){
+    scale: 2;
+  }
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,12 +50,23 @@ const InputClip = styled.label`
   margin-right: 20px;
   color: gray;
   cursor: pointer;
+  @media (max-width:1224px){
+    scale: 2;
+    margin-left: -60px;
+
+  }
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+
+  @media (max-width: 1224px) {
+    border-radius: 0;
+    width: calc(100%);
+  }
+
 `;
 
 const DeleteBotton = styled.button`
@@ -61,30 +78,26 @@ const DeleteBotton = styled.button`
   }
 `;
 
-const GetAllButton = styled.button`
-  opacity: 0;
-  background-color: #00003c;
-  color: white;
-  font-size: 20px;
-  font-weight: 600;
-  padding: 4px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: all 0.3s;
-  &:active {
-    transform: scale(1.05);
-  }
-  &:hover {
-    opacity: 1;
+const SendImage = styled.img``;
+
+const ChatInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 1224px) {
+    border-radius: 0;
+    width: calc(100% - 20px);
   }
 `;
-
-const SendImage = styled.img``;
 
 const BottomBlock: React.FC = () => {
   const { chatStore } = useContext(ChatContext);
   const [message, setMessage] = useState<string>("");
   const [files, setFiles] = useState<File[]>([]);
+
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -96,8 +109,8 @@ const BottomBlock: React.FC = () => {
   return (
     <Wrapper>
       <InputWrapper>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <ChatInput setMessage={setMessage} message={message}/>
+        <ChatInputWrapper>
+          <ChatInput setMessage={setMessage} message={message}  />
           <InputClip>
             <LuPaperclip size={30} />
             <input
@@ -107,7 +120,7 @@ const BottomBlock: React.FC = () => {
               onChange={handleFileUpload}
             />
           </InputClip>
-        </div>
+        </ChatInputWrapper>
 
         {files.map((file, index) => (
           <div key={index} style={{ display: "flex", gap: "10px" }}>
@@ -127,14 +140,17 @@ const BottomBlock: React.FC = () => {
 
       <SendButton
         onClick={() => {
-          chatStore.send(message, files);
-          setMessage("");
-          setFiles([]);
+          if (message !== "" || files.length > 0) {
+            chatStore.send(message, files);
+            setMessage("");
+            setFiles([]);
+            chatStore.setRowNumber(1);
+          }
+
         }}
       >
         <SendImage src="/images/chat/Forward.png" />
       </SendButton>
-      <GetAllButton onClick={chatStore.getAll}>Get All</GetAllButton>
     </Wrapper>
   );
 };

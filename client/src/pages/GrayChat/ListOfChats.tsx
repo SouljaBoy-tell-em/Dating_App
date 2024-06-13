@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { ChatDTO } from "../../shared/models/chat/ChatDTO";
 
 import { ChatContext } from "./GrayChat";
+import ConnectIndicator from "./ConnectIndicator";
 
 const Container = styled.div`
   width: 330px;
@@ -14,7 +15,12 @@ const Container = styled.div`
   padding-right: 5px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+  @media(max-width:1224px){
+    width: calc(100% - 20px);
+    height: calc(100% - 100px);
 
+    font-size: 30px;
+  }
   overflow-y: auto;
   background-color: #e3b3df;
   display: flex;
@@ -29,12 +35,19 @@ const Wrapper = styled.div`
   width: calc(100%);
   height: 580px;
   background-color: white;
+  @media(max-width:1224px){
+    height: calc(100% - 100px);
+    font-size: 30px;
+  }
 `;
 
 const ImageWithPeople = styled.img`
   width: 250px;
   position: absolute;
   bottom: 0;
+  @media(max-width:1224px){
+    width: calc(70%);
+  }
 `;
 const ListOfChatWrapper = styled.div`
   width: calc(100% - 35px);
@@ -48,14 +61,17 @@ const ListOfChatWrapper = styled.div`
   align-items: flex-start;
   overflow-y: auto;
 
-
   &::-webkit-scrollbar {
     width: 7px;
   }
   &::-webkit-scrollbar-thumb {
     background-color: #999999;
   }
-  
+
+  @media(max-width:1224px){
+    height: calc(60%);
+    font-size: 30px;
+  }
 `;
 const ChatBlock = styled.div`
   width: calc(100% - 20px);
@@ -69,6 +85,7 @@ const ChatBlock = styled.div`
   &:hover {
     background-color: #ddbdfd;
   }
+
 `;
 
 const ChatName = styled.div`
@@ -106,6 +123,7 @@ const ImageOfChat = styled.div`
   height: 60px;
   border-radius: 50%;
   background-color: #e3b3df;
+
 `;
 
 const ChatBlockWrapper = styled.div`
@@ -122,6 +140,11 @@ const BetweenChatBlock = styled.hr`
   height: 5px;
   background-color: #a8a6a8;
 `;
+
+const NameAndIndicatorBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 const ListOfChats = () => {
   const { chatStore } = useContext(ChatContext);
 
@@ -131,15 +154,20 @@ const ListOfChats = () => {
 
   return (
     <Container>
-      <Name>Chats</Name>
+      <NameAndIndicatorBlock>
+        <Name>Chats</Name>
+        <ConnectIndicator isConnected={chatStore.connectIdicator}/>
+      </NameAndIndicatorBlock>
       <Wrapper>
         <ListOfChatWrapper>
           {chatStore.chats.map((chat, index) => (
-            <ChatBlockWrapper>
+            <ChatBlockWrapper key={chat.chatDTO.id}>
               <ChatBlock
                 key={chat.chatDTO.id}
                 onClick={() => {
                   chatStore.setChatId(chat.chatDTO.id);
+                  chatStore.getAllMessageFromChat();
+                  chatStore.setMobileChatChoosing(false);
                 }}
               >
                 <ImageOfChat></ImageOfChat>
