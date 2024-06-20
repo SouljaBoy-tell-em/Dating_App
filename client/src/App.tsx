@@ -15,7 +15,6 @@ import Main1 from "./pages/Main1/Main1";
 import LogIn from "./pages/LogIn/LogIn";
 import SignUp from "./pages/SignUp/SignUp";
 import ConfirmEmail from "./pages/ConfirmEmail/ConfirmEmail";
-import NewChat from "./pages/NewChat/NewChat";
 import { Menu } from "./widgets/Menu/Menu";
 
 import CreateProfile from "./pages/CreateProfile/CreateProfile";
@@ -81,7 +80,6 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="newChat" element={<NewChat />} />
           <Route
             path="swiper"
             element={

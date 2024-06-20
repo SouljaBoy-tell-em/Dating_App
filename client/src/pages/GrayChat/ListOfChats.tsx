@@ -15,7 +15,7 @@ const Container = styled.div`
   padding-right: 5px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-  @media(max-width:1224px){
+  @media (max-width: 1224px) {
     width: calc(100% - 20px);
     height: calc(100% - 100px);
 
@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   width: calc(100%);
   height: 580px;
   background-color: white;
-  @media(max-width:1224px){
+  @media (max-width: 1224px) {
     height: calc(100% - 100px);
     font-size: 30px;
   }
@@ -45,7 +45,7 @@ const ImageWithPeople = styled.img`
   width: 250px;
   position: absolute;
   bottom: 0;
-  @media(max-width:1224px){
+  @media (max-width: 1224px) {
     width: calc(70%);
   }
 `;
@@ -68,7 +68,7 @@ const ListOfChatWrapper = styled.div`
     background-color: #999999;
   }
 
-  @media(max-width:1224px){
+  @media (max-width: 1224px) {
     height: calc(60%);
     font-size: 30px;
   }
@@ -85,7 +85,6 @@ const ChatBlock = styled.div`
   &:hover {
     background-color: #ddbdfd;
   }
-
 `;
 
 const ChatName = styled.div`
@@ -96,6 +95,9 @@ const ChatName = styled.div`
 `;
 
 const UnreadMessages = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
   background-color: red;
   color: white;
   font-weight: 800;
@@ -123,10 +125,10 @@ const ImageOfChat = styled.div`
   height: 60px;
   border-radius: 50%;
   background-color: #e3b3df;
-
 `;
 
 const ChatBlockWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: calc(100% - 10px);
@@ -156,7 +158,7 @@ const ListOfChats = () => {
     <Container>
       <NameAndIndicatorBlock>
         <Name>Chats</Name>
-        <ConnectIndicator isConnected={chatStore.connectIdicator}/>
+        <ConnectIndicator isConnected={chatStore.connectIdicator} />
       </NameAndIndicatorBlock>
       <Wrapper>
         <ListOfChatWrapper>
@@ -172,8 +174,16 @@ const ListOfChats = () => {
               >
                 <ImageOfChat></ImageOfChat>
                 <ChatName>
-                  <p>{chat.chatDTO.user1}</p>
-                  <p>{chat.chatDTO.user2}</p>
+                  <p>
+                    {chat.chatDTO.user1.length > 12
+                      ? `${chat.chatDTO.user1.substring(0, 12)}...`
+                      : chat.chatDTO.user1}
+                  </p>
+                  <p>
+                    {chat.chatDTO.user2.length > 12
+                      ? `${chat.chatDTO.user2.substring(0, 12)}...`
+                      : chat.chatDTO.user2}
+                  </p>
                 </ChatName>
                 {chat.unreadMessages > 0 && (
                   <UnreadMessages>{chat.unreadMessages}</UnreadMessages>

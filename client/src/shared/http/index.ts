@@ -4,21 +4,28 @@ import { AuthResponse } from "../models/response/AuthResponse";
 
 export const API_URL = process.env.REACT_APP_SERVER_URL;
 
+export const getImageURL = (oldURL: string) => {
+  try {
+    if (oldURL.length > 0) {
+      return API_URL + oldURL.substring(21);
+    } else return API_URL + "/images/NoAvatar.jpg";
+  } catch {
+    return API_URL + "/images/NoAvatar.jpg";
+  }
+};
+
 const $api = axios.create({
   withCredentials: true,
   baseURL: API_URL,
-  
 });
 
 $api.interceptors.request.use((config) => {
-
   if (localStorage.getItem("AccessToken") !== null) {
     config.headers.Authorization = `Bearer ${localStorage.getItem(
       "AccessToken"
     )}`;
   }
   return config;
-  
 });
 
 $api.interceptors.response.use(
@@ -27,7 +34,11 @@ $api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    if (error.response && error.response.status === 403 && !originalRequest._isRetry) {
+    if (
+      error.response &&
+      error.response.status === 403 &&
+      !originalRequest._isRetry
+    ) {
       originalRequest._isRetry = true;
       try {
         const response = await axios.post<AuthResponse>(
@@ -40,7 +51,7 @@ $api.interceptors.response.use(
       } catch (refreshError) {
         return Promise.reject(refreshError);
       }
-    } 
+    }
     return Promise.reject(error);
   }
 );

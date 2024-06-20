@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { SwiperContext } from "./SwiperPage";
+import { getImageURL } from "../../shared/http";
 
 const SwiperContainer = styled.div`
   z-index: 100;
@@ -130,7 +131,7 @@ const SwiperImageBlock = observer(() => {
 
   return (
     <SwiperContainer>
-      <SwiperImage src={swiperStore.users[0]?.imageAvatarUrl} />
+      <SwiperImage src={getImageURL(swiperStore.users[0]?.imageAvatarUrl)} />
       <SwiperColorDiv />
       <SwiperBottomBlock>
         <TextBlock>

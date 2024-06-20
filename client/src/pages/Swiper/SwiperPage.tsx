@@ -9,6 +9,7 @@ import Context from "../..";
 import SwiperLayout from "./SwiperLayout";
 import SwiperImageBlock from "./SwiperImageBlock";
 import SwiperInfoBlock from "./SwiperInfoBlock";
+import MobileSwiper from "./MobileSwiper/MobileSwiper";
 
 const Container = styled.div<{ colorTheme: boolean }>`
   height: 100vh;
@@ -60,8 +61,11 @@ const SwiperPage = observer(() => {
   const { store } = useContext(Context);
   swiperStore.getUsers();
 
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
 
-  return (
+  return isDesktop ? (
     <SwiperContext.Provider value={{ swiperStore }}>
       <Container colorTheme={store.colorTheme}>
         <Wrapper colorTheme={store.colorTheme}>
@@ -73,6 +77,8 @@ const SwiperPage = observer(() => {
         </Wrapper>
       </Container>
     </SwiperContext.Provider>
+  ) : (
+    <MobileSwiper />
   );
 });
 

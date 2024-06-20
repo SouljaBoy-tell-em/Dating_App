@@ -61,6 +61,7 @@ const MessageBlockWrapper = styled.div`
   width: calc(100% - 5px);
   overflow-y: hidden;
   position: relative;
+  padding-bottom: 50px;
 `;
 
 const BottomBlockWrapper = styled.div`

@@ -22,21 +22,21 @@ const Wrapper = styled.div`
 
 const ChatName = styled.p`
   color: white;
-  font-size: 70px;
+  font-size: 40px;
   font-weight: 500;
-  margin-left: 100px;
+  margin-left: 10px;
 `;
 
 const MessageBlockWrapper = styled.div`
   z-index: 10;
-  margin-top: 210px;
+  margin-top: 78px;
   background-color: white;
-  height: calc(100% - 240px);
+  height: calc(100% - 138px);
   overflow-y: hidden;
   padding-right: 10px;
   width: calc(100% - 10px);
   position: relative;
-  margin-bottom: 120px;
+
 `;
 
 const MessegeBlock = styled.div`
@@ -64,8 +64,8 @@ const BottomBlockWrapper = styled.div`
   background-color: #e3b3df;
   position: fixed;
   bottom: 0;
-  width: calc(100% - 40px);
-  padding: 20px 20px;
+  width: calc(100%);
+  padding: 5px 0;
 `;
 
 const TopBlock = styled.div`
@@ -75,10 +75,11 @@ const TopBlock = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding-top: 20px;
+  width: calc(100% - 70px);
+  padding-top: 10px;
+  padding-left: 70px;
+  padding-bottom: 10px;
   background-color: #e3b3df;
-  padding-bottom: 20px;
 `;
 
 const pulseAnimation = keyframes`
@@ -109,10 +110,10 @@ const colorChangeAnimation = keyframes`
 `;
 
 const ChooseChatBottom = styled.div`
-  font-size: 70px;
+  font-size: 30px;
   color: white;
-  padding: 20px;
-  border-radius: 20px;
+  padding: 5px;
+  border-radius: 5px;
   animation: ${pulseAnimation} 2s ease-in-out infinite,
     ${colorChangeAnimation} 5s linear infinite;
   margin-right: 20px;
@@ -129,16 +130,19 @@ const ChatMobile = observer(() => {
 
   useEffect(scrollToBottom, [chatStore.isScrolling]);
 
+  const chatName =
+    chatStore.chatUsers.length === 0
+      ? "Choose chat"
+      : chatStore.chatUsers[0] === store.userInfo.username
+      ? chatStore.chatUsers[1]
+      : chatStore.chatUsers[0];
+
   return (
     <Container isOpen={!chatStore.isMobileChatChoosing}>
       <Wrapper>
         <TopBlock>
           <ChatName>
-            {chatStore.chatUsers.length === 0
-              ? "Choose chat"
-              : chatStore.chatUsers[0] === store.userInfo.username
-              ? chatStore.chatUsers[1]
-              : chatStore.chatUsers[0]}
+            {chatName.length < 5 ? chatName : `${chatName.substring(0, 5)}...`}
           </ChatName>
           <ChooseChatBottom
             onClick={() => {
