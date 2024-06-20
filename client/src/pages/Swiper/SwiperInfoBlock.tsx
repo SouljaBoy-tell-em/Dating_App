@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { SwiperContext } from "./SwiperPage";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   min-height: 520px;
@@ -33,7 +34,7 @@ const GoToProfileButton = styled.div`
 const InfoBlock = styled.div`
   display: flex;
   flex-direction: column;
-  gap:10px;
+  gap: 10px;
 `;
 
 const MainText = styled.p`
@@ -66,13 +67,14 @@ const SmallInfoBlock = styled.div`
   flex-direction: column;
 `;
 const SwiperInfoBlock = observer(() => {
-
-  const {swiperStore} = useContext(SwiperContext);
+  const { swiperStore } = useContext(SwiperContext);
 
   return (
     <Container>
       <InfoBlock>
-        <MainText>{swiperStore.users[0]?.firstname}, {swiperStore.users[0]?.age}</MainText>
+        <MainText>
+          {swiperStore.users[0]?.firstname}, {swiperStore.users[0]?.age}
+        </MainText>
         <LocationBlock>
           <LocationIcon src="/images/swiper/Location.png" />
           <BaseText>(Location)</BaseText>
@@ -89,9 +91,10 @@ const SwiperInfoBlock = observer(() => {
           <BaseText>Personality test</BaseText>
           <SmallText>FNTP</SmallText>
         </SmallInfoBlock>
-
       </InfoBlock>
-      <GoToProfileButton>Go to profile</GoToProfileButton>
+      <Link to={`/user/${swiperStore.users[0]?.email}`}>
+        <GoToProfileButton>Go to profile</GoToProfileButton>
+      </Link>
     </Container>
   );
 });

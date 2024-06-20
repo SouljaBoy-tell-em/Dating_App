@@ -10,7 +10,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   @media (max-width: 1224px) {
-    width: 100%;
+    width: calc(100% - 40px);
   }
 `;
 
@@ -19,7 +19,7 @@ const TextArea = styled.textarea`
   padding: 5px 10px;
   font-size: 18px;
   border: 0;
-  width: 450px;
+  width: 420px;
   overflow-y: auto;
   resize: none;
 
@@ -34,7 +34,7 @@ const TextArea = styled.textarea`
   @media (max-width:1224px) {
     border-radius: 10px;
     width: 100%;
-    font-size: 30px;
+    font-size: 25px;
   }
 
   cursor: default;
@@ -85,7 +85,7 @@ const ChatInput: React.FC<ChatInputInterface> = observer(
         <TextArea
           rows={chatStore.rowNumber}
           style={{
-            height: `${chatStore.rowNumber * (isDesktop ? 30 : 70)}px`,
+            height: `${chatStore.rowNumber * (isDesktop ? 30 : 40)}px`,
             userSelect: "none",
             border: "0px",
           }}

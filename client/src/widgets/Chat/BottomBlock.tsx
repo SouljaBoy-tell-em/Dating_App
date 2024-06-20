@@ -32,7 +32,7 @@ const SendButton = styled.button`
   width: 35px;
   height: 35px;
   @media (max-width:1224px){
-    scale: 2;
+    scale: 1.3;
   }
   display: flex;
   justify-content: center;
@@ -46,13 +46,11 @@ const SendButton = styled.button`
 
 const InputClip = styled.label`
   margin-top: 5px;
-  margin-left: -40px;
-  margin-right: 20px;
   color: gray;
   cursor: pointer;
   @media (max-width:1224px){
-    scale: 2;
-    margin-left: -60px;
+    scale: 1.3;
+    margin-left: 0px;
 
   }
 `;
@@ -83,10 +81,13 @@ const SendImage = styled.img``;
 const ChatInputWrapper = styled.div`
   display: flex;
   align-items: center;
-
+  background-color: white;
+  gap:5px;
+  border-radius: 20px;
   @media (max-width: 1224px) {
-    border-radius: 0;
-    width: calc(100% - 20px);
+    border-radius: 10px;
+    width: calc(100% -1 0px);
+    background-color: white;
   }
 `;
 

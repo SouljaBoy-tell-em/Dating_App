@@ -152,7 +152,7 @@ const SwiperLayout = observer(() => {
       </Header>
       <TopRightBlock>
         <InnerTPBlock />
-        <ButterflyImage src="/images/swiper/butterfly.png" />
+        <ButterflyImage src={"/images/swiper/butterfly.png"} />
       </TopRightBlock>
       <BottomLeftBlock>
         <InnerBLBlock />

@@ -15,7 +15,7 @@ export default class ChatService {
     try {
       return API_URL + url.substring(21);
     } catch {
-      return "http://localhost:3000/images/NoAvatar.jpg";
+      return API_URL + "/images/NoAvatar.jpg";
     }
   }
 }

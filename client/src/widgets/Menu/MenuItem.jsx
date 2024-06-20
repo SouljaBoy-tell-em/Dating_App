@@ -2,6 +2,8 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import MenuIcon from "./MenuIcon";
+import { observer } from "mobx-react-lite";
+import Context from "../..";
 
 const variants = {
   open: {
@@ -22,7 +24,6 @@ const variants = {
   },
 };
 
-
 const colors = [
   "#FF008C",
   "#D309E1",
@@ -32,31 +33,29 @@ const colors = [
   "#6600ff",
 ];
 
-const routes = [
-  "/",
-  "/grayChat",
-  "/swiper",
-  "/profile",
+const routes = ["/", "/grayChat", "/swiper", "/profile"];
+const text = ["Main Page", "Chat", "Swiper", "Edit Profile"];
 
-];
-const text = [
-  "Main Page",
-  "Chat",
-  "Swiper",
-  "Edit Profile",
-];
+const iconType = ["", "chat", "swiper", "profile"];
 
-const iconType = ["", "chat" , "swiper", "profile"];
-
-export const MenuItem = ({ i }) => {
+export const MenuItem = observer(({ i }) => {
   const style = {
     border: `2px solid ${colors[1]}`,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
   };
+
+  const { store } = React.useContext(Context);
+
   return (
-    <Link to={routes[i]} style={{ textDecoration: "none" }}>
+    <Link
+      to={routes[i]}
+      style={{
+        textDecoration: "none",
+        color: store.colorTheme ? "white" : "black",
+      }}
+    >
       <motion.li
         className="menu-li"
         variants={variants}
@@ -72,4 +71,4 @@ export const MenuItem = ({ i }) => {
       </motion.li>
     </Link>
   );
-};
+});

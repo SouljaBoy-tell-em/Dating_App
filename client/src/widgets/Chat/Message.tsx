@@ -21,7 +21,7 @@ const Container = styled.div`
   display: flex;
   position: relative;
   @media (max-width: 1224px) {
-    font-size: 40px;
+    font-size: 25px;
   }
 `;
 
@@ -29,12 +29,13 @@ const Messege = styled.div`
   background-color: #f1e2ff;
   border-radius: 20px;
   padding: 10px;
-  width: min-content;
+  width: fit-content;
+  max-width: 80%;
   display: flex;
   flex-direction: column;
   position: relative;
   @media (max-width: 1224px) {
-    max-width: 70%;
+    max-width: 90%;
   }
 `;
 
@@ -42,7 +43,7 @@ const Name = styled.p`
   font-size: medium;
   font-weight: 800;
   @media (max-width: 1224px) {
-    font-size: 40px;
+    font-size: 25px;
   }
 `;
 
@@ -64,7 +65,6 @@ const IconsContainer = styled.div`
   gap: 10px;
   top: 10px;
   position: absolute;
-
 `;
 
 const IconButton = styled.button`
@@ -80,7 +80,7 @@ const Time = styled.p`
   font-size: 15px;
   font-weight: 500;
   @media (max-width: 1224px) {
-    font-size: 40px;
+    font-size: 25px;
   }
 `;
 
@@ -94,6 +94,7 @@ const FileContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
 `;
 
 const ImageContainer = styled.div`
@@ -213,7 +214,11 @@ const Message: React.FC<MessageInterface> = ({ value }) => {
               style={{ textDecoration: "none", color: "inherit" }}
               to={`/user/${value.sender.email}`}
             >
-              <Name>{value.sender.email}</Name>
+              <Name>
+                {value.sender.email.length < 5
+                  ? value.sender.email
+                  : `${value.sender.email.substring(0, 5)}...`}
+              </Name>
             </Link>
             {/* {value.sender.avatarURL !== "" && (
               <AvatarImage src={value.sender.avatarURL} />
@@ -223,7 +228,7 @@ const Message: React.FC<MessageInterface> = ({ value }) => {
 
         <FileContainer>
           {value.files?.map((file) => (
-            <ImageContainer>
+            <ImageContainer key={value.id}>
               {file.fileType === "video/mp4" && (
                 <VideoPlayer url={ChatService.getImageUrl(file.fileURL)} />
               )}
