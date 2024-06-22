@@ -1,15 +1,9 @@
-# Используем за основу образ OpenJDK 11
-FROM openjdk:21
+FROM maven:3.9.5
 
-# Устанавливаем переменную окружения для указания корневой директории приложения
-ENV APP_HOME /app
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Создаем директорию для приложения
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
+COPY src src
 
-# Копируем JAR файл приложения в контейнер
-COPY target/project-0.0.1-SNAPSHOT.jar ./
-
-# Запускаем приложение при старте контейнера
-CMD ["java", "-jar", "project-0.0.1-SNAPSHOT.jar"]
+CMD ["mvn", "spring-boot:run"]
