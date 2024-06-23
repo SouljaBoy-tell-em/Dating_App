@@ -15,16 +15,17 @@ import Main1 from "./pages/Main1/Main1";
 import LogIn from "./pages/LogIn/LogIn";
 import SignUp from "./pages/SignUp/SignUp";
 import ConfirmEmail from "./pages/ConfirmEmail/ConfirmEmail";
-import NewChat from "./pages/NewChat/NewChat";
 import { Menu } from "./widgets/Menu/Menu";
 
 import CreateProfile from "./pages/CreateProfile/CreateProfile";
 import Profile from "./pages/Profile/Profile.jsx";
 import SwiperPage from "./pages/Swiper/SwiperPage";
 
-import Context from ".";
 import License from "./pages/License/License";
 import UserPage from "./pages/UserPage/UserPage";
+
+import Context from ".";
+import { AccessLevels } from "./shared/accessLevel/accessLevel";
 
 const Container = styled.div`
   position: relative;
@@ -47,7 +48,7 @@ function App() {
           <Route
             path="confirmEmail"
             element={
-              <RequireAuth>
+              <RequireAuth accessLevel={AccessLevels.LEVEL1}>
                 <ConfirmEmail />
               </RequireAuth>
             }
@@ -58,7 +59,7 @@ function App() {
           <Route
             path="profile"
             element={
-              <RequireAuth>
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
                 <Profile />
               </RequireAuth>
             }
@@ -66,7 +67,7 @@ function App() {
           <Route
             path="createProfile"
             element={
-              <RequireAuth>
+              <RequireAuth accessLevel={AccessLevels.LEVEL2}>
                 <CreateProfile />
               </RequireAuth>
             }
@@ -75,19 +76,25 @@ function App() {
           <Route
             path="grayChat"
             element={
-              <RequireAuth>
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
                 <GrayChat />
               </RequireAuth>
             }
           />
-          <Route path="newChat" element={<NewChat />} />
-          <Route path="swiper" element={<SwiperPage />} />
+          <Route
+            path="swiper"
+            element={
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
+                <SwiperPage />
+              </RequireAuth>
+            }
+          />
           <Route path="license" element={<License />} />
 
           <Route
             path="/user/:email"
             element={
-              <RequireAuth>
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
                 <UserPage />
               </RequireAuth>
             }

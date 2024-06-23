@@ -8,6 +8,11 @@ import Context from "../../";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  @media(max-width:1224px){
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 `;
 
 const LabelLogIn = styled.h2`
@@ -15,6 +20,9 @@ const LabelLogIn = styled.h2`
   font-size: 55px;
   margin-bottom: 22px;
   margin-left: 10px;
+  @media(max-width:1224px){
+
+  }
 `;
 
 const LogInForm = styled.form`
@@ -39,6 +47,9 @@ const Input = styled.input`
   height: 68px;
   border-radius: 15px;
   border: 0;
+  @media(max-width:1224px){
+    width: 100%;  
+  }
 `;
 
 const Button = styled.button`
@@ -46,7 +57,7 @@ const Button = styled.button`
   padding: 5px;
   border-radius: 10px;
   font-size:25px;
-  color:white;
+  color:black;
   font-weight: 600;
   background-color: #c58afc;
   border: 0px;

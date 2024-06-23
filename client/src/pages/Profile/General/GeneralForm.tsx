@@ -185,7 +185,7 @@ const GeneralForm:React.FC<GeneralForimInterface> = ({setABOpen}) => {
       </Wrapper>
       <Wrapper>
         <Label>Address</Label>
-        <AddressButton onClick={()=>{setABOpen(true)}}>Choosee Address</AddressButton>
+        <AddressButton onClick={()=>{setABOpen(true);}}>Choosee Address</AddressButton>
       </Wrapper>
       <hr/>
       <UploadPhoto />

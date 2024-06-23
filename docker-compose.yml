@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  mysqldb:
+    image: mysql:5.7
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+      - MYSQL_USER=ilya
+      - MYSQL_PASSWORD=55_Rjhjkm_55 
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql   
+      - db:/var/lib/mysql
+  spring:
+    depends_on:
+      - mysqldb
+    build: ./server
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - "$SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT"
+  react:
+    build: ./client
+    env_file: ./.env
+    ports:
+      - "$REACT_LOCAL_PORT:$REACT_DOCKER_PORT"
+    depends_on:
+      - spring
+
+volumes:
+  db:

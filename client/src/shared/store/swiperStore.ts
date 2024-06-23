@@ -52,19 +52,21 @@ export default class SwiperStore {
     try {
       const response = await SwiperService.getUsersForSwiper(this.filtedSet);
       console.log(response);
-      if (response.length === 3) {
+      if (response.length > 0) {
         this.setUsers(response);
       } else {
-        window.alert("Вы долистали до конца!");
+        return "You have listed to the end!";
       }
     } catch (error: any) {
       console.log(error?.message?.data);
     }
   };
 
-  ratePerson = async (email: string, isLike: boolean) => {
+  ratePerson = async (email: string | undefined, isLike: boolean) => {
     try {
-      const response = await SwiperService.ratePerson(email, isLike);
+      if (email != null) {
+        const response = await SwiperService.ratePerson(email, isLike);
+      }
     } catch (error: any) {
       console.log(error?.message?.data);
     }

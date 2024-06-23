@@ -5,9 +5,11 @@ import { MdDelete } from "react-icons/md";
 
 import { FileDTO } from "../../../shared/models/files/FileDTO";
 import ChatService from "../../../shared/services/ChatService";
-import LikeButton from "./LikeButton";
+
 import { UserPageContext } from "../UserPage";
 import { PostDTO } from "../../../shared/models/userPage/PostDTO";
+
+import LikeButton from "./LikeButton";
 
 const PostContainer = styled.div`
   background: #fff;

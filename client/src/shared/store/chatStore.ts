@@ -1,12 +1,9 @@
 import { action, makeAutoObservable, observable } from "mobx";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import axios from "axios";
-import { io } from "socket.io-client";
 
 import { MessageDTO } from "../models/chat/MessageDTO";
 import $api, { API_URL } from "../http";
-import { ChatDTO } from "../models/chat/ChatDTO";
 import ChatService from "../services/ChatService";
 import { ChatEntity } from "../models/chat/ChatEntity";
 
@@ -26,12 +23,21 @@ export default class ChatStore {
   chatId: number = -1;
   chatUsers: string[] = [];
   isScrolling = false;
-
-  setScrolling(bool:boolean) {
+  connectIdicator: boolean = false;
+  isMobileChatChoosing: boolean = true;
+  rowNumber:number = 1;
+  
+  setRowNumber(number:number) {
+    this.rowNumber = number;
+  }
+  
+  setMobileChatChoosing(isMobileChatChoosing: boolean) {
+    this.isMobileChatChoosing = isMobileChatChoosing;
+  }
+  
+  setScrolling(bool: boolean) {
     this.isScrolling = bool;
   }
-
-
 
   constructor() {
     makeAutoObservable(this, {
@@ -69,13 +75,21 @@ export default class ChatStore {
         localStorage.getItem("AccessToken")
     );
     this.stompClient = Stomp.over(this.socket);
-
-    this.connect(); // Подключение к новому соединению
+    this.connect();
   }
 
   async connect() {
     try {
-      this.stompClient.connect({}, () => this.subscribe()); // исправлено здесь
+      this.stompClient.connect(
+        {},
+        () => {
+          this.setConnectIndicator(true);
+          this.subscribe();
+        },
+        () => {
+          this.setConnectIndicator(false);
+        }
+      );
     } catch (error) {}
   }
 
@@ -85,13 +99,9 @@ export default class ChatStore {
         "/user/queue/position-updates",
         (response: Stomp.Message) => {
           const message = JSON.parse(response.body);
-          console.log(message);
           if (message?.type === "DELETE") {
-            console.log("is subscribe messege with id  deleted");
             this.deleteMessage(message);
           } else {
-            console.log(`in subscribe messege with id ${message.id} added`);
-
             this.addMessage(message);
             this.setScrolling(!this.isScrolling);
           }
@@ -104,7 +114,7 @@ export default class ChatStore {
     try {
       var formData = new FormData();
       Array.from(files).map((value) => formData.append("file", value));
-      if (!(files&&files.length>0)){
+      if (!(files && files.length > 0)) {
         formData.append("file", "");
       }
       formData.append("id", "0");
@@ -120,7 +130,6 @@ export default class ChatStore {
           },
         }
       );
-
     } catch (error) {}
   }
 
@@ -134,7 +143,7 @@ export default class ChatStore {
     );
   }
 
-  getAll = async () => {
+  getAllMessageFromChat = async () => {
     try {
       const response = await $api.get(
         serverURL + "/chat/getAllMessages/" + this.chatId
@@ -166,8 +175,6 @@ export default class ChatStore {
           type: "DELETE",
         }
       );
-
-      console.log(`message with id ${message.id} was deleted`);
     } catch {}
   };
 
@@ -184,10 +191,9 @@ export default class ChatStore {
       const allChats = await ChatService.getAllChat();
       const formattedChats = allChats.map((chatDTO) => ({
         chatDTO,
-        unreadMessages: 0, // Установите здесь количество непрочитанных сообщений
+        unreadMessages: 0,
       }));
       this.setChats(formattedChats);
-      console.log(allChats);
       if (this.chatId === -1 && formattedChats.length > 0) {
         this.chatId = formattedChats[0].chatDTO.id;
       }
@@ -205,7 +211,6 @@ export default class ChatStore {
     }
     const user1 = chat?.chatDTO.user1 || "";
     const user2 = chat?.chatDTO.user2 || "";
-    console.log({ user1, user2 });
 
     this.chatUsers = [user1, user2];
   };
@@ -213,4 +218,8 @@ export default class ChatStore {
   getChat = (chatId: number) => {
     return this.chats.find((chat) => chat.chatDTO.id === this.chatId);
   };
+
+  setConnectIndicator(bool: boolean) {
+    this.connectIdicator = bool;
+  }
 }
