@@ -163,6 +163,9 @@ public class UserServiceManager {
         userRepository.ConfirmUpdate(changeField, email);
     }
 
+    public void ProfileFilledUpdate(boolean changeField, String email) {
+        userRepository.ProfileFilledUpdate(changeField, email);
+    }
     public void FirstnameUpdate(String changeField) { // ACCESS: USER;
         userRepository.FirstnameUpdate(changeField, GetEmail());
     }

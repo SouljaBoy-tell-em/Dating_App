@@ -92,6 +92,7 @@ public class UpdateFieldsController {
             userServiceManager.LastnameUpdate(request.getLastname());
             userServiceManager.BirthdayUpdate(request.getBirthday());
             userServiceManager.ProfileAccessUpdate(request.isPrivate(), userServiceManager.GetEmail());
+            userServiceManager.ProfileFilledUpdate(true, userServiceManager.GetEmail());
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>("Not enough rights.", HttpStatus.BAD_GATEWAY);

@@ -176,10 +176,12 @@ public class AuthController {
                     currentUser.getUsername(),
                     currentUser.getRole(),
                     currentUser.isConfirm(),
+                    currentUser.isProfileFilled(),
                     currentUser.getFirstname(),
                     currentUser.getLastname(),
                     currentUser.getBirthday(),
-                    currentUser.getPersonalType()),
+                    currentUser.getPersonalType()
+        ),
                     HttpStatus.OK);
     }
 }

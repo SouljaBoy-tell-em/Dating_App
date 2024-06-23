@@ -35,10 +35,17 @@ public interface UserRepository extends CrudRepository<User, String>,
     @Transactional
     void BlackListIdUpdate(String blackListId, String email);
 
+
+
     @Modifying
     @Query(value = "update users set is_confirm = ?1 where email = ?2", nativeQuery = true)
     @Transactional
     void ConfirmUpdate(boolean isConfirm, String email);
+
+    @Modifying
+    @Query(value = "update users set is_profile_filled = ?1 where email = ?2", nativeQuery = true)
+    @Transactional
+    void ProfileFilledUpdate(boolean isConfirm, String email);
 
     @Modifying
     @Query(value = "update users set is_confirm = 1 where email = ?1", nativeQuery = true)
