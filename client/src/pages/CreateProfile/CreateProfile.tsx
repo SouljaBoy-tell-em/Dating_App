@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import Header from "../Main1/Header";
 
 import ProfileForm from "./ProfileForm";
 import ProfilePhoto from "./ProfilePhoto";
+import { observer } from "mobx-react-lite";
+import Context from "../..";
+import { AccessLevels } from "../../shared/accessLevel/accessLevel";
+import { Navigate } from "react-router";
 
 const Container = styled.div`
   height: 100vh;
@@ -32,16 +36,19 @@ const Wrapper = styled.div`
   top:300px;
 `;
 
-const CreateProfile = () => {
-  return (
+const CreateProfile = observer(() => {
+
+  const {store} = useContext(Context);
+
+  return ( store.accessLevel === AccessLevels.LEVEL2 ?
     <Container>
       <Header color="#f1e2ff" />
       <Wrapper>
         <ProfileForm/>
         <ProfilePhoto/>
       </Wrapper>
-    </Container>
+    </Container> : <Navigate to="/swiper"/>
   );
-};
+});
 
 export default CreateProfile;

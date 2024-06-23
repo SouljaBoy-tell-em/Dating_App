@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { FaHeart } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+
 import { UserPageContext } from "../UserPage";
 
 const Container = styled.div`

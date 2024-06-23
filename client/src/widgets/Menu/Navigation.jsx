@@ -1,9 +1,13 @@
 import * as React from "react";
 import { motion } from "framer-motion";
-import { MenuItem } from "./MenuItem";
-import { ColorTheme } from "../../shared/models/ColorTheme";
-import ColorThemeSwitch from "./ColorThemeSwitch";
+
 import styled from "styled-components";
+
+import { ColorTheme } from "../../shared/models/ColorTheme";
+
+import { MenuItem } from "./MenuItem";
+import ColorThemeSwitch from "./ColorThemeSwitch";
+
 
 const SwitchContainer = styled.div`
   margin-top: 50px;

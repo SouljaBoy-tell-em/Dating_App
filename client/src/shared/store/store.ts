@@ -1,7 +1,5 @@
 import { makeAutoObservable } from "mobx";
 
-import axios, { AxiosResponse } from "axios";
-
 import { UserDTO } from "../models/UserDTO";
 import AuthService from "../services/AuthService";
 import $api, { API_URL } from "../http";
@@ -9,33 +7,32 @@ import ProfileService from "../services/ProfileService";
 import { ProfileDTO } from "../models/ProfileDTO";
 
 import { UserInf } from "../models/UserInf";
+import { AccessLevels } from "../accessLevel/accessLevel";
 
 export default class Store {
   user = {} as UserDTO;
   isAuth = false;
-
   userInfo = {} as UserInf;
-
   isConfirmEmail = false;
-
   isLoading = false;
-
   colorTheme = false;
-
   avatarURL = "";
-
-  getAvatarURL= async () => {
-    try {
-      this.avatarURL = (await $api.get(API_URL+"/photo/avatar/"+this.userInfo.username)).data;
-    } catch (e: any) {}
-  }
-
-  setColorTheme(bool: boolean) {
-    this.colorTheme = bool;
-  }
+  accessLevel: AccessLevels = AccessLevels.LEVEL0;
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  getAvatarURL = async () => {
+    try {
+      this.avatarURL = (
+        await $api.get(API_URL + "/photo/avatar/" + this.userInfo.username)
+      ).data;
+    } catch (e: any) {}
+  };
+
+  setColorTheme(bool: boolean) {
+    this.colorTheme = bool;
   }
 
   setAuth(bool: boolean) {
@@ -58,11 +55,28 @@ export default class Store {
     this.isLoading = loading;
   }
 
+  updateAccessLevel() {
+    switch (true) {
+    case !this.isAuth:
+      this.accessLevel = AccessLevels.LEVEL0;
+      break;
+    case !this.userInfo.confirmed:
+      this.accessLevel = AccessLevels.LEVEL1;
+      break;
+    case !this.userInfo.profileFilled:
+      this.accessLevel = AccessLevels.LEVEL2;
+      break;
+    default:
+      this.accessLevel = AccessLevels.LEVEL3;
+      break;
+    }
+    console.log(this.userInfo);
+    console.log(this.accessLevel);
+  }
   async login(email: string, password: string): Promise<any> {
     try {
       this.setLoading(true);
       const response = await AuthService.login(email, password);
-      console.log(response);
 
       localStorage.setItem("AccessToken", response.data.jwtToken);
       localStorage.setItem("refreshToken", response.data.jwtRefreshToken);
@@ -72,7 +86,6 @@ export default class Store {
       this.setLoading(false);
       return "okay";
     } catch (e: any) {
-      console.log(e?.response?.data);
       this.setLoading(false);
       return e;
     }
@@ -82,7 +95,6 @@ export default class Store {
     try {
       this.setLoading(true);
       const response = await AuthService.registration(email, password);
-      console.log(response);
 
       localStorage.setItem("AccessToken", response.data.jwtToken);
       localStorage.setItem("refreshToken", response.data.jwtRefreshToken);
@@ -91,7 +103,6 @@ export default class Store {
       this.setUser(response.data.user);
       this.setLoading(false);
     } catch (e: any) {
-      console.log(e?.response?.data);
       this.setLoading(false);
       return e;
     }
@@ -104,70 +115,54 @@ export default class Store {
 
       this.setAuth(false);
       this.setUser({} as UserDTO);
-    } catch (e) {
-      console.log(e);
-      console.log("Проблема с выходом");
-    }
+    } catch (e) {}
   }
 
   async checkAuth() {
     try {
       const response = await AuthService.checkAuth();
-      console.log(response);
 
       this.setUserInf(response.data);
 
-      console.log(this.userInfo);
-
       this.setUser({ email: response.data.username } as UserDTO);
-
       this.setAuth(true);
     } catch (error) {
       this.setAuth(false);
       this.setUser({} as UserDTO);
       localStorage.removeItem("AccessToken");
       localStorage.removeItem("refreshToken");
-      console.log(error);
+    } finally{
+      this.updateAccessLevel();
     }
   }
 
   async confirmEmail(confirmCode: string) {
     try {
-      const response = await AuthService.confirmEmail(confirmCode);
-      console.log(response);
+      await AuthService.confirmEmail(confirmCode);
       this.setConfirmEmail(true);
     } catch (error) {
-      console.log(error);
       return error;
     }
   }
 
   async requestNewCode() {
     try {
-      const response = await AuthService.requestNewCode();
-      console.log(response);
+      await AuthService.requestNewCode();
     } catch (error) {
-      console.log(error);
       return error;
     }
   }
 
   async fieldProfile(profileDTO: ProfileDTO) {
     try {
-      const response = await ProfileService.fieldProfile(profileDTO);
-      console.log(response);
-    } catch (error: any) {
-      console.log(error?.message);
-    }
+      await ProfileService.fieldProfile(profileDTO);
+    } catch (error: any) {}
   }
 
   async uploadAvatar(file: any) {
     try {
-      const response = await ProfileService.uploadAvatar(file);
+      await ProfileService.uploadAvatar(file);
       this.getAvatarURL();
-      console.log(response);
-    } catch (error: any) {
-      console.log(error?.message);
-    }
+    } catch (error: any) {}
   }
 }
