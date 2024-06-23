@@ -46,6 +46,11 @@ public class User implements Serializable, UserDetails {
     @Setter
     private boolean isConfirm;
 
+    @Column(name = "isProfileFilled")
+    @Getter
+    @Setter
+    private boolean isProfileFilled;
+
     @Column(name = "isActive")
     @Getter
     @Setter

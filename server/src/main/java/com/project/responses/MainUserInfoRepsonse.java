@@ -13,6 +13,7 @@ public class MainUserInfoRepsonse {
     private String username;
     private UserRole role;
     private boolean confirmed;
+    private boolean profileFilled;
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
