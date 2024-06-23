@@ -6,11 +6,11 @@ export const API_URL = process.env.REACT_APP_SERVER_URL;
 
 export const getImageURL = (oldURL: string) => {
   try {
-    if (oldURL.length > 0) {
+    if (oldURL) {
       return API_URL + oldURL.substring(21);
-    } else return API_URL + "/images/NoAvatar.jpg";
+    } else return "/images/NoAvatar.jpg";
   } catch {
-    return API_URL + "/images/NoAvatar.jpg";
+    return "/images/NoAvatar.jpg";
   }
 };
 

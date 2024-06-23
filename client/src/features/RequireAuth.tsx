@@ -3,20 +3,40 @@ import { useLocation, Navigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import Context from "..";
+import { AccessLevels } from "../shared/accessLevel/accessLevel";
 
-const RequireAuth = observer(({ children }: any) => {
+interface RequireAuthInterface {
+  children: any;
+  accessLevel: AccessLevels;
+}
 
-  const location = useLocation();
-  const { store } = useContext(Context);
+const RequireAuth: React.FC<RequireAuthInterface> = observer(
+  ({ children, accessLevel }) => {
+    const location = useLocation();
+    const { store } = useContext(Context);
 
-  useEffect(()=>{
-    store.checkAuth();
-  });
-  
-  return (
-    store.isAuth ? children : <Navigate to="/logIn" state={{ from: location }} />
-  );
+    useEffect(() => {
+      store.checkAuth();
+    });
 
-});
+    console.log(store.accessLevel, accessLevel);
+
+    return store.accessLevel >= accessLevel ? (
+      children
+    ) : (
+      <>
+        {store.accessLevel === AccessLevels.LEVEL0 && (
+          <Navigate to="/logIn" state={{ from: location }} />
+        )}
+        {store.accessLevel === AccessLevels.LEVEL1 && (
+          <Navigate to="/confirmEmail" state={{ from: location }} />
+        )}
+        {store.accessLevel === AccessLevels.LEVEL2 && (
+          <Navigate to="/createProfile" state={{ from: location }} />
+        )}
+      </>
+    );
+  }
+);
 
 export { RequireAuth };

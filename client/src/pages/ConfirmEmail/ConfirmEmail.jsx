@@ -2,9 +2,11 @@ import styled from "styled-components";
 
 import Header from "../Main1/Header";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import Context from "../..";
+import { observer } from "mobx-react-lite";
+import { AccessLevels } from "../../shared/accessLevel/accessLevel";
 
 const Container = styled.div`
   height: 100vh;
@@ -104,7 +106,7 @@ const RequestNewCodeButton = styled.button`
   gap: 15px;
 `;
 
-const ConfirmEmail = () => {
+const ConfirmEmail = observer( () => {
   const [confirmCode, setConfirmCode] = useState(null);
   const { store } = useContext(Context);
   const navigate = useNavigate();
@@ -125,7 +127,7 @@ const ConfirmEmail = () => {
       );
     } else{
       window.alert("Почта успешно подтверждена!");
-      navigate("/newChat");
+      navigate("/createProfile");
     }
   };
 
@@ -136,7 +138,7 @@ const ConfirmEmail = () => {
     );
   };
 
-  return (
+  return (store.accessLevel === AccessLevels.LEVEL1 ?
     <Container>
       <Header color="#f1e2ff" />
       <Wrapper>
@@ -168,8 +170,8 @@ const ConfirmEmail = () => {
           </RequestNewCodeButton>
         </InputBlock>
       </Wrapper>
-    </Container>
+    </Container> : <Navigate to="/createProfile" />
   );
-};
+});
 
 export default ConfirmEmail;
