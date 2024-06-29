@@ -16,23 +16,33 @@ const Container = styled.div`
   gap: 20px;
   justify-content: space-between;
   z-index: 10;
+  @media (max-width: 1224px) {
+    justify-content: end;
+  }
 `;
 
 const AuthButtonsWrapper = styled.div`
   margin-top: 140px;
   margin-right: 100px;
+  @media (max-width: 1224px) {
+    margin: 0;
+    margin-top: 140px;
+  }
 `;
 
 const LogoWrapper = styled.div`
   margin-left: 140px;
+  @media (max-width: 1224px) {
+    display: none;
+  }
 `;
 
 const Header = (props) => {
   return (
     <Container>
       <LogoWrapper>
-        <Link to="/main1">
-          <Logo color={props.color}/>
+        <Link to="/">
+          <Logo color={props.color} />
         </Link>
       </LogoWrapper>
       <AuthButtonsWrapper>

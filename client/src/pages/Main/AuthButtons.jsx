@@ -21,6 +21,9 @@ const LogInButton = styled.button`
   &:active {
     transform: scale(1.05);
   }
+  @media (max-width: 1224px) {
+    width: max-content;
+  }
 `;
 
 const SignUpButton = styled.button`
@@ -34,6 +37,9 @@ const SignUpButton = styled.button`
   &:active {
     transform: scale(1.05);
   }
+  @media (max-width: 1224px) {
+    width: max-content;
+  }
 `;
 
 const LogOutButton = styled.button`
@@ -46,6 +52,9 @@ const LogOutButton = styled.button`
   cursor: pointer;
   &:active {
     transform: scale(1.05);
+  }
+  @media (max-width: 1224px) {
+    width: max-content;
   }
 `;
 

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { observer } from "mobx-react-lite";
 
-import { ChatContext } from "../../pages/GrayChat/GrayChat";
+import { ChatContext } from "../../pages/ChatPage/ChatPage";
 import { useMediaQuery } from "react-responsive";
 
 const Container = styled.div`

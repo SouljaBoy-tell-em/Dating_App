@@ -15,12 +15,26 @@ export default class Store {
   userInfo = {} as UserInf;
   isConfirmEmail = false;
   isLoading = false;
+  isTutorial = false;
   colorTheme = false;
   avatarURL = "";
   accessLevel: AccessLevels = AccessLevels.LEVEL0;
+  isMenuOpen = false;
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setMenuOpen(bool:boolean) {
+    this.isMenuOpen = bool;
+  }
+
+  changeMenuOpen() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  setTutorial(bool:boolean) {
+    this.isTutorial = bool;
   }
 
   getAvatarURL = async () => {

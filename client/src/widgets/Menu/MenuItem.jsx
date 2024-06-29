@@ -33,7 +33,7 @@ const colors = [
   "#6600ff",
 ];
 
-const routes = ["/", "/grayChat", "/swiper", "/profile"];
+const routes = ["/", "/chat", "/swiper", "/profile"];
 const text = ["Main Page", "Chat", "Swiper", "Edit Profile"];
 
 const iconType = ["", "chat", "swiper", "profile"];
@@ -55,6 +55,7 @@ export const MenuItem = observer(({ i }) => {
         textDecoration: "none",
         color: store.colorTheme ? "white" : "black",
       }}
+      onClick={()=>{store.setMenuOpen(false)}}
     >
       <motion.li
         className="menu-li"

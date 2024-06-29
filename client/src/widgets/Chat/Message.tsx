@@ -6,7 +6,7 @@ import { FaReply } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
 
-import { ChatContext } from "../../pages/GrayChat/GrayChat";
+import { ChatContext } from "../../pages/ChatPage/ChatPage";
 import { MessageDTO } from "../../shared/models/chat/MessageDTO";
 import Context from "../..";
 

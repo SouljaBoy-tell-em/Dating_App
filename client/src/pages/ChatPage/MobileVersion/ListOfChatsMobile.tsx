@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { ChatContext } from "../GrayChat";
+import { ChatContext } from "../ChatPage";
 import { IoClose } from "react-icons/io5";
 import ListOfChats from "../ListOfChats";
 

@@ -76,7 +76,7 @@ const ChatContext = createContext<State>({
 
 export { ChatContext };
 
-const GrayChat = observer(() => {
+const ChatPage = observer(() => {
   const { store } = useContext(Context);
   const [isDisplayChatChoosing, setDisplayChatChoosing] = useState(true);
   const isDesktop = useMediaQuery({
@@ -120,4 +120,4 @@ const GrayChat = observer(() => {
   );
 });
 
-export default GrayChat;
+export default ChatPage;

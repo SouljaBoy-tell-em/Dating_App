@@ -5,7 +5,7 @@ import { MdDelete } from "react-icons/md";
 
 import { LuPaperclip } from "react-icons/lu";
 
-import { ChatContext } from "../../pages/GrayChat/GrayChat";
+import { ChatContext } from "../../pages/ChatPage/ChatPage";
 
 import ChatInput from "./ChatInput";
 import { useMediaQuery } from "react-responsive";

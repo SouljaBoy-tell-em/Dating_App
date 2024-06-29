@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useMediaQuery } from "react-responsive";
 
 import InnerLeftBlock from "./InnerLeftBlock";
 import InnerRightBlock from "./InnerRightBlock";
@@ -15,7 +16,7 @@ const Container = styled.div`
   min-width: 1440px;
   max-width: 2400px;
   margin-left: auto;
-  margin-right: auto; 
+  margin-right: auto;
 `;
 
 const Wrapper = styled.div`
@@ -38,6 +39,12 @@ const LeftBlock = styled.div`
   display: flex;
   justify-content: flex-end;
   padding-top: 55px;
+  @media (max-width:1224px){
+    height: fit-content;
+    width : 100%;
+    position: absolute;
+    bottom: 0;
+  }
 `;
 
 const WrapperRightBlock = styled.div`
@@ -49,11 +56,19 @@ const WrapperRightBlock = styled.div`
   padding: 8px 0 8px 8px;
 `;
 
+const MobileVersionContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+`;
 
-const Main1 = () => {
-  return (
+const Main = () => {
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+
+  return isDesktop ? (
     <Container>
-      <Header color="#f1e2ff"/>
+      <Header color="#f1e2ff" />
       <Wrapper>
         <LeftBlock>
           <InnerLeftBlock />
@@ -63,7 +78,14 @@ const Main1 = () => {
         </WrapperRightBlock>
       </Wrapper>
     </Container>
+  ) : (
+    <MobileVersionContainer>
+      <Header />
+      <LeftBlock>
+        <InnerLeftBlock />
+      </LeftBlock> 
+    </MobileVersionContainer>
   );
 };
 
-export default Main1;
+export default Main;
