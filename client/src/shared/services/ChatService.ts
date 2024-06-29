@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 
-import $api from "../http";
-import { ChatDTO } from "../models/ChatDTO";
+import $api, { API_URL } from "../http";
+import { ChatDTO } from "../models/chat/ChatDTO";
 
 export default class ChatService {
   static async getAllChat(): Promise<ChatDTO[]> {
@@ -10,5 +10,12 @@ export default class ChatService {
   }
   static async createNewChat(email: string) {
     return $api.post("/chat/createNewChat", { email });
+  }
+  static getImageUrl(url: string) {
+    try {
+      return API_URL + url.substring(21);
+    } catch {
+      return API_URL + "/images/NoAvatar.jpg";
+    }
   }
 }

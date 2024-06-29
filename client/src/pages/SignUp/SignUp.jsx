@@ -3,15 +3,17 @@ import styled from "styled-components";
 import { Navigate, useLocation } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
+import { useMediaQuery } from "react-responsive";
 
 import Context from "../..";
 
-import Header from "../Main1/Header";
+import Header from "../Main/Header";
 
 import SignUpLeftBlock from "./SignUpLeftBlock";
 import SignUpRightBlock from "./SignUpRightBlock";
 import SignUpTopRightBlock from "./SignUpTopRightBlock";
 import FormBlock from "./FormBlock";
+import MobileSignUp from "./MobileSignUp/MobileSignUp";
 
 const Container = styled.div`
   height: 1024px;
@@ -42,6 +44,9 @@ const SignUp = () => {
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || "/";
   const { store } = useContext(Context);
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
 
   useEffect(() => {
     store.checkAuth();
@@ -51,7 +56,7 @@ const SignUp = () => {
     return <Navigate to={fromPage} />;
   }
 
-  return (
+  return isDesktop ? (
     <Container>
       <Header color="#f1e2ff" />
       <SignUpTopRightBlock />
@@ -62,6 +67,8 @@ const SignUp = () => {
         <SignUpRightBlock />
       </Wrapper>
     </Container>
+  ) : (
+    <MobileSignUp />
   );
 };
 

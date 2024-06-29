@@ -19,7 +19,7 @@ const LogInRightBlock = () => {
     <Container>
       <Img src="/images/logIn_right_human.svg"></Img> 
     </Container>
-  );
+  );  
 };
 
 export default LogInRightBlock;

@@ -1,64 +1,102 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-const TextArea = styled.textarea`
-  border-radius: 1px;
-  padding: 10px 5px;
-  font-size: 18px;
-  border: 0;
-  box-shadow: 0 0 1px 1px gray;
-  width: 350px;
-  overflow-y: auto; // Убедитесь, что скролл активируется, если содержимое переполняется
-  resize: none; // Отключает возможность изменения размера
+import { observer } from "mobx-react-lite";
 
-  &::-webkit-scrollbar {
-    width: 5px; // Ширина полосы прокрутки
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #999; // Цвет бегунка
-  }
-`;
+import { ChatContext } from "../../pages/ChatPage/ChatPage";
+import { useMediaQuery } from "react-responsive";
 
 const Container = styled.div`
   display: flex;
   align-items: center;
+  @media (max-width: 1224px) {
+    width: calc(100% - 40px);
+  }
 `;
 
+const TextArea = styled.textarea`
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 18px;
+  border: 0;
+  width: 420px;
+  overflow-y: auto;
+  resize: none;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #999;
+  }
+
+
+  @media (max-width:1224px) {
+    border-radius: 10px;
+    width: 100%;
+    font-size: 25px;
+  }
+
+  cursor: default;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  outline: none;
+`;
+
+
+
 interface ChatInputInterface {
-  setMessage: (text: string) => void; // Теперь функция принимает string и возвращает void
+  setMessage: (text: string) => void;
+  message: string;
 }
 
-const ChatInput: React.FC<ChatInputInterface> = ({ setMessage }) => {
-  const [rows, setRows] = useState(1);
-  const maxRows = 8;
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      if (rows < maxRows) {
-        setRows(rows + 1);
+const ChatInput: React.FC<ChatInputInterface> = observer(
+  ({ setMessage, message }) => {
+    const { chatStore } = useContext(ChatContext);
+    const maxRows = 6;
+
+    const isDesktop = useMediaQuery({
+      query: "(min-width: 1224px)",
+    });
+    
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        if (chatStore.rowNumber < maxRows) {
+          chatStore.setRowNumber(chatStore.rowNumber + 1);
+        }
       }
-    }
-  };
+    };
 
-  const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const textareaRows = event.target.value.split("\n").length;
-    if (textareaRows <= maxRows) {
-      setRows(textareaRows);
-    }
-    setMessage(event.target.value);
-  };
+    const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const textareaRows = event.target.value.split("\n").length;
+      if (textareaRows <= maxRows) {
+        chatStore.setRowNumber(textareaRows);
+      }
+      setMessage(event.target.value);
+    };
 
-  return (
-    <Container>
-      <TextArea
-        rows={rows}
-        style={{ height: `${rows * 20}px` }}
-        onKeyDown={handleKeyDown}
-        onInput={handleInput}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-    </Container>
-  );
-};
+    return (
+      <Container>
+        <TextArea
+          rows={chatStore.rowNumber}
+          style={{
+            height: `${chatStore.rowNumber * (isDesktop ? 30 : 40)}px`,
+            userSelect: "none",
+            border: "0px",
+          }}
+          onKeyDown={handleKeyDown}
+          onInput={handleInput}
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
+        />
+      </Container>
+    );
+  }
+);
 
 export default ChatInput;

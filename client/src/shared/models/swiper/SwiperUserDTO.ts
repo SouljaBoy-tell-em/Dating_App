@@ -6,4 +6,6 @@ export interface SwiperUserDTO {
     age:number;
     imageAvatarUrl:string;
     description:string;
+    zodiac:string;
+    testResult:string;
 }

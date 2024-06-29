@@ -1,15 +1,21 @@
-import React, { createContext, useRef } from "react";
+import React, { createContext, useContext, useRef, useState } from "react";
 import styled from "styled-components";
+import { observer } from "mobx-react-lite";
+import { useMediaQuery } from "react-responsive";
 
 import SwiperStore from "../../shared/store/swiperStore";
+import Context from "../..";
 
-import OurSwiper from "./components/OurSwiper";
-import Desription from "./components/Desription";
+import SwiperLayout from "./SwiperLayout";
+import SwiperImageBlock from "./SwiperImageBlock";
+import SwiperInfoBlock from "./SwiperInfoBlock";
+import MobileSwiper from "./MobileSwiper/MobileSwiper";
 
-const Container = styled.div`
+const Container = styled.div<{ colorTheme: boolean }>`
   height: 100vh;
+  min-height: 900px;
   max-height: 1200px;
-  background-color: #ffffff;
+  background-color: ${(props) => (props.colorTheme ? "#202020" : "#ffffff ")};
   position: relative;
   width: 100%;
   min-width: 1440px;
@@ -19,19 +25,24 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: 0.2s background-color;
 `;
 
-const Wrapper = styled.div`
-  padding-top: 10px;
-  padding-left: 5px;
-  padding-bottom: 5px;
+const Wrapper = styled.div<{ colorTheme: boolean }>`
+  height: 100%;
+  width: 100%;
+  position: relative;
   display: flex;
   justify-content: center;
-  background-color: #ffffff;
-  border-radius: 20px;
-  border: 20px solid #d2d2d2;
 `;
 
+const SwiperContentContainer = styled.div`
+  z-index: 50;
+  display: flex;
+  margin-top: 340px;
+  margin-left: -400px;
+  gap: 70px;
+`;
 interface State {
   swiperStore: SwiperStore;
 }
@@ -42,22 +53,33 @@ const SwiperContext = createContext<State>({
   swiperStore,
 });
 
-export {SwiperContext};
+export { SwiperContext };
 
 swiperStore.getUsers();
 
-const SwiperPage = () => {
+const SwiperPage = observer(() => {
+  const { store } = useContext(Context);
+  swiperStore.getUsers();
 
-  return (
-    <Container>
-      <SwiperContext.Provider value={{ swiperStore }}>
-        <Wrapper>
-          <OurSwiper/>
-          <Desription />
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+
+  return isDesktop ? (
+    <SwiperContext.Provider value={{ swiperStore }}>
+      <Container colorTheme={store.colorTheme}>
+        <Wrapper colorTheme={store.colorTheme}>
+          <SwiperLayout />
+          <SwiperContentContainer>
+            <SwiperImageBlock />
+            <SwiperInfoBlock />
+          </SwiperContentContainer>
         </Wrapper>
-      </SwiperContext.Provider>
-    </Container>
+      </Container>
+    </SwiperContext.Provider>
+  ) : (
+    <MobileSwiper />
   );
-};
+});
 
 export default SwiperPage;

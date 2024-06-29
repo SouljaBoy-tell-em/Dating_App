@@ -5,7 +5,8 @@ import QuizBlock from "./components/QuizBlock";
 import StartBlock from "./components/StartBlock";
 import "./Styles.css";
 
-const Container = styled.div``;
+const Container = styled.div`
+`;
 
 const PersonalityTest = () => {
   const [isStarted, setStarted] = useState(false);

@@ -2,7 +2,7 @@
 export interface ProfileDTO {
     firstname:string;
     lastname:string;
-    birthday:Date;
+    birthday:string;
     isPrivate:boolean;
     email:string;
 }
