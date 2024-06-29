@@ -7,7 +7,7 @@ import { useMediaQuery } from "react-responsive";
 
 import Context from "../..";
 
-import Header from "../Main1/Header";
+import Header from "../Main/Header";
 
 import SignUpLeftBlock from "./SignUpLeftBlock";
 import SignUpRightBlock from "./SignUpRightBlock";

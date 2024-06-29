@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { useMediaQuery } from "react-responsive";
 
 import Context from "../../";
-import Header from "../Main1/Header";
+import Header from "../Main/Header";
 import LogInLeftBlock from "./LogInLeftBlock";
 import LogInRightBlock from "./LogInRightBlock";
 import FormBlock from "./FormBlock";

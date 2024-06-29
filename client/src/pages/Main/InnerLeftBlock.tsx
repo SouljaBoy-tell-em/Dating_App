@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FaGoogle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   background-color: inherit;
@@ -8,6 +9,9 @@ const Container = styled.div`
   flex-direction: column;
   gap: 50px;
   height: min-content;
+  @media (max-width:1224px){
+    width : 100%;
+  }
 `;
 
 const Label1 = styled.p`
@@ -65,12 +69,15 @@ const InputButton = styled.button`
   text-align: left;
   display: flex;
   align-items: center;
+  @media (max-width: 1224px) {
+    width: 150px;
+  }
 `;
 
 const ContinueButton = styled.button`
   cursor: pointer;
   width: fit-content;
-  padding:  14px;
+  padding: 14px;
   padding-right: 27px;
   height: 65px;
   border-radius: 18px;
@@ -85,7 +92,7 @@ const ContinueButton = styled.button`
   flex-direction: row;
   align-items: center;
   justify-content: left;
-  gap:15px;
+  gap: 15px;  
 `;
 const InnerLeftBlock = () => {
   return (
@@ -99,13 +106,15 @@ const InnerLeftBlock = () => {
         <InputLabel>Sign up with your email</InputLabel>
         <InputPlusButton>
           <Input />
-          <InputButton>Sign up</InputButton>
+          <Link to="/signUp" style={{textDecoration:"none"}}>
+            <InputButton>Sign up</InputButton>
+          </Link>
         </InputPlusButton>
       </InputBlock>
-      <ContinueButton>
+      {/* <ContinueButton>
         <FaGoogle size={30}/>
         <p>Continue with Google</p>
-      </ContinueButton>
+      </ContinueButton> */}
     </Container>
   );
 };

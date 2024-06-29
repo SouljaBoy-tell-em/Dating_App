@@ -10,8 +10,7 @@ import AuthPage from "./pages/AuthPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { RequireAuth } from "./features/RequireAuth";
 
-import GrayChat from "./pages/GrayChat/GrayChat";
-import Main1 from "./pages/Main1/Main1";
+import Main from "./pages/Main/Main";
 import LogIn from "./pages/LogIn/LogIn";
 import SignUp from "./pages/SignUp/SignUp";
 import ConfirmEmail from "./pages/ConfirmEmail/ConfirmEmail";
@@ -26,6 +25,7 @@ import UserPage from "./pages/UserPage/UserPage";
 
 import Context from ".";
 import { AccessLevels } from "./shared/accessLevel/accessLevel";
+import ChatPage from "./pages/ChatPage/ChatPage";
 
 const Container = styled.div`
   position: relative;
@@ -53,8 +53,8 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route index element={<Navigate to="main1" />} />
-          <Route path="main1" element={<Main1 />} />
+          <Route index element={<Navigate to="main" />} />
+          <Route path="main" element={<Main />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route
             path="profile"
@@ -74,10 +74,10 @@ function App() {
           />
 
           <Route
-            path="grayChat"
+            path="chat"
             element={
               <RequireAuth accessLevel={AccessLevels.LEVEL3}>
-                <GrayChat />
+                <ChatPage />
               </RequireAuth>
             }
           />

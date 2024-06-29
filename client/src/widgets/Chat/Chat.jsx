@@ -3,9 +3,8 @@ import styled from "styled-components";
 
 import { observer } from "mobx-react-lite";
 
-import { ChatContext } from "../../pages/GrayChat/GrayChat";
-
 import Context from "../..";
+import { ChatContext } from "../../pages/ChatPage/ChatPage";
 
 import BottomBlock from "./BottomBlock";
 import Message from "./Message";

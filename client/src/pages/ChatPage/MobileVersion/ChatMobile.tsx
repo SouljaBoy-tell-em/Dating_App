@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import { ChatContext } from "../GrayChat";
+import { ChatContext } from "../ChatPage";
 import Context from "../../..";
 import { observer } from "mobx-react-lite";
 

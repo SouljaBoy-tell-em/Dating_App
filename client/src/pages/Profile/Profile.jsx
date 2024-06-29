@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useMediaQuery } from "react-responsive";
 
-import Header from "../Main1/Header";
+import Header from "../Main/Header";
 
 import PersonalityTest from "../../widgets/PersonalityTest/PersonalityTest";
 

@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 
 import { ChatDTO } from "../../shared/models/chat/ChatDTO";
 
-import { ChatContext } from "./GrayChat";
+import { ChatContext } from "./ChatPage";
 import ConnectIndicator from "./ConnectIndicator";
 
 const Container = styled.div`

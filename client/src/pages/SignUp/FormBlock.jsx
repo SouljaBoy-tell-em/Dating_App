@@ -98,7 +98,7 @@ const FormBlock = () => {
     } else {
       const e = await store.registration(email, password);
       if (store.isAuth) {
-        navigate(fromPage, { replace: true });
+        navigate("/confirmEmail");
       } else {
         console.log(e);
         window.alert(

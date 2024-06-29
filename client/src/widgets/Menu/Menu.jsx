@@ -14,6 +14,7 @@ import { Navigation } from "./Navigation";
 import "./style.css";
 import Loading from "./Loading/Loading";
 import styled from "styled-components";
+import Tutorial from "./Tutorial/Tutorial";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -46,25 +47,27 @@ const MenuBackground = styled(motion.div)`
 `;
 
 export const Menu = observer(() => {
-  const [isOpen, toggleOpen] = useCycle(false, true);
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
   const { store } = useContext(Context);
+
 
   return (
     <>
       <motion.nav
         className="menu-nav"
         initial={false}
-        animate={isOpen ? "open" : "closed"}
+        animate={store.isMenuOpen ? "open" : "closed"}
         custom={height}
         ref={containerRef}
       >
         <MenuBackground colorTheme={store.colorTheme} variants={sidebar} />
-        <Navigation  />
-        <MenuToggle toggle={() => toggleOpen()} />
+        <Navigation />
+        <MenuToggle toggle={() => store.changeMenuOpen()} />
       </motion.nav>
+      {store.isTutorial && <Tutorial />}
       {store.isLoading && <Loading />}
+
       <Outlet />
     </>
   );
