@@ -2,6 +2,9 @@ import { makeAutoObservable } from "mobx";
 
 import { SwiperUserDTO } from "../models/swiper/SwiperUserDTO";
 import SwiperService from "../services/SwiperService";
+import { FilterData } from "../models/swiper/FilterData";
+import { SexType } from "../models/swiper/SexType";
+import { API_URL } from "../http";
 
 export default class SwiperStore {
   users: SwiperUserDTO[] = [];
@@ -9,8 +12,18 @@ export default class SwiperStore {
 
   order: number[] = [0, 1, 1];
 
+  filtedSet: FilterData = {
+    ageFrom: 0,
+    ageTo: 90,
+    sex: SexType.FEMALE,
+  };
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setFilter(filterData: FilterData) {
+    this.filtedSet = filterData;
   }
 
   next() {
@@ -37,24 +50,29 @@ export default class SwiperStore {
 
   getUsers = async () => {
     try {
-      const response = await SwiperService.getUsersForSwiper();
+      const response = await SwiperService.getUsersForSwiper(this.filtedSet);
       console.log(response);
-      this.setUsers(response);
+      if (response.length > 0) {
+        this.setUsers(response);
+      } else {
+        return "You have listed to the end!";
+      }
     } catch (error: any) {
       console.log(error?.message?.data);
     }
   };
 
-  ratePerson = async (email: string, isLike: boolean) => {
+  ratePerson = async (email: string | undefined, isLike: boolean) => {
     try {
-      const response = await SwiperService.ratePerson(email, isLike);
-
+      if (email != null) {
+        const response = await SwiperService.ratePerson(email, isLike);
+      }
     } catch (error: any) {
       console.log(error?.message?.data);
     }
   };
 
   getHamachiUrl(url: string) {
-    return "http://25.47.247.34:8081" + url.substring(21);
+    return API_URL + url.substring(21);
   }
 }

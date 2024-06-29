@@ -9,21 +9,24 @@ import Swiper from "swiper";
 import AuthPage from "./pages/AuthPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { RequireAuth } from "./features/RequireAuth";
-import ChatPage from "./pages/ChatPage/ChatPage";
 
-import GrayChat from "./pages/GrayChat/GrayChat";
-import Main1 from "./pages/Main1/Main1";
+import Main from "./pages/Main/Main";
 import LogIn from "./pages/LogIn/LogIn";
 import SignUp from "./pages/SignUp/SignUp";
 import ConfirmEmail from "./pages/ConfirmEmail/ConfirmEmail";
-import NewChat from "./pages/NewChat/NewChat";
 import { Menu } from "./widgets/Menu/Menu";
 
 import CreateProfile from "./pages/CreateProfile/CreateProfile";
 import Profile from "./pages/Profile/Profile.jsx";
 import SwiperPage from "./pages/Swiper/SwiperPage";
 
+import License from "./pages/License/License";
+import UserPage from "./pages/UserPage/UserPage";
+
 import Context from ".";
+import { AccessLevels } from "./shared/accessLevel/accessLevel";
+import ChatPage from "./pages/ChatPage/ChatPage";
+import HomePage from "./features/HomePage";
 
 const Container = styled.div`
   position: relative;
@@ -39,51 +42,73 @@ function App() {
   return (
     <Container>
       <Routes>
-        <Route path="/" element={<Menu/>}>
+        <Route path="/" element={<Menu />}>
           <Route path="auth" element={<AuthPage />} />
           <Route path="logIn" element={<LogIn />} />
           <Route path="signUp" element={<SignUp />} />
           <Route
             path="confirmEmail"
             element={
-              <RequireAuth>
+              <RequireAuth accessLevel={AccessLevels.LEVEL1}>
                 <ConfirmEmail />
               </RequireAuth>
             }
           />
-          <Route index element={<Navigate to="main1" />} />
-          <Route path="main1" element={<Main1 />} />
+          <Route index element={<Navigate to="main" />} />
+          <Route path="main" element={<Main />} />
           <Route path="*" element={<NotFoundPage />} />
-          <Route path="profile" element={<Profile />} />
           <Route
-            path="createProfile"
+            path="profile"
             element={
-              <RequireAuth>
-                <CreateProfile/>
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
+                <Profile />
               </RequireAuth>
             }
           />
           <Route
+            path="createProfile"
+            element={
+              <RequireAuth accessLevel={AccessLevels.LEVEL2}>
+                <CreateProfile />
+              </RequireAuth>
+            }
+          />
+
+          <Route
             path="chat"
             element={
-              <RequireAuth>
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
                 <ChatPage />
               </RequireAuth>
             }
           />
           <Route
-            path="grayChat"
+            path="swiper"
             element={
-              // <RequireAuth>
-              //   <GrayChat />
-              // </RequireAuth>
-              <GrayChat />
-
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
+                <SwiperPage />
+              </RequireAuth>
             }
           />
-          <Route path="newChat" element={<NewChat/>} />
-          <Route path="swiper" element={<SwiperPage/>} />
+          <Route path="license" element={<License />} />
 
+          <Route
+            path="/user/:email"
+            element={
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
+                <UserPage />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/homePage"
+            element={
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
+                <HomePage />
+              </RequireAuth>
+            }
+          />
         </Route>
       </Routes>
     </Container>

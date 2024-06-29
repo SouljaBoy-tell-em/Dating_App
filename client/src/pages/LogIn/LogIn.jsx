@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import { Navigate, useLocation} from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
+import { useMediaQuery } from "react-responsive";
 
 import Context from "../../";
-
-import Header from "../Main1/Header";
-
+import Header from "../Main/Header";
 import LogInLeftBlock from "./LogInLeftBlock";
 import LogInRightBlock from "./LogInRightBlock";
 import FormBlock from "./FormBlock";
+import MobileLogIn from "./MobileLogIn/MobileLogIn";
 
 const Container = styled.div`
   height: 100vh;
@@ -40,7 +40,10 @@ const LogIn = () => {
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || "/";
   const { store } = useContext(Context);
-
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+  
   useEffect(() => {
     store.checkAuth();
   });
@@ -48,16 +51,18 @@ const LogIn = () => {
   if (store.isAuth) {
     return <Navigate to={fromPage} />;
   }
-  
-  return (
+
+  return isDesktop ? (
     <Container>
       <Header color="#f1e2ff" />
       <Wrapper>
         <LogInLeftBlock />
-        <FormBlock/>
+        <FormBlock />
         <LogInRightBlock />
       </Wrapper>
     </Container>
+  ) : (
+    <MobileLogIn />
   );
 };
 

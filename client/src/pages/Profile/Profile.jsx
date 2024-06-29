@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useMediaQuery } from "react-responsive";
 
-import Header from "../Main1/Header";
-import Block from "./Block";
-import NavigateMenu from "./NavigateMenu";
+import Header from "../Main/Header";
+
 import PersonalityTest from "../../widgets/PersonalityTest/PersonalityTest";
-import ProfileForm from "../CreateProfile/ProfileForm";
-import CreateProfile from "../CreateProfile/CreateProfile";
+
+import NavigateMenu from "./NavigateMenu";
+import Block from "./Block";
 
 import General from "./General/General";
-import ZodiacBlock from "./Zodiac/ZodiacBlock";
-
-
+import Privacy from "./Privacy/Privacy";
 
 const Container = styled.div`
   height: 100vh;
@@ -63,6 +62,9 @@ const Profile = () => {
       setIsSticky(false);
     }
   };
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -77,20 +79,23 @@ const Profile = () => {
       <Header color="#f1e2ff" />
       <Wrapper>
         <Block name="General">
-          <General/>
+          <General />
         </Block>
         <Block name="Personality Test">
-          <PersonalityTest/>
+          <PersonalityTest />
         </Block>
-        <Block name="Zodiac sign">
+        {/* <Block name="Zodiac sign">
           <ZodiacBlock/>
+        </Block> */}
+        <Block name="Privacy">
+          <Privacy />
         </Block>
-        <Block name="Block4" />
-        <Block name="Block5" />
         <Footer />
-        <NavigateWrapper sticky={isSticky}>
-          <NavigateMenu />
-        </NavigateWrapper>
+        {isDesktop && (
+          <NavigateWrapper sticky={isSticky}>
+            <NavigateMenu />
+          </NavigateWrapper>
+        )}
       </Wrapper>
     </Container>
   );

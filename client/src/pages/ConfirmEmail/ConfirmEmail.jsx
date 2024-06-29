@@ -1,10 +1,13 @@
 import styled from "styled-components";
 
-import Header from "../Main1/Header";
+import Header from "../Main/Header";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 import Context from "../..";
+import { observer } from "mobx-react-lite";
+import { AccessLevels } from "../../shared/accessLevel/accessLevel";
 
 const Container = styled.div`
   height: 100vh;
@@ -38,6 +41,11 @@ const InputBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  @media (max-width:1224px){
+    width: 90%;
+    padding: 10px;
+
+  }
 `;
 
 const Label = styled.label`
@@ -53,11 +61,15 @@ const Input = styled.input`
   height: 72px;
   border-radius: 15px;
   border: 0;
+  @media (max-width:1224px){
+    width: 90%;
+  }
 `;
 const ConfirmButtonBlock = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+
 `;
 const ConfirmButton = styled.button`
   cursor: pointer;
@@ -82,6 +94,9 @@ const ConfirmButton = styled.button`
 const Codelive = styled.p`
   font-size: 30px;
   font-weight: 500;
+  @media (max-width:1224px){
+    display: none;
+  }
 `;
 
 const RequestNewCodeButton = styled.button`
@@ -104,10 +119,18 @@ const RequestNewCodeButton = styled.button`
   gap: 15px;
 `;
 
-const ConfirmEmail = () => {
+const MobileConfirmEmail = styled.div`
+  width: 100%;
+  height: 100vh;
+`;
+
+const ConfirmEmail = observer(() => {
   const [confirmCode, setConfirmCode] = useState(null);
   const { store } = useContext(Context);
   const navigate = useNavigate();
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
 
   const handleConfirm = async () => {
     const regex = /^[0-9]{6}$/;
@@ -123,53 +146,92 @@ const ConfirmEmail = () => {
       window.alert(
         e?.response?.data ? e?.response?.data : "Проблема с подтвержением"
       );
-    } else{
+    } else {
       window.alert("Почта успешно подтверждена!");
-      navigate("/newChat");
+      navigate("/createProfile");
     }
   };
 
   const handleRequestNewCode = async () => {
     const e = await store.requestNewCode();
-    if (e) window.alert(
-      e?.response?.data ? e?.response?.data : "Проблема с получением нового кода"
-    );
+    if (e)
+      window.alert(
+        e?.response?.data
+          ? e?.response?.data
+          : "Проблема с получением нового кода"
+      );
   };
 
-  return (
-    <Container>
-      <Header color="#f1e2ff" />
-      <Wrapper>
-        <InputBlock>
-          <Label>Сonfirmation code</Label>
-          <Input
-            placeholder="######"
-            onChange={(e) => {
-              setConfirmCode(e.target.value);
-            }}
-          />
-          <ConfirmButtonBlock>
-            <ConfirmButton
+  return store.accessLevel === AccessLevels.LEVEL1 ? (
+    isDesktop ? (
+      <Container>
+        <Header color="#f1e2ff" />
+        <Wrapper>
+          <InputBlock>
+            <Label>Сonfirmation code</Label>
+            <Input
+              placeholder="######"
+              onChange={(e) => {
+                setConfirmCode(e.target.value);
+              }}
+            />
+            <ConfirmButtonBlock>
+              <ConfirmButton
+                onClick={() => {
+                  handleConfirm();
+                }}
+              >
+                Confirm
+              </ConfirmButton>
+              <Codelive>Codelive is 10 min</Codelive>
+            </ConfirmButtonBlock>
+
+            <RequestNewCodeButton
               onClick={() => {
-                handleConfirm();
+                handleRequestNewCode();
               }}
             >
-              Confirm
-            </ConfirmButton>
-            <Codelive>Codelive is 10 min</Codelive>
-          </ConfirmButtonBlock>
+              Request new code
+            </RequestNewCodeButton>
+          </InputBlock>
+        </Wrapper>
+      </Container>
+    ) : (
+      <MobileConfirmEmail>
+        <Wrapper>
+          <InputBlock>
+            <Label>Сonfirmation code</Label>
+            <Input
+              placeholder="######"
+              onChange={(e) => {
+                setConfirmCode(e.target.value);
+              }}
+            />
+            <ConfirmButtonBlock>
+              <ConfirmButton
+                onClick={() => {
+                  handleConfirm();
+                }}
+              >
+                Confirm
+              </ConfirmButton>
+              <Codelive>Codelive is 10 min</Codelive>
+            </ConfirmButtonBlock>
 
-          <RequestNewCodeButton
-            onClick={() => {
-              handleRequestNewCode();
-            }}
-          >
-            Request new code
-          </RequestNewCodeButton>
-        </InputBlock>
-      </Wrapper>
-    </Container>
+            <RequestNewCodeButton
+              onClick={() => {
+                handleRequestNewCode();
+              }}
+            >
+              Request new code
+            </RequestNewCodeButton>
+          </InputBlock>
+        </Wrapper>
+      </MobileConfirmEmail>
+    )
+  ) : (
+    <Navigate to="/createProfile" />
   );
-};
+});
 
 export default ConfirmEmail;
