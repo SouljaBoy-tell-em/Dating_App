@@ -78,7 +78,9 @@ public class SwiperController {
                     currentUser.getLastname(),
                     (int) currentUser.getBirthday().until(LocalDate.now(), ChronoUnit.YEARS),
                     userServiceManager.GetAvatarUrl(currentUser.getUsername()),
-                    currentUser.getDescription()));
+                    currentUser.getDescription(),
+                    currentUser.getCity(),
+                    currentUser.getZodiacSign()));
         }
 
         return new ResponseEntity<>(swiperFormResponses, HttpStatus.OK);
