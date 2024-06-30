@@ -8,6 +8,7 @@ import com.project.requests.admin.UserUpdateField;
 import com.project.user_config.main.PersonalType;
 import com.project.user_config.main.UserRole;
 import com.project.user_config.main.UserServiceManager;
+import com.project.user_config.main.ZodiacSign;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,7 @@ public class UpdateFieldsController {
                 case CASE_ACTIVE_UPDATE          -> userServiceManager.ActiveUpdate((String)                       changeField,  email); // ACCESS: ADMIN, USER;
                 case CASE_BAN                    -> userServiceManager.Ban(email);
                 case CASE_BIRTHDAY_UPDATE        -> userServiceManager.BirthdayUpdate((LocalDate)                  changeField);         // ACCESS: USER;
+                case CASE_CITY_UPDATE            -> userServiceManager.CityUpdate((String) changeField);                                 // ACCESS: USER;
                 case CASE_CONFIRM_UPDATE         -> userServiceManager.ConfirmUpdate(Boolean.parseBoolean((String) changeField), email); // ACCESS: ADMIN, USER;
                 case CASE_FIRSTNAME_UPDATE       -> userServiceManager.FirstnameUpdate((String)                    changeField);         // ACCESS: USER;
                 case CASE_GENDER                 -> userServiceManager.GenderUpdate(Boolean.parseBoolean((String) changeField));         // ACCESS: USER;
@@ -53,6 +55,7 @@ public class UpdateFieldsController {
                         case UserRole.ROLE_ADMIN -> userServiceManager.RoleUpdate(UserRole.ROLE_ADMIN, email);                           // ACCESS: ADMIN, USER;
                     }
                 }
+                case CASE_ZODIAC_SIGN_UPDATE     -> userServiceManager.ZodiacSignUpdate(ZodiacSign.valueOf(changeField.toString()));     // ACCESS: USER;
 
                 // BLACKLIST REQUESTS:
                 case CASE_ADD_TO_BLACKLIST -> {

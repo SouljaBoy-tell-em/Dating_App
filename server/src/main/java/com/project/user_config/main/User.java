@@ -15,7 +15,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-
 @AllArgsConstructor
 @Builder
 @Entity
@@ -109,6 +108,16 @@ public class User implements Serializable, UserDetails {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "email")
     private List<Grade> grades;
+
+    @Column(name = "zodiacSign")
+    @Getter
+    @Setter
+    private ZodiacSign zodiacSign;
+
+    @Column(name = "city")
+    @Getter
+    @Setter
+    private String city;
 // ###################################################################################################
 
     public User() {

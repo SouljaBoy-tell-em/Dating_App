@@ -48,9 +48,15 @@ public interface UserRepository extends CrudRepository<User, String>,
     void ProfileFilledUpdate(boolean isConfirm, String email);
 
     @Modifying
+    @Query(value = "update users set city = ?1 where email = ?2", nativeQuery = true)
+    @Transactional
+    void CityUpdate(String city, String email);
+
+    @Modifying
     @Query(value = "update users set is_confirm = 1 where email = ?1", nativeQuery = true)
     @Transactional
     void Confirmed(String email);
+
 
     @Modifying
     @Query(value = "update users set firstname = ?1 where email = ?2", nativeQuery = true)
@@ -91,6 +97,11 @@ public interface UserRepository extends CrudRepository<User, String>,
     @Query(value = "update users set user_role = ?1 where email = ?2", nativeQuery = true)
     @Transactional
     void RoleUpdate(UserRole userRole, String email);
+
+    @Modifying
+    @Query(value = "update users set zodiac_sign = ?1 where email = ?2", nativeQuery = true)
+    @Transactional
+    void ZodiacSignUpdate(ZodiacSign zodiacSign, String email);
 
     // SWIPER
 //    @Query(value = "select liked_email from likes where email = ?1 order by grade_time desc limit 1;", nativeQuery = true)

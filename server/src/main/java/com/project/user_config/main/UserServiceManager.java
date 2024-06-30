@@ -159,6 +159,10 @@ public class UserServiceManager {
         userRepository.BirthdayUpdate(changeField, GetEmail());
     }
 
+    public void CityUpdate(String city) {
+        userRepository.CityUpdate(city, GetEmail());
+    }
+
     public void ConfirmUpdate(boolean changeField, String email) { // ACCESS: ADMIN, USER;
         userRepository.ConfirmUpdate(changeField, email);
     }
@@ -194,6 +198,9 @@ public class UserServiceManager {
         userRepository.RoleUpdate(role, email);
     }
 
+    public void ZodiacSignUpdate(ZodiacSign zodiacSign) {
+        userRepository.ZodiacSignUpdate(zodiacSign, GetEmail());
+    }
 
 
     // BLACKLIST:

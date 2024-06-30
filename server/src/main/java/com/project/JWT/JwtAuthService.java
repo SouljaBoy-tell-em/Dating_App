@@ -5,10 +5,7 @@ import com.project.requests.AuthorizationRequest;
 import com.project.requests.JwtAuthResponse;
 import com.project.requests.RefreshRequest;
 import com.project.requests.RegisterRequest;
-import com.project.user_config.main.PersonalType;
-import com.project.user_config.main.User;
-import com.project.user_config.main.UserRole;
-import com.project.user_config.main.UserServiceManager;
+import com.project.user_config.main.*;
 import com.project.utilits.RandomFieldGenerator;
 import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
@@ -113,6 +110,8 @@ public class JwtAuthService {
                 .birthday(LocalDate.of(2003, 11, 11))
                 .description(RandomFieldGenerator.GenerateRandomDescription())
                 .isPrivate(false)
+                .zodiacSign(ZodiacSign.NONE)
+                .city(null)
                 .build();
         userServiceManager.Add(user);
 
