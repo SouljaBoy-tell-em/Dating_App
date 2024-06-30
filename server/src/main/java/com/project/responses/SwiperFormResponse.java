@@ -1,6 +1,7 @@
 package com.project.responses;
 
 
+import com.project.user_config.main.ZodiacSign;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,6 @@ public class SwiperFormResponse {
     private int age;
     private String imageAvatarUrl;
     private String description;
+    private String city;
+    private ZodiacSign zodiacSign;
 }
