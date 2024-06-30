@@ -1,15 +1,19 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
+
+import { observer } from "mobx-react-lite";
+
+import { Navigate } from "react-router";
+
+import { useMediaQuery } from "react-responsive";
+
+import Context from "../..";
+import { AccessLevels } from "../../shared/accessLevel/accessLevel";
+
 import Header from "../Main/Header";
 
 import ProfileForm from "./ProfileForm";
-import ProfilePhoto from "./ProfilePhoto";
-import { observer } from "mobx-react-lite";
-import Context from "../..";
-import { AccessLevels } from "../../shared/accessLevel/accessLevel";
-import { Navigate } from "react-router";
-import { useMediaQuery } from "react-responsive";
 import MobileCreateProfile from "./MobileCreateProfile/MobileCreateProfile";
 
 const Container = styled.div`
@@ -50,7 +54,6 @@ const CreateProfile = observer(() => {
         <Header color="#f1e2ff" />
         <Wrapper>
           <ProfileForm />
-          <ProfilePhoto />
         </Wrapper>
       </Container>
     ) : (

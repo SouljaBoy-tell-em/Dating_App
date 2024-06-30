@@ -8,6 +8,7 @@ import { ProfileDTO } from "../models/ProfileDTO";
 
 import { UserInf } from "../models/UserInf";
 import { AccessLevels } from "../accessLevel/accessLevel";
+import GeneralUpdateRequest from "../models/profile/GeneralUpdateRequest";
 
 export default class Store {
   user = {} as UserDTO;
@@ -84,8 +85,7 @@ export default class Store {
       this.accessLevel = AccessLevels.LEVEL3;
       break;
     }
-    console.log(this.userInfo);
-    console.log(this.accessLevel);
+
   }
   async login(email: string, password: string): Promise<any> {
     try {
@@ -170,6 +170,12 @@ export default class Store {
   async fieldProfile(profileDTO: ProfileDTO) {
     try {
       await ProfileService.fieldProfile(profileDTO);
+    } catch (error: any) {}
+  }
+
+  async updateField(request:GeneralUpdateRequest) {
+    try {
+      await ProfileService.updateField(request);
     } catch (error: any) {}
   }
 

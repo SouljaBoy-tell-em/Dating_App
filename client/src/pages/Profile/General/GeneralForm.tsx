@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 
 import Context from "../../..";
 import UploadPhoto from "../../CreateProfile/UploadPhoto";
+import { observer } from "mobx-react-lite";
 
 const Container = styled.div`
   display: flex;
@@ -97,15 +98,15 @@ const DateInput = styled.input`
   font-size: x-large;
 `;
 
-interface GeneralForimInterface{
-  setABOpen: (isOpen:boolean) => void;
+interface GeneralForimInterface {
+  setABOpen: (isOpen: boolean) => void;
 }
-const GeneralForm:React.FC<GeneralForimInterface> = ({setABOpen}) => {
+const GeneralForm: React.FC<GeneralForimInterface> = observer(({ setABOpen }) => {
   const { store } = useContext(Context);
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [birthday, setBirthday] = useState("");
+  const [birthday, setBirthday] = useState(store.userInfo.birthDate ?? "");
   const [isPrivate, setIsPrivate] = useState("");
 
   const handleFirstnameChange = (event: any) => {
@@ -135,6 +136,8 @@ const GeneralForm:React.FC<GeneralForimInterface> = ({setABOpen}) => {
     });
   };
 
+  console.log(store.userInfo.birthDate);
+
   return (
     <Container>
       <Wrapper>
@@ -157,9 +160,16 @@ const GeneralForm:React.FC<GeneralForimInterface> = ({setABOpen}) => {
       </Wrapper>
       <Wrapper>
         <Label>Birthday</Label>
-        <DateInput type="date" value={birthday} onChange={handleBirthdayChange} min="1940-01-01" max="2006-01-01"/>
+        <DateInput
+          type="date"
+          value={birthday}
+          placeholder={store.userInfo.birthDate}
+          onChange={handleBirthdayChange}
+          min="1940-01-01"
+          max="2006-01-01"
+        />
       </Wrapper>
-      
+
       <Wrapper>
         <Label>Is private</Label>
         <RadioContainer>
@@ -185,15 +195,21 @@ const GeneralForm:React.FC<GeneralForimInterface> = ({setABOpen}) => {
       </Wrapper>
       <Wrapper>
         <Label>Address</Label>
-        <AddressButton onClick={()=>{setABOpen(true);}}>Choosee Address</AddressButton>
+        <AddressButton
+          onClick={() => {
+            setABOpen(true);
+          }}
+        >
+          Choosee Address
+        </AddressButton>
       </Wrapper>
-      <hr/>
+      <hr />
       <UploadPhoto />
-      <hr/>
+      <hr />
 
       <SaveButton onClick={handleFormSubmit}>Save</SaveButton>
     </Container>
   );
-};
+});
 
 export default GeneralForm;

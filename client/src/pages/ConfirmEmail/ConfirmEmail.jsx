@@ -41,10 +41,9 @@ const InputBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  @media (max-width:1224px){
+  @media (max-width: 1224px) {
     width: 90%;
     padding: 10px;
-
   }
 `;
 
@@ -61,7 +60,7 @@ const Input = styled.input`
   height: 72px;
   border-radius: 15px;
   border: 0;
-  @media (max-width:1224px){
+  @media (max-width: 1224px) {
     width: 90%;
   }
 `;
@@ -69,7 +68,7 @@ const ConfirmButtonBlock = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-
+  margin-top: 20px;
 `;
 const ConfirmButton = styled.button`
   cursor: pointer;
@@ -94,7 +93,7 @@ const ConfirmButton = styled.button`
 const Codelive = styled.p`
   font-size: 30px;
   font-weight: 500;
-  @media (max-width:1224px){
+  @media (max-width: 1224px) {
     display: none;
   }
 `;
@@ -123,6 +122,24 @@ const MobileConfirmEmail = styled.div`
   width: 100%;
   height: 100vh;
 `;
+
+const DesktopStyles = {
+  height: "100vh",
+  minHeight: "1024px",
+  maxHeight: "1200px",
+  width: "100%",
+  minWidth: "1440px",
+  maxWidth: "2400px",
+  backgroundColor: "#ffffff",
+  position: "relative",
+  marginLeft: "auto",
+  marginRight: "auto",
+};
+
+const MobileStyles = {
+  width: "100%",
+  height: "100vh",
+};
 
 const ConfirmEmail = observer(() => {
   const [confirmCode, setConfirmCode] = useState(null);
@@ -163,11 +180,16 @@ const ConfirmEmail = observer(() => {
   };
 
   return store.accessLevel === AccessLevels.LEVEL1 ? (
-    isDesktop ? (
-      <Container>
-        <Header color="#f1e2ff" />
-        <Wrapper>
-          <InputBlock>
+    <div style={isDesktop ? DesktopStyles : MobileStyles}>
+      {isDesktop && <Header color="#f1e2ff" />}
+      <Wrapper>
+        <InputBlock>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleConfirm();
+            }}
+          >
             <Label>Сonfirmation code</Label>
             <Input
               placeholder="######"
@@ -176,59 +198,21 @@ const ConfirmEmail = observer(() => {
               }}
             />
             <ConfirmButtonBlock>
-              <ConfirmButton
-                onClick={() => {
-                  handleConfirm();
-                }}
-              >
-                Confirm
-              </ConfirmButton>
+              <ConfirmButton>Confirm</ConfirmButton>
               <Codelive>Codelive is 10 min</Codelive>
             </ConfirmButtonBlock>
+          </form>
 
-            <RequestNewCodeButton
-              onClick={() => {
-                handleRequestNewCode();
-              }}
-            >
-              Request new code
-            </RequestNewCodeButton>
-          </InputBlock>
-        </Wrapper>
-      </Container>
-    ) : (
-      <MobileConfirmEmail>
-        <Wrapper>
-          <InputBlock>
-            <Label>Сonfirmation code</Label>
-            <Input
-              placeholder="######"
-              onChange={(e) => {
-                setConfirmCode(e.target.value);
-              }}
-            />
-            <ConfirmButtonBlock>
-              <ConfirmButton
-                onClick={() => {
-                  handleConfirm();
-                }}
-              >
-                Confirm
-              </ConfirmButton>
-              <Codelive>Codelive is 10 min</Codelive>
-            </ConfirmButtonBlock>
-
-            <RequestNewCodeButton
-              onClick={() => {
-                handleRequestNewCode();
-              }}
-            >
-              Request new code
-            </RequestNewCodeButton>
-          </InputBlock>
-        </Wrapper>
-      </MobileConfirmEmail>
-    )
+          <RequestNewCodeButton
+            onClick={() => {
+              handleRequestNewCode();
+            }}
+          >
+            Request new code
+          </RequestNewCodeButton>
+        </InputBlock>
+      </Wrapper>
+    </div>
   ) : (
     <Navigate to="/createProfile" />
   );
