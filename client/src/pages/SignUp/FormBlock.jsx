@@ -97,14 +97,16 @@ const FormBlock = () => {
       window.alert("Пароли не совпадают");
     } else {
       const e = await store.registration(email, password);
-      if (store.isAuth) {
-        navigate("/confirmEmail");
-      } else {
-        console.log(e);
-        window.alert(
-          e?.response?.data ? e?.response?.data : "Проблема с регистрацией"
-        );
-      }
+      setTimeout(() => {
+        if (store.isAuth) {
+          navigate("/confirmEmail");
+        } else {
+          console.log(e);
+          window.alert(
+            e?.response?.data ? e?.response?.data : "Проблема с регистрацией"
+          );
+        }
+      }, 100);
     }
   };
 

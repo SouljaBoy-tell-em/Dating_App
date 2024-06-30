@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./style.css";
 import UploadPhoto from "./UploadPhoto";
 import Context from "../..";
+import Dropdown from "./DropDown";
 
 const Container = styled.div`
   border-radius: 15px;
@@ -55,6 +56,7 @@ const Button = styled.button`
 const RadioContainer = styled.div`
   display: flex;
   gap: 10px;
+  margin-top: -10px;
 `;
 
 const DateInput = styled.input`
@@ -70,6 +72,24 @@ const Warning = styled.p`
   font: red 700 30px;
   background-color: #fbbcbc;
 `;
+
+const ZodiacInput = styled.input``;
+
+const zodiacOptions = [
+  "Aries",
+  "Taurus",
+  "Gemini",
+  "Cancer",
+  "Leo",
+  "Virgo",
+  "Libra",
+  "Scorpio",
+  "Sagittarius",
+  "Capricorn",
+  "Aquarius",
+  "Pisces",
+];
+
 const ProfileForm = () => {
   const { store } = useContext(Context);
   const navigate = useNavigate();
@@ -79,8 +99,11 @@ const ProfileForm = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [birthday, setBirthday] = useState("");
-  const [isPrivate, setIsPrivate] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
   const [isWarning, setWarning] = useState(false);
+  const [file, setFile] = useState(null);
+  const [zodiac, setZodiac] = useState("");
+  const [country, setCountry] = useState("");
 
   const handleFirstnameChange = (event) => {
     setFirstname(event.target.value);
@@ -98,6 +121,13 @@ const ProfileForm = () => {
     setIsPrivate(event.target.value);
   };
 
+  const handleCountryChange = (e) => {
+    setCountry(e.target.value);
+  };
+
+  const handleZodiacChange = (e) => {
+    setZodiac(e);
+  };
   const handleFormSubmit = async () => {
     if (checkField()) {
       setWarning(false);
@@ -109,6 +139,7 @@ const ProfileForm = () => {
         birthday: birthday,
         isPrivate: isPrivateBool,
       });
+      await store.uploadAvatar(file);
       if (isDesktop) store.setTutorial(true);
       navigate("/main");
     } else {
@@ -121,10 +152,24 @@ const ProfileForm = () => {
       firstname != "" &&
       lastname != "" &&
       birthday != "" &&
-      isPrivate != ""
+      zodiac != "" &&
+      country != "" &&
+      file != null
     ) {
       return true;
-    } else return false;
+    } else {
+      console.log(
+        firstname,
+        lastname,
+        birthday,
+        isPrivate,
+        zodiac,
+        country,
+        file
+      );
+      return false;
+
+    }
   };
 
   return (
@@ -145,8 +190,21 @@ const ProfileForm = () => {
         placeholder={store.userInfo.lastName}
       />
       <Label>Birthday</Label>
-      <DateInput type="date" value={birthday} onChange={handleBirthdayChange} min="1940-01-01" max="2006-01-01"/>
-      <Label>Is private</Label>
+      <DateInput
+        type="date"
+        value={birthday}
+        onChange={handleBirthdayChange}
+        min="1940-01-01"
+        max="2006-01-01"
+      />
+      <Label>Country</Label>
+      <Input type="text" value={country} onChange={handleCountryChange} />
+      <Dropdown
+        label="Zodiac"
+        options={zodiacOptions}
+        onChange={handleZodiacChange}
+      />
+      {/* <Label>Is private</Label>
       <RadioContainer>
         <label>
           <input
@@ -166,8 +224,8 @@ const ProfileForm = () => {
           />
           No
         </label>
-      </RadioContainer>
-      <UploadPhoto />
+      </RadioContainer> */}
+      <UploadPhoto externalFile={file} externalSetFile={setFile} />
       <Button onClick={handleFormSubmit}>Send</Button>
     </Container>
   );

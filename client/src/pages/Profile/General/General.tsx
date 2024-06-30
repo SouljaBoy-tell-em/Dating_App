@@ -2,9 +2,6 @@ import React, { useState } from "react";
 
 import styled from "styled-components";
 
-import ProfileForm from "../../CreateProfile/ProfileForm";
-import ProfilePhoto from "../../CreateProfile/ProfilePhoto";
-
 import GeneralForm from "./GeneralForm";
 import GeneralPhoto from "./GeneralPhoto";
 import AddressBlock from "./AddressBlock";

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
 import PersonalityTypeSelector from "./PersonalityTypeSelector";
@@ -19,9 +19,11 @@ import ISFJ from "./ISFJ";
 import ISFP from "./ISFP";
 import ISTJ from "./ISTJ";
 import ISTP from "./ISTP";
+import { observer } from "mobx-react-lite";
+import Context from "../../..";
+import { UserUpdateField } from "../../../shared/models/profile/GeneralUpdateRequest";
 
-const Container = styled.div`
-`;
+const Container = styled.div``;
 const QuestionsBlock = styled.div`
   height: fit-content;
 `;
@@ -103,7 +105,7 @@ const QuestionsContainer = styled.div`
   text-align: center;
   font-family: "Bodoni MT";
   font-size: 150%;
-  height: fit-content ;
+  height: fit-content;
   width: 97vw;
 
   .question-block {
@@ -128,6 +130,7 @@ const QuestionsContainer = styled.div`
 `;
 
 const QuizBlock = () => {
+  const { store } = useContext(Context);
   const [selectedType, setSelectedType] = useState(null);
   const questionsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
@@ -184,6 +187,12 @@ const QuizBlock = () => {
     const calculatedResult = calculateMBTI(answers);
     setResult(calculatedResult);
     setSelectedType(calculatedResult);
+    console.log(calculatedResult);
+    store.updateField({
+      email: store.userInfo.username,
+      field: calculatedResult,
+      type: UserUpdateField.personalityTest ,
+    });
   };
 
   const handleAnswer = (index, answer) => {
@@ -344,7 +353,10 @@ const QuizBlock = () => {
               </div>
             </ResultBlock>
             <InformationBlock>
-              <Image src={`images/PersonaTest/${selectedType}.png`} alt={selectedType} />
+              <Image
+                src={`images/PersonaTest/${selectedType}.png`}
+                alt={selectedType}
+              />
               <Text>
                 {selectedType === "INTJ" && (
                   <div dangerouslySetInnerHTML={{ __html: INTJ }} />
@@ -403,7 +415,7 @@ const QuizBlock = () => {
   );
 };
 
-export default QuizBlock;
+export default observer(QuizBlock);
 
 function calculateMBTI(answers) {
   let result = "";
