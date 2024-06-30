@@ -1,10 +1,12 @@
 package com.project.requests.admin;
 
+
 public enum UserUpdateField {
     // PROFILE INFO CASES:
     CASE_ACTIVE_UPDATE,
     CASE_BAN,
     CASE_BIRTHDAY_UPDATE,
+    CASE_CITY_UPDATE,
     CASE_CONFIRM_UPDATE,
     CASE_FIRSTNAME_UPDATE,
     CASE_LASTNAME_UPDATE,
@@ -13,6 +15,7 @@ public enum UserUpdateField {
     CASE_PERSONAL_TYPE_UPDATE,
     CASE_PROFILE_ACCESS_UPDATE,
     CASE_ROLE_UPDATE,
+    CASE_ZODIAC_SIGN_UPDATE,
 
     // BLACKLIST CASES:
     CASE_ADD_TO_BLACKLIST,
