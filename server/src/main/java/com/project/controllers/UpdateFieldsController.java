@@ -93,6 +93,8 @@ public class UpdateFieldsController {
         if(userServiceManager.IsAccess(userServiceManager.GetEmail())) {
             userServiceManager.FirstnameUpdate(request.getFirstname());
             userServiceManager.LastnameUpdate(request.getLastname());
+            userServiceManager.CityUpdate(request.getCity());
+            userServiceManager.ZodiacSignUpdate(request.getZodiacSign());
             userServiceManager.BirthdayUpdate(request.getBirthday());
             userServiceManager.ProfileAccessUpdate(request.isPrivate(), userServiceManager.GetEmail());
             userServiceManager.ProfileFilledUpdate(true, userServiceManager.GetEmail());
