@@ -178,6 +178,8 @@ public class AuthController {
                     currentUser.isProfileFilled(),
                     currentUser.getFirstname(),
                     currentUser.getLastname(),
+                    currentUser.getCity(),
+                    currentUser.getZodiacSign(),
                     currentUser.getBirthday(),
                     currentUser.getPersonalType()
         ),
