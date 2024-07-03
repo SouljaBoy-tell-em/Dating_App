@@ -80,7 +80,8 @@ public class SwiperController {
                     userServiceManager.GetAvatarUrl(currentUser.getUsername()),
                     currentUser.getDescription(),
                     currentUser.getCity(),
-                    currentUser.getZodiacSign()));
+                    currentUser.getZodiacSign(),
+                    currentUser.getPersonalType().toString()));
         }
 
         return new ResponseEntity<>(swiperFormResponses, HttpStatus.OK);

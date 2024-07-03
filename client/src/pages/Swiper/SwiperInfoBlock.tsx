@@ -77,7 +77,7 @@ const SwiperInfoBlock = observer(() => {
         </MainText>
         <LocationBlock>
           <LocationIcon src="/images/swiper/Location.png" />
-          <BaseText>(Location)</BaseText>
+          <BaseText>{swiperStore.users[0]?.city ?? "(Location)"}</BaseText>
         </LocationBlock>
         <SmallInfoBlock>
           <BaseText>About me</BaseText>
@@ -85,11 +85,11 @@ const SwiperInfoBlock = observer(() => {
         </SmallInfoBlock>
         <SmallInfoBlock>
           <BaseText>Zodiac sign</BaseText>
-          <SmallText>{swiperStore.users[0]?.zodiac}</SmallText>
+          <SmallText>{swiperStore.users[0]?.zodiacSign ?? "Gemini"}</SmallText>
         </SmallInfoBlock>
         <SmallInfoBlock>
           <BaseText>Personality test</BaseText>
-          <SmallText>{swiperStore.users[0]?.testResult}</SmallText>
+          <SmallText>{swiperStore.users[0]?.personalType ?? "-----"}</SmallText>
         </SmallInfoBlock>
       </InfoBlock>
       <Link to={`/user/${swiperStore.users[0]?.email}`}>

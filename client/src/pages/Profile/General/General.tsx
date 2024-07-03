@@ -2,9 +2,6 @@ import React, { useState } from "react";
 
 import styled from "styled-components";
 
-import ProfileForm from "../../CreateProfile/ProfileForm";
-import ProfilePhoto from "../../CreateProfile/ProfilePhoto";
-
 import GeneralForm from "./GeneralForm";
 import GeneralPhoto from "./GeneralPhoto";
 import AddressBlock from "./AddressBlock";
@@ -27,6 +24,7 @@ const Wrapper = styled.div`
 const PhotoWrapper = styled.div`
   height: min-content;
   margin-top: 20px;
+  margin-left: -100px;
 `;
 const General = () => {
 

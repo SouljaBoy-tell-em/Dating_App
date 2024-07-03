@@ -5,11 +5,22 @@ import DatePicker from "react-datepicker";
 
 import Context from "../../..";
 import UploadPhoto from "../../CreateProfile/UploadPhoto";
+import { observer } from "mobx-react-lite";
+import Dropdown from "../../CreateProfile/DropDown";
+import { zodiacOptions } from "../../../shared/models/profile/ZodiacOptions";
+import { UserUpdateField } from "../../../shared/models/profile/GeneralUpdateRequest";
+
+const GeneralContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: fit-content;
 `;
 
 const Wrapper = styled.div`
@@ -44,7 +55,7 @@ const StyledDatePicker = styled(DatePicker)`
 `;
 
 const AddressButton = styled.button`
-  background-color: #007bff;
+  background-color: #c768c0;
   color: white;
   padding: 6px 12px;
   border: none;
@@ -67,7 +78,7 @@ const AddressButton = styled.button`
 `;
 
 const SaveButton = styled.button`
-  background-color: #007bff;
+  background-color: #c768c0;
   font-size: 25px;
 
   color: white;
@@ -78,7 +89,7 @@ const SaveButton = styled.button`
   transition: all 0.3s ease;
   width: fit-content;
   &:hover {
-    background-color: #0056b3;
+    background-color: #c754bf;
   }
 
   &:active {
@@ -97,103 +108,198 @@ const DateInput = styled.input`
   font-size: x-large;
 `;
 
-interface GeneralForimInterface{
-  setABOpen: (isOpen:boolean) => void;
+const TextArea = styled.textarea`
+  font-size: 20px;
+  width: 300px;
+  cursor: default;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  outline: none;
+  overflow-y: auto;
+  resize: none;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #999;
+  }
+  border: none;
+`;
+
+const TextAreaWrapper = styled.div`
+  padding: 2px 10px;
+  border-radius: 15px;
+  border: 1px solid black;
+`;
+
+interface GeneralForimInterface {
+  setABOpen: (isOpen: boolean) => void;
 }
-const GeneralForm:React.FC<GeneralForimInterface> = ({setABOpen}) => {
-  const { store } = useContext(Context);
+const GeneralForm: React.FC<GeneralForimInterface> = observer(
+  ({ setABOpen }) => {
+    const { store } = useContext(Context);
 
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [isPrivate, setIsPrivate] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [birthday, setBirthday] = useState(store.userInfo.birthDate ?? "");
+    const [gender, setGender] = useState("");
+    const [city, setCity] = useState("");
+    const [zodiac, setZodiac] = useState("");
+    const [description, setDescription] = useState("");
 
-  const handleFirstnameChange = (event: any) => {
-    setFirstname(event.target.value);
-  };
+    const handleFirstnameChange = (event: any) => {
+      setFirstname(event.target.value);
+    };
 
-  const handleLastnameChange = (event: any) => {
-    setLastname(event.target.value);
-  };
+    const handleLastnameChange = (event: any) => {
+      setLastname(event.target.value);
+    };
 
-  const handleBirthdayChange = (event: any) => {
-    setBirthday(event.target.value);
-  };
+    const handleBirthdayChange = (event: any) => {
+      setBirthday(event.target.value);
+    };
 
-  const handleIsPrivateChange = (event: any) => {
-    setIsPrivate(event.target.value);
-  };
+    const handleIsGenderChange = (event: any) => {
+      setGender(event.target.value);
+    };
 
-  const handleFormSubmit = () => {
-    const isPrivateBool = isPrivate === "Yes" ? true : false;
-    store.fieldProfile({
-      email: "ifedorov555@mail.ru",
-      firstname: firstname !== "" ? firstname : store.userInfo.firstName,
-      lastname: lastname !== "" ? lastname : store.userInfo.lastName,
-      birthday: birthday,
-      isPrivate: isPrivateBool,
-    });
-  };
+    const handleCityChange = (event: any) => {
+      setCity(event.target.value);
+    };
 
-  return (
-    <Container>
-      <Wrapper>
-        <Label>Firstname</Label>
-        <Input
-          type="text"
-          value={firstname}
-          onChange={handleFirstnameChange}
-          placeholder={store.userInfo.firstName}
-        />
-      </Wrapper>
-      <Wrapper>
-        <Label>Lastname</Label>
-        <Input
-          type="text"
-          value={lastname}
-          onChange={handleLastnameChange}
-          placeholder={store.userInfo.lastName}
-        />
-      </Wrapper>
-      <Wrapper>
-        <Label>Birthday</Label>
-        <DateInput type="date" value={birthday} onChange={handleBirthdayChange} min="1940-01-01" max="2006-01-01"/>
-      </Wrapper>
-      
-      <Wrapper>
-        <Label>Is private</Label>
-        <RadioContainer>
-          <label>
-            <input
-              type="radio"
-              value="Yes"
-              checked={isPrivate === "Yes"}
-              onChange={handleIsPrivateChange}
+    const handleDescriptionChange = (event: any) => {
+      setDescription(event.target.value);
+    };
+
+    const handleZodiacChange = (value: string) => {
+      setZodiac(value);
+    };
+
+    const handleFormSubmit = async () => {
+      const genderBool = gender === "Male" ? "true" : "false";
+
+      await store.fieldProfile({
+        email: "ifedorov555@mail.ru",
+        firstname: firstname !== "" ? firstname : store.userInfo.firstName,
+        lastname: lastname !== "" ? lastname : store.userInfo.lastName,
+        birthday: birthday,
+        isPrivate: false,
+        zodiacSign:
+          zodiac !== "" ? zodiac.toUpperCase() : store.userInfo.zodiacSign,
+        city: city !== "" ? city : store.userInfo.city,
+      });
+
+      await store.updateField({
+        email: store.userInfo.username,
+        field: gender !== "" ? genderBool : store.userInfo.gender,
+        type: UserUpdateField.gender,
+      });
+      await store.updateField({
+        email: store.userInfo.username,
+        field: description !== "" ? description : store.userInfo.description,
+        type: UserUpdateField.description,
+      });
+    };
+
+    console.log(store.userInfo.birthDate);
+
+    return (
+      <GeneralContainer>
+        <Container>
+          <Wrapper>
+            <Label>Firstname</Label>
+            <Input
+              type="text"
+              value={firstname}
+              onChange={handleFirstnameChange}
+              placeholder={store.userInfo.firstName}
             />
-            Yes
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="No"
-              checked={isPrivate === "No"}
-              onChange={handleIsPrivateChange}
+          </Wrapper>
+          <Wrapper>
+            <Label>Lastname</Label>
+            <Input
+              type="text"
+              value={lastname}
+              onChange={handleLastnameChange}
+              placeholder={store.userInfo.lastName}
             />
-            No
-          </label>
-        </RadioContainer>
-      </Wrapper>
-      <Wrapper>
-        <Label>Address</Label>
-        <AddressButton onClick={()=>{setABOpen(true);}}>Choosee Address</AddressButton>
-      </Wrapper>
-      <hr/>
-      <UploadPhoto />
-      <hr/>
+          </Wrapper>
+          <Wrapper>
+            <Label>Country</Label>
+            <Input
+              type="text"
+              value={city}
+              onChange={handleCityChange}
+              placeholder={store.userInfo.city}
+            />
+          </Wrapper>
+          <Wrapper>
+            <Dropdown
+              label="Zodiac"
+              options={zodiacOptions}
+              onChange={handleZodiacChange}
+            />
+          </Wrapper>
+          <Wrapper>
+            <Label>Birthday</Label>
+            <DateInput
+              type="date"
+              value={birthday}
+              placeholder={store.userInfo.birthDate}
+              onChange={handleBirthdayChange}
+              min="1940-01-01"
+              max="2006-01-01"
+            />
+          </Wrapper>
 
-      <SaveButton onClick={handleFormSubmit}>Save</SaveButton>
-    </Container>
-  );
-};
+          <Wrapper>
+            <Label>Gender</Label>
+            <RadioContainer>
+              <label>
+                <input
+                  type="radio"
+                  value="Male"
+                  checked={gender === "Male"}
+                  onChange={handleIsGenderChange}
+                />
+                Male
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="Female"
+                  checked={gender === "Female"}
+                  onChange={handleIsGenderChange}
+                />
+                Female
+              </label>
+            </RadioContainer>
+          </Wrapper>
+          <hr />
+          <UploadPhoto />
+          <hr />
+        </Container>
+        <Wrapper>
+          <Label>Description</Label>
+          <TextAreaWrapper>
+            <TextArea
+              value={description}
+              onChange={handleDescriptionChange}
+              placeholder={store.userInfo.description}
+              rows={4}
+            />
+          </TextAreaWrapper>
+        </Wrapper>
+
+        <SaveButton onClick={handleFormSubmit}>Save</SaveButton>
+      </GeneralContainer>
+    );
+  }
+);
 
 export default GeneralForm;

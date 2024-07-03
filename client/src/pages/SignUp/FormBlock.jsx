@@ -4,6 +4,7 @@ import { Navigate, useLocation, useNavigate, Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 
 import Context from "../../";
+import { observer } from "mobx-react-lite";
 
 const Container = styled.div`
   display: flex;
@@ -80,31 +81,51 @@ const LicenseP = styled.p`
     text-decoration: underline;
   }
 `;
-const FormBlock = () => {
+
+const LicenseBlock = styled.div`
+  display: flex;
+  gap: 10px;
+  font-size: 20px;
+`;
+
+const LicenseInput = styled.input``;
+
+const WarningBlock = styled.div`
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #ffa2a2;
+`;
+
+const FormBlock = observer(() => {
   const location = useLocation();
-  const fromPage = location.state?.from?.pathname || "/";
   const { store } = useContext(Context);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confPassword, setConfPassword] = useState("");
+  const [isWarning, setWarning] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (confPassword !== password) {
+    console.log(store.signUpConfirmLicense);
+    if (store.signUpConfirmPassword !== store.signUpPassword) {
       window.alert("Пароли не совпадают");
+    } else if (store.signUpConfirmLicense === false) {
+      setWarning(true);
     } else {
-      const e = await store.registration(email, password);
-      if (store.isAuth) {
-        navigate("/confirmEmail");
-      } else {
-        console.log(e);
-        window.alert(
-          e?.response?.data ? e?.response?.data : "Проблема с регистрацией"
-        );
-      }
+      setWarning(false);
+      const e = await store.registration(
+        store.signUpEmail,
+        store.signUpPassword
+      );
+      store.setSignUpDefault();
+      setTimeout(() => {
+        if (store.isAuth) {
+          navigate("/confirmEmail");
+        } else {
+          window.alert(
+            e?.response?.data ? e?.response?.data : "Проблема с регистрацией"
+          );
+        }
+      }, 100);
     }
   };
 
@@ -118,12 +139,13 @@ const FormBlock = () => {
     <Container>
       <LabelLogIn>Sign up</LabelLogIn>
       <LogInForm onSubmit={handleSubmit} onKeyPress={handleKeyPress}>
+        {isWarning && <WarningBlock>Please, confirm license</WarningBlock>}
         <Label htmlFor="login">Email</Label>
         <Input
           type="text"
           id="login"
           name="login"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => store.setSignUpEmail(e.target.value)}
           required
         />
         <Label htmlFor="password">Password</Label>
@@ -131,8 +153,8 @@ const FormBlock = () => {
           type="password"
           id="password"
           name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={store.signUpPassword}
+          onChange={(e) => store.setSignUpPassword(e.target.value)}
           required
         />
         <Label htmlFor="confPassword">Confirm password</Label>
@@ -140,19 +162,29 @@ const FormBlock = () => {
           type="password"
           id="confPassword"
           name="confPassword"
-          value={confPassword}
-          onChange={(e) => setConfPassword(e.target.value)}
+          value={store.signUpConfirmPassword}
+          onChange={(e) => store.setSignUpConfirmPassword(e.target.value)}
           required
         />
 
+        <LicenseBlock>
+          <LicenseP>
+            By registering, you agree to the{" "}
+            <Link to="/license" state={{ from: location }}>
+              license agreement
+            </Link>
+          </LicenseP>
+          <LicenseInput
+            type="checkbox"
+            value={store.signUpConfirmLicense}
+            onChange={(e) => store.setSignUpConfirmLicense(e.target.value)}
+          />
+        </LicenseBlock>
+
         <Button onClick={handleSubmit}>Sign up</Button>
-        <LicenseP>
-          By registering, you agree to the{" "}
-          <Link to="/license">license agreement</Link>
-        </LicenseP>
       </LogInForm>
     </Container>
   );
-};
+});
 
 export default FormBlock;

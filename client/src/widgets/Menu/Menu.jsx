@@ -51,20 +51,21 @@ export const Menu = observer(() => {
   const { height } = useDimensions(containerRef);
   const { store } = useContext(Context);
 
-
   return (
     <>
-      <motion.nav
-        className="menu-nav"
-        initial={false}
-        animate={store.isMenuOpen ? "open" : "closed"}
-        custom={height}
-        ref={containerRef}
-      >
-        <MenuBackground colorTheme={store.colorTheme} variants={sidebar} />
-        <Navigation />
-        <MenuToggle toggle={() => store.changeMenuOpen()} />
-      </motion.nav>
+      {store.isAuth && (
+        <motion.nav
+          className="menu-nav"
+          initial={false}
+          animate={store.isMenuOpen ? "open" : "closed"}
+          custom={height}
+          ref={containerRef}
+        >
+          <MenuBackground colorTheme={store.colorTheme} variants={sidebar} />
+          <Navigation />
+          <MenuToggle toggle={() => store.changeMenuOpen()} />
+        </motion.nav>
+      )}
       {store.isTutorial && <Tutorial />}
       {store.isLoading && <Loading />}
 

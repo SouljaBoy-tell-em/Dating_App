@@ -5,4 +5,6 @@ export interface ProfileDTO {
     birthday:string;
     isPrivate:boolean;
     email:string;
+    city:string;
+    zodiacSign:string;
 }

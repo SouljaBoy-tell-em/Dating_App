@@ -8,6 +8,7 @@ import { ProfileDTO } from "../models/ProfileDTO";
 
 import { UserInf } from "../models/UserInf";
 import { AccessLevels } from "../accessLevel/accessLevel";
+import GeneralUpdateRequest from "../models/profile/GeneralUpdateRequest";
 
 export default class Store {
   user = {} as UserDTO;
@@ -20,6 +21,32 @@ export default class Store {
   avatarURL = "";
   accessLevel: AccessLevels = AccessLevels.LEVEL0;
   isMenuOpen = false;
+
+  /*Sign Up form*/
+  signUpPassword = "";
+  signUpEmail = "";
+  signUpConfirmPassword = "";
+  signUpConfirmLicense = false;
+
+  setSignUpPassword (value:string) {
+    this.signUpPassword = value;
+  }
+  setSignUpEmail (value:string) {
+    this.signUpEmail = value;
+  }
+  setSignUpConfirmPassword (value:string) {
+    this.signUpConfirmPassword = value;
+  }
+  setSignUpConfirmLicense(value:boolean) {
+    this.signUpConfirmLicense = value;
+  }
+
+  setSignUpDefault () {
+    this.signUpEmail="";
+    this.signUpPassword="";
+    this.signUpConfirmPassword="";
+  }
+  /*---------------------------------------------------*/
 
   constructor() {
     makeAutoObservable(this);
@@ -84,8 +111,7 @@ export default class Store {
       this.accessLevel = AccessLevels.LEVEL3;
       break;
     }
-    console.log(this.userInfo);
-    console.log(this.accessLevel);
+
   }
   async login(email: string, password: string): Promise<any> {
     try {
@@ -129,6 +155,7 @@ export default class Store {
 
       this.setAuth(false);
       this.setUser({} as UserDTO);
+      this.accessLevel = AccessLevels.LEVEL0;
     } catch (e) {}
   }
 
@@ -170,6 +197,12 @@ export default class Store {
   async fieldProfile(profileDTO: ProfileDTO) {
     try {
       await ProfileService.fieldProfile(profileDTO);
+    } catch (error: any) {}
+  }
+
+  async updateField(request:GeneralUpdateRequest) {
+    try {
+      await ProfileService.updateField(request);
     } catch (error: any) {}
   }
 

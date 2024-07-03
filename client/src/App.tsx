@@ -27,6 +27,7 @@ import Context from ".";
 import { AccessLevels } from "./shared/accessLevel/accessLevel";
 import ChatPage from "./pages/ChatPage/ChatPage";
 import HomePage from "./features/HomePage";
+import PersonalityTestPage from "./pages/PersonalityTest/PersonalityTest";
 
 const Container = styled.div`
   position: relative;
@@ -106,6 +107,15 @@ function App() {
             element={
               <RequireAuth accessLevel={AccessLevels.LEVEL3}>
                 <HomePage />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/personalityTest"
+            element={
+              <RequireAuth accessLevel={AccessLevels.LEVEL3}>
+                <PersonalityTestPage />
               </RequireAuth>
             }
           />

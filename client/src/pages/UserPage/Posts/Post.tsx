@@ -17,7 +17,10 @@ const PostContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 20px 0;
   padding: 20px;
-  width: 300px;
+  width: calc(100% - 40px);
+  @media (min-width:1224x) {
+    width: 300px;
+  }
 `;
 
 const UserInfo = styled.div`

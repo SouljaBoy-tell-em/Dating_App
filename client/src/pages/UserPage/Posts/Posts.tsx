@@ -15,8 +15,9 @@ const Container = styled.div`
   flex-direction: column;
   gap: 20px;
   margin-top: -20px;
-  /* overflow-y: auto; */
-  /* max-height: 800px; */
+  @media (max-width:1224px) {
+    width: 100%;
+  } 
 `;
 
 const Posts = observer(() => {

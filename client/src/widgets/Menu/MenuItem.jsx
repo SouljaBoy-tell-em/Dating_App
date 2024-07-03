@@ -34,7 +34,7 @@ const colors = [
 ];
 
 const routes = ["/", "/chat", "/swiper", "/profile", "/homePage"];
-const text = ["Main Page", "Chat", "Swiper", "Edit Profile", "Home Page"];
+const text = ["About us", "Chat", "Swiper", "Edit Profile", "Home Page"];
 
 const iconType = ["", "chat", "swiper", "profile", ""];
 

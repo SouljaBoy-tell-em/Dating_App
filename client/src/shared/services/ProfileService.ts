@@ -3,6 +3,7 @@ import { AxiosResponse } from "axios";
 import $api, { API_URL } from "../http";
 import { ChatDTO } from "../models/chat/ChatDTO";
 import { ProfileDTO } from "../models/ProfileDTO";
+import GeneralUpdateRequest from "../models/profile/GeneralUpdateRequest";
 
 
 const $avatar_url = API_URL + "/photo/1";
@@ -24,4 +25,9 @@ export default class ProfileService {
       },
     });
   }
+
+  static async updateField(request: GeneralUpdateRequest): Promise<string> {
+    return $api.post("/profile/update/field", request);
+  }
+
 }

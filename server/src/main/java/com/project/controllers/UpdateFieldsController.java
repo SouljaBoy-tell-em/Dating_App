@@ -56,7 +56,7 @@ public class UpdateFieldsController {
                     }
                 }
                 case CASE_ZODIAC_SIGN_UPDATE     -> userServiceManager.ZodiacSignUpdate(ZodiacSign.valueOf(changeField.toString()));     // ACCESS: USER;
-
+                case CASE_DESCRIPTION     -> userServiceManager.DescriptionUpdate((String) changeField, email);
                 // BLACKLIST REQUESTS:
                 case CASE_ADD_TO_BLACKLIST -> {
                     return userServiceManager.AddToBlackList((String) changeField);                                                      // ACCESS: USER;

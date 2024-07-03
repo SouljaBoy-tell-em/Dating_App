@@ -6,7 +6,6 @@ import { observer } from "mobx-react-lite";
 
 import UserPageStore from "../../shared/store/userPageStore";
 
-
 import Context from "../..";
 import ChatService from "../../shared/services/ChatService";
 
@@ -16,12 +15,9 @@ import Posts from "./Posts/Posts";
 import UserImage from "./UserImage";
 
 const Container = styled.div`
-  height: 100vh;
-  min-height: 1024px;
-  max-height: 1200px;
-  width: 100%;
-  min-width: 1440px;
-  max-width: 2400px;
+  height: 100vh;  
+  width: calc(100% - 20px);
+  padding: 10px 0;
   background-color: #ffffff;
   position: relative;
   margin-left: auto;
@@ -29,6 +25,13 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (min-width: 1224px) {
+    width: 100%;
+    min-width: 1440px;
+    max-width: 2400px;
+    min-height: 1024px;
+    max-height: 1200px;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -37,12 +40,17 @@ const Wrapper = styled.div`
   flex-direction: row;
   position: absolute;
   top: 100px;
+  @media (max-width: 1224px) {
+    flex-direction: column;
+    width: 100%;
+  } 
 `;
 
 const GeneralWrapper = styled.div`
   display: flex;
   gap: 20px;
   @media (max-width: 1200px) {
+    display: inline-flex;
     flex-direction: column;
   }
 `;
@@ -55,6 +63,11 @@ const GeneralInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width: 400px;
+  @media (max-width:1224px) {
+    width: calc(100% - 60px);
+    max-width: none;
+  }
 `;
 
 const Name = styled.p`
@@ -70,10 +83,14 @@ const Param = styled.p`
 const ParamValue = styled.p`
   font-size: 25px;
   font-weight: 400;
+  width: 100%;
+  word-wrap: break-word; 
+  white-space: normal;
 `;
 
 const InfoContainer = styled.div`
-  display: flex;
+  display: inline;
+  width: 100%;
 `;
 
 const AnotherWrapper = styled.div`
@@ -96,7 +113,7 @@ export { UserPageContext };
 const UserPage = observer(() => {
   const { email } = useParams<{ email: string }>();
   const emailAddress = email ? email : "";
-  const {store} = useContext(Context);
+  const { store } = useContext(Context);
   useEffect(() => {
     userPageStore.setEmail(emailAddress);
     userPageStore.getAllPosts();
@@ -109,29 +126,42 @@ const UserPage = observer(() => {
         <Wrapper>
           <AnotherWrapper>
             <GeneralWrapper>
-              <UserImage src={ChatService.getImageUrl(userPageStore.profileInfo.photoURL)}/>
+              <UserImage
+                src={ChatService.getImageUrl(
+                  userPageStore.profileInfo.photoURL
+                )}
+              />
               <GeneralInfo>
-                <Name>{userPageStore.profileInfo.firstname} {userPageStore.profileInfo.lastname}</Name>
+                <Name>
+                  {userPageStore.profileInfo.firstname}{" "}
+                  {userPageStore.profileInfo.lastname}
+                </Name>
                 <InfoContainer>
                   <Param>Birthday: </Param>
                   <ParamValue>{userPageStore.profileInfo.birthday}</ParamValue>
                 </InfoContainer>
                 <InfoContainer>
-                  <Param>Country: </Param>
-                  <ParamValue>Russia</ParamValue>
+                  <Param>City: </Param>
+                  <ParamValue>{userPageStore.profileInfo.city ?? "---"}</ParamValue>
                 </InfoContainer>
                 <InfoContainer>
                   <Param>Gender: </Param>
-                  <ParamValue>{userPageStore.profileInfo.isMan ? "Man" : "Woman"}</ParamValue>
+                  <ParamValue>
+                    {userPageStore.profileInfo.isMan ? "Man" : "Woman"}
+                  </ParamValue>
                 </InfoContainer>
                 <InfoContainer>
-                  <Param>Status: </Param>
-                  <ParamValue>divorsed</ParamValue>
+                  <Param>Personality test: </Param>
+                  <ParamValue>{userPageStore.profileInfo.personalType ?? "---"}</ParamValue>
+                </InfoContainer>
+                <InfoContainer>
+                  <Param>Description: </Param>
+                  <ParamValue>{userPageStore.profileInfo.description ?? "---"}</ParamValue>
                 </InfoContainer>
               </GeneralInfo>
             </GeneralWrapper>
 
-            {store.user.email===userPageStore.email&&<AddPost/>}
+            {store.user.email === userPageStore.email && <AddPost />}
           </AnotherWrapper>
 
           <Posts />

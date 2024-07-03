@@ -103,6 +103,11 @@ public interface UserRepository extends CrudRepository<User, String>,
     @Transactional
     void ZodiacSignUpdate(ZodiacSign zodiacSign, String email);
 
+    @Modifying
+    @Query(value = "update users set description = ?1 where email = ?2", nativeQuery = true)
+    @Transactional
+    void DescriptionUpdate(String description, String email);
+
     // SWIPER
 //    @Query(value = "select liked_email from likes where email = ?1 order by grade_time desc limit 1;", nativeQuery = true)
 //    String GetLastLikedEmail(String email);

@@ -95,7 +95,10 @@ public class PostController {
             profile.setMan(user.isMan());
             profile.setDescription(user.getDescription());
             profile.setBirthday(user.getBirthday());
-            profile.setPhotoURL(userServiceManager.GetAvatarUrl(email)); // files(postFileService.getPostFileDTO(post.getFiles()))
+            profile.setPhotoURL(userServiceManager.GetAvatarUrl(email));// files(postFileService.getPostFileDTO(post.getFiles()))
+            profile.setCity(user.getCity());
+            profile.setZodiacSign(user.getZodiacSign());
+            profile.setPersonalType(user.getPersonalType());
             return ResponseEntity.ok(profile);
         } else {
             return ResponseEntity.badRequest().body("This page is not available");

@@ -21,4 +21,6 @@ public class MainUserInfoRepsonse {
     private ZodiacSign zodiacSign;
     private LocalDate birthDate;
     private PersonalType personalType;
+    private String description;
+
 }

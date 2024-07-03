@@ -31,7 +31,7 @@ const MobileSwiper = () => {
   return (
     <Container>
       <Header>
-        <PageName>Swiper</PageName>
+        {/* <PageName>Swiper</PageName> */}
       </Header>
       <SwiperImageBlock />
       <SwiperInfoBlock />

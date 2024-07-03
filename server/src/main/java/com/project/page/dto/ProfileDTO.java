@@ -1,5 +1,7 @@
 package com.project.page.dto;
 
+import com.project.user_config.main.PersonalType;
+import com.project.user_config.main.ZodiacSign;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,9 @@ public class ProfileDTO {
     private LocalDate birthday;
     private String description;
     private String photoURL;
+    private String city;
+    private PersonalType personalType;
+    private ZodiacSign zodiacSign;
 
     public boolean isMan() {
         return isMan;

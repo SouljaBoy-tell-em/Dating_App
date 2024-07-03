@@ -4,5 +4,9 @@ export interface UPProfileDTO{
     isMan:boolean;
     birthday:string;
     description:string;
-    photoURL:string
+    photoURL:string;
+    city:string;
+    zodiacSign:string;
+    gender:string;
+    personalType:string;
 }

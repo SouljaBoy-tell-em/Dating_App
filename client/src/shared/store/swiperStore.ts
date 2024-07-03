@@ -51,7 +51,6 @@ export default class SwiperStore {
   getUsers = async () => {
     try {
       const response = await SwiperService.getUsersForSwiper(this.filtedSet);
-      console.log(response);
       if (response.length > 0) {
         this.setUsers(response);
       } else {

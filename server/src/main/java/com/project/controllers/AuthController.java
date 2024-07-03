@@ -181,7 +181,8 @@ public class AuthController {
                     currentUser.getCity(),
                     currentUser.getZodiacSign(),
                     currentUser.getBirthday(),
-                    currentUser.getPersonalType()
+                    currentUser.getPersonalType(),
+                    currentUser.getDescription()
         ),
                     HttpStatus.OK);
     }

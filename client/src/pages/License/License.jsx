@@ -3,6 +3,20 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 
 import "./License.css";
 import termsAndConditionsText from "./termsAndConditions";
+import styled from "styled-components";
+
+const TopContainer = styled.div`
+  width: 100%;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`;
+
+const Header = styled.h2`
+  width: max-content;
+`;
 
 function HomePage({ setPage, fromPage }) {
   const [showModal, setShowModal] = useState(false);
@@ -25,30 +39,24 @@ function HomePage({ setPage, fromPage }) {
 
   return (
     <div className="home-page">
-      <button className="button-23" onClick={() => setShowModal(true)}>
+      {/* <button className="button-23" onClick={() => setShowModal(true)}>
         Sign Up
-      </button>
+      </button> */}
       (
       <div className="modal">
-        <button className="close-button" onClick={handleClose}>
+        {/* <button className="close-button" onClick={handleClose}>
           &#10006;
-        </button>
+        </button> */}
         <div className="modal-content" ref={modalContentRef}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <h2>TERMS & CONDITIONS</h2>
+          <TopContainer>
+            <Header>TERMS & CONDITIONS</Header>
             <button
               className="button-39 scroll-to-bottom-button"
               onClick={handleScrollToBottom}
             >
               Scroll to Bottom
             </button>
-          </div>
+          </TopContainer>
           <p dangerouslySetInnerHTML={{ __html: termsAndConditionsText }}></p>
           <Link to={fromPage}>
             {" "}
@@ -63,10 +71,10 @@ function HomePage({ setPage, fromPage }) {
         </div>
       </div>
       )
-      <p className="terms-text">
+      {/* <p className="terms-text">
         By creating an account, you agree to our Terms & Conditions and Privacy
         Policy
-      </p>
+      </p> */}
     </div>
   );
 }
@@ -74,7 +82,6 @@ function HomePage({ setPage, fromPage }) {
 const License = () => {
   const location = useLocation();
   const fromPage = location.state?.from?.pathname || "/";
-  console.log(location.state);
 
   const [page, setPage] = useState("home");
 

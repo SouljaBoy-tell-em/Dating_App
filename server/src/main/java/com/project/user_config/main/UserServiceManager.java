@@ -194,6 +194,9 @@ public class UserServiceManager {
         userRepository.ProfileAccessUpdate(changeField, email);
     }
 
+    public void DescriptionUpdate(String changeField, String email) { // ACCESS: ADMIN, USER;
+        userRepository.DescriptionUpdate(changeField, email);
+    }
     public void RoleUpdate(UserRole role, String email) { // ACCESS: ADMIN, USER;
         userRepository.RoleUpdate(role, email);
     }

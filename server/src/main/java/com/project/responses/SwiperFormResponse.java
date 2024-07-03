@@ -20,4 +20,5 @@ public class SwiperFormResponse {
     private String description;
     private String city;
     private ZodiacSign zodiacSign;
+    private String personalType;
 }

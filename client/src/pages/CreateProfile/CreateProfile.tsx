@@ -1,15 +1,19 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
+
+import { observer } from "mobx-react-lite";
+
+import { Navigate } from "react-router";
+
+import { useMediaQuery } from "react-responsive";
+
+import Context from "../..";
+import { AccessLevels } from "../../shared/accessLevel/accessLevel";
+
 import Header from "../Main/Header";
 
 import ProfileForm from "./ProfileForm";
-import ProfilePhoto from "./ProfilePhoto";
-import { observer } from "mobx-react-lite";
-import Context from "../..";
-import { AccessLevels } from "../../shared/accessLevel/accessLevel";
-import { Navigate } from "react-router";
-import { useMediaQuery } from "react-responsive";
 import MobileCreateProfile from "./MobileCreateProfile/MobileCreateProfile";
 
 const Container = styled.div`
@@ -17,7 +21,6 @@ const Container = styled.div`
   min-height: 1024px;
   max-height: 1200px;
   width: 100%;
-  min-width: 1440px;
   max-width: 2400px;
 
   background-color: #ffffff;
@@ -38,6 +41,16 @@ const Wrapper = styled.div`
   top: 300px;
 `;
 
+const Text = styled.h2`
+  font-size: 45px;
+  font-weight: 500;
+  top:150px;
+  left:50px;
+  position: absolute;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 const CreateProfile = observer(() => {
   const { store } = useContext(Context);
   const isDesktop = useMediaQuery({
@@ -49,8 +62,8 @@ const CreateProfile = observer(() => {
       <Container>
         <Header color="#f1e2ff" />
         <Wrapper>
+          <Text>Let's create profile!</Text>
           <ProfileForm />
-          <ProfilePhoto />
         </Wrapper>
       </Container>
     ) : (

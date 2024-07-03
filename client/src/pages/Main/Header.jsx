@@ -26,7 +26,8 @@ const AuthButtonsWrapper = styled.div`
   margin-right: 100px;
   @media (max-width: 1224px) {
     margin: 0;
-    margin-top: 70px;
+    margin-top: 10px;
+    margin-right: 10px;
   }
 `;
 

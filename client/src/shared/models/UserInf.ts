@@ -7,6 +7,11 @@ export interface UserInf{
     likedUsersId:number;
     firstName:string;
     lastName:string;
-    birthday:string;
+    birthDate:string;
     profileFilled:boolean;
+    city:string;
+    zodiacSign:string;
+    gender:string;
+    personalType:string;
+    description:string;
 }

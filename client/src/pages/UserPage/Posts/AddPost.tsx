@@ -14,6 +14,10 @@ const Container = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   background-color: #ffffff;
+  @media (max-width:1224px) {
+    
+    width: calc(100% - 40px);
+  }
 `;
 
 const PostForm = styled.form`
@@ -23,7 +27,7 @@ const PostForm = styled.form`
 `;
 
 const TextArea = styled.textarea`
-  width: 100%;
+  width: calc(100% - 20px);
   height: 100px;
   padding: 10px;
   border-radius: 5px;
@@ -37,12 +41,12 @@ const Button = styled.button`
   width: 100px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #c768c0;
   color: white;
   font-size: 16px;
   cursor: pointer;
   &:hover {
-    background-color: #0056b3;
+    background-color: #c258bb;
   }
 `;
 

@@ -19,8 +19,6 @@ const RequireAuth: React.FC<RequireAuthInterface> = observer(
       store.checkAuth();
     });
 
-    console.log(store.accessLevel, accessLevel);
-
     return store.accessLevel >= accessLevel ? (
       children
     ) : (

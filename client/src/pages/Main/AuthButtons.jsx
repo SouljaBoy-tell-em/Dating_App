@@ -18,6 +18,9 @@ const LogInButton = styled.button`
   font-size: 45px;
   padding: 0px 30px;
   cursor: pointer;
+  color:black;
+  width: max-content;
+
   &:active {
     transform: scale(1.05);
   }
@@ -34,6 +37,9 @@ const SignUpButton = styled.button`
   font-size: 45px;
   padding: 0px 30px;
   cursor: pointer;
+  color:black;
+  width: max-content;
+
   &:active {
     transform: scale(1.05);
   }
@@ -50,6 +56,9 @@ const LogOutButton = styled.button`
   font-size: 45px;
   padding: 0px 30px;
   cursor: pointer;
+  color:black;
+  width: max-content;
+
   &:active {
     transform: scale(1.05);
   }
