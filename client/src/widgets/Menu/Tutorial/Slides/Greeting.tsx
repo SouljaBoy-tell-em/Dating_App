@@ -1,7 +1,9 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import AnimatedText from "../AnimatedText";
+
 import { observer } from "mobx-react-lite";
+
+import AnimatedText from "../AnimatedText";
 import { TutorialContext } from "../Tutorial";
 import Context from "../../../..";
 import { Slides } from "../../../../shared/store/turorialStore";

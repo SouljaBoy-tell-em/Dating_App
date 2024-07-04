@@ -39,6 +39,7 @@ const InputPlusButton = styled.div`
   margin-top: 10px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   gap: 25px;
 `;
 
@@ -71,6 +72,7 @@ const InputButton = styled.button`
   align-items: center;
   @media (max-width: 1224px) {
     width: 120px;
+    margin-right:-10px
   }
 `;
 

@@ -1,8 +1,10 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { ChatContext } from "../ChatPage";
+
 import { IoClose } from "react-icons/io5";
+
+import { ChatContext } from "../ChatPage";
 import ListOfChats from "../ListOfChats";
 
 const Container = styled.div<{ isOpen: boolean }>`

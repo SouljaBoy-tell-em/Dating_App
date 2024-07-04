@@ -60,14 +60,13 @@ public class SwiperController {
                                            @RequestParam(value = "gender") boolean gender) {
         List<User> next3Users;
         List<SwiperFormResponse> swiperFormResponses = new ArrayList<>();
+        System.out.println(gender);
 
-        System.out.println("TRIGGER 1");
         if(startAge > 0 && endAge > 0 && startAge < endAge)
             next3Users = userRepository.GetNext3UsersFilteredByAge(userServiceManager.GetEmail(), startAge, endAge, gender);
         else
             next3Users = userRepository.GetNext3Users(userServiceManager.GetEmail());
 
-        System.out.println("TRIGGER 2");
 
         for(int iUser = 0; iUser < next3Users.size(); iUser++) {
             User currentUser = next3Users.get(iUser);

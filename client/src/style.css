@@ -13,3 +13,11 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+
+@font-face {
+  font-family: 'Jost';
+  src: url('../public/fonts/Jost-VariableFont_wght.ttf') format('truetype');
+
+}
+

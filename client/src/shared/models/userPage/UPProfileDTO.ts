@@ -9,4 +9,5 @@ export interface UPProfileDTO{
     zodiacSign:string;
     gender:string;
     personalType:string;
+    man:boolean;
 }

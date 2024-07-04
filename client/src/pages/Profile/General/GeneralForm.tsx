@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import DatePicker from "react-datepicker";
+import { observer } from "mobx-react-lite";
 
 import Context from "../../..";
 import UploadPhoto from "../../CreateProfile/UploadPhoto";
-import { observer } from "mobx-react-lite";
 import Dropdown from "../../CreateProfile/DropDown";
 import { zodiacOptions } from "../../../shared/models/profile/ZodiacOptions";
 import { UserUpdateField } from "../../../shared/models/profile/GeneralUpdateRequest";
@@ -45,37 +44,6 @@ const RadioContainer = styled.div`
   gap: 10px;
 `;
 
-const StyledDatePicker = styled(DatePicker)`
-  .react-datepicker {
-    font-family: Arial, sans-serif;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-  }
-`;
-
-const AddressButton = styled.button`
-  background-color: #c768c0;
-  color: white;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.3s ease;
-  width: fit-content;
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  &:disabled {
-    background-color: #ccc;
-  }
-`;
 
 const SaveButton = styled.button`
   background-color: #c768c0;

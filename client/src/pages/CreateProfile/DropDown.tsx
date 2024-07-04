@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from 'react';
-import styled from 'styled-components';
+import { ChangeEvent, useState } from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ interface DropdownProps {
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ options, label, onChange }) => {
-  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [selectedOption, setSelectedOption] = useState<string>("");
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);

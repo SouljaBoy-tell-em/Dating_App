@@ -1,8 +1,11 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { SwiperContext } from "./SwiperPage";
+
 import { getImageURL } from "../../shared/http";
+
+import { SwiperContext } from "./SwiperPage";
+import SwiperFilter from "./SwiperFilter";
 
 const SwiperContainer = styled.div`
   z-index: 100;
@@ -110,8 +113,44 @@ const LocationIcon = styled.img`
   margin-left: -8px;
   margin-right: 4px;
 `;
+
+const SwiperFilterImage = styled.img`
+  position:absolute;
+  top:0;
+  right:0;
+  border-top-right-radius:15px;
+  border-bottom-left-radius:15px;
+  width:70px;
+  height:70px;
+  z-index:200;
+  background-color: rgb(255,255,255, 0.7);
+  transition: 0.3s all;
+  &:hover{
+    background-color: rgb(255,255,255, 0.9);
+  }
+`;
+
+const UnstyledButton = styled.button`
+  background-color:0;
+  border:0;
+  cursor:pointer;
+`;
+
+const SwiperFilterWrapper = styled.div`
+  background-color:rgb(255,255,255,0.7);
+  position:fixed;
+  width:100%;
+  height:100vh;
+  z-index:3000;
+  top:0;
+  left:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+`;
 const SwiperImageBlock = observer(() => {
   const { swiperStore } = useContext(SwiperContext);
+  const [isFilterOpen, setFilterOpen] = useState(false);
 
   const handleDislike = async () => {
     await swiperStore.ratePerson(swiperStore.users[0]?.email, false);
@@ -127,11 +166,24 @@ const SwiperImageBlock = observer(() => {
     if (response) {
       window.alert(response);
     }
-  };
+  };  
+
+  const handleFilterWrapperClick = (e:any) => {
+    if (e.target === e.currentTarget) {
+      setFilterOpen(false);
+    }
+  }
 
   return (
     <SwiperContainer>
       <SwiperImage src={getImageURL(swiperStore.users[0]?.imageAvatarUrl)} />
+      <UnstyledButton onClick={()=>setFilterOpen(true)}>       
+         <SwiperFilterImage src="/images/swiper/Filter.svg"/>
+      </UnstyledButton>
+      {isFilterOpen && 
+      <SwiperFilterWrapper onClick={handleFilterWrapperClick}>
+        <SwiperFilter onClose={()=>setFilterOpen(false)}/>
+      </SwiperFilterWrapper>}
       <SwiperColorDiv />
       <SwiperBottomBlock>
         <TextBlock>
@@ -148,7 +200,7 @@ const SwiperImageBlock = observer(() => {
             <IconContainer>
               <IconImageDeny
                 src="/images/swiper/Deny.png"
-                onClick={async ()=>{await handleDislike()}}
+                onClick={async ()=>{await handleDislike();}}
               />
             </IconContainer>
           </IconButton>
@@ -156,7 +208,7 @@ const SwiperImageBlock = observer(() => {
             <IconContainer>
               <IconImageHeart
                 src="/images/swiper/Heart.png"
-                onClick={async ()=>{await handleLike()}}
+                onClick={async ()=>{await handleLike();}}
               />
             </IconContainer>
           </IconButton>

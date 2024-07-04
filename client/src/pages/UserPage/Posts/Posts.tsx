@@ -34,6 +34,7 @@ const Posts = observer(() => {
         .reverse()
         .map((value, index) => (
           <Post
+            key = {value.id}
             post={value}
             isOurPage={store.user.email === userPageStore.email}
             avatarURL={getImageURL(userPageStore.profileInfo.photoURL)}

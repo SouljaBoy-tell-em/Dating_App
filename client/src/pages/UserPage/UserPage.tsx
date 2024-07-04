@@ -147,7 +147,7 @@ const UserPage = observer(() => {
                 <InfoContainer>
                   <Param>Gender: </Param>
                   <ParamValue>
-                    {userPageStore.profileInfo.isMan ? "Man" : "Woman"}
+                    {userPageStore.profileInfo.man ? "Man" : "Woman"}
                   </ParamValue>
                 </InfoContainer>
                 <InfoContainer>

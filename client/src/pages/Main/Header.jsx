@@ -18,6 +18,7 @@ const Container = styled.div`
   z-index: 10;
   @media (max-width: 1224px) {
     justify-content: end;
+    height: 140px;
   }
 `;
 

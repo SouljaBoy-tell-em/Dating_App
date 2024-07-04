@@ -1,8 +1,12 @@
 import React, { createContext, useState } from "react";
 import styled from "styled-components";
-import Greeting from "./Slides/Greeting";
-import TutorialStore, { Slides } from "../../../shared/store/turorialStore";
+
 import { observer } from "mobx-react-lite";
+
+import TutorialStore, { Slides } from "../../../shared/store/turorialStore";
+
+import Greeting from "./Slides/Greeting";
+
 import MenuSlide from "./Slides/MenuSlide";
 
 const Container = styled.div`
@@ -35,12 +39,12 @@ const Tutorial = observer(() => {
 
   if (slide != undefined) {
     switch (slide) {
-      case Slides.GREETING:
-        zIndex = 1000;
-        break;
-      case Slides.MENU:
-        zIndex = 100;
-        break;
+    case Slides.GREETING:
+      zIndex = 1000;
+      break;
+    case Slides.MENU:
+      zIndex = 100;
+      break;
     }
   }
 

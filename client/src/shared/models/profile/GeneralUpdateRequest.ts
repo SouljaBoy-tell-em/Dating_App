@@ -10,5 +10,5 @@ export default interface GeneralUpdateRequest{
     email:string;
     field:string;
     type: UserUpdateField;
-}
+};;;;;;;;;;
 

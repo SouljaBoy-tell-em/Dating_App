@@ -45,6 +45,14 @@ const TitleUnderline = styled.div`
   height: 30px;
 `;
 
+const Heart = styled.img`
+  width: 165px; 
+  height:165px;
+  z-index: 100;
+  position:absolute;
+  left:440px;
+  top:80px;
+`;
 const Logo = (props) => {
   return (
     <Container>
@@ -55,6 +63,7 @@ const Logo = (props) => {
         <TitleText>Phystech.Date</TitleText>
         <TitleUnderline backgroundcolor={props.color}/>
       </TitleBlock>
+      <Heart src="images/header/Heart.svg"/>
     </Container>
   );
 };

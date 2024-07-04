@@ -17,7 +17,7 @@ export default class SwiperService {
       await $api.get(
         `/swiper?startAge=${filtedSet.ageFrom}&endAge=${
           filtedSet.ageTo
-        }&gender=${filtedSet.sex === "man" ? true : false}`
+        }&gender=${filtedSet.sex}`
       )
     ).data;
   }

@@ -23,11 +23,12 @@ import SwiperPage from "./pages/Swiper/SwiperPage";
 import License from "./pages/License/License";
 import UserPage from "./pages/UserPage/UserPage";
 
-import Context from ".";
 import { AccessLevels } from "./shared/accessLevel/accessLevel";
 import ChatPage from "./pages/ChatPage/ChatPage";
 import HomePage from "./features/HomePage";
 import PersonalityTestPage from "./pages/PersonalityTest/PersonalityTest";
+
+import Context from ".";
 
 const Container = styled.div`
   position: relative;

@@ -1,8 +1,10 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { SwiperContext } from "./SwiperPage";
+
 import { Link } from "react-router-dom";
+
+import { SwiperContext } from "./SwiperPage";
 
 const Container = styled.div`
   min-height: 520px;

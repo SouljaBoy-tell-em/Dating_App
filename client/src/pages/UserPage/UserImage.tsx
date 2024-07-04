@@ -18,7 +18,7 @@ interface UserImageInterface {
 
 const UserImage:React.FC<UserImageInterface> = ({src}) => {
   const handleError = (e: any) => {
-    e.target.src = "http://localhost:3000/images/NoAvatar.jpg"; // Запасной URL
+    e.target.src = "/images/NoAvatar.jpg"; // Запасной URL
   };
 
   return (

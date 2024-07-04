@@ -3,8 +3,9 @@ import styled from "styled-components";
 
 import { observer } from "mobx-react-lite";
 
-import { ChatContext } from "../../pages/ChatPage/ChatPage";
 import { useMediaQuery } from "react-responsive";
+
+import { ChatContext } from "../../pages/ChatPage/ChatPage";
 
 const Container = styled.div`
   display: flex;

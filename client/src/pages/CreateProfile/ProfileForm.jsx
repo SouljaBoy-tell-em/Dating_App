@@ -1,11 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import DatePicker from "react-datepicker";
 import { observer } from "mobx-react-lite";
 import { useMediaQuery } from "react-responsive";
 
-import "react-datepicker/dist/react-datepicker.css";
 import "./style.css";
 import UploadPhoto from "./UploadPhoto";
 import Context from "../..";
@@ -115,6 +113,7 @@ const ProfileForm = () => {
     setZodiac(e);
   };
   const handleFormSubmit = async () => {
+    store.setLoading(true);
     if (checkField()) {
       setWarning(false);
       const isPrivateBool = isPrivate === "Yes" ? true : false;
@@ -133,6 +132,7 @@ const ProfileForm = () => {
     } else {
       setWarning(true);
     }
+    store.setLoading(false);
   };
 
   const checkField = () => {

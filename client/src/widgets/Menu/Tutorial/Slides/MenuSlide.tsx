@@ -1,11 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TutorialContext } from "../Tutorial";
+
 import styled from "styled-components";
+
+import { observer } from "mobx-react-lite";
+
+import { useLocation } from "react-router-dom";
+
+import { TutorialContext } from "../Tutorial";
 import { Slides } from "../../../../shared/store/turorialStore";
 import Context from "../../../..";
-import { observer } from "mobx-react-lite";
+
+
 import AnimatedText from "../AnimatedText";
-import { useLocation } from "react-router-dom";
+
 
 const Container = styled.div`
   position: absolute;

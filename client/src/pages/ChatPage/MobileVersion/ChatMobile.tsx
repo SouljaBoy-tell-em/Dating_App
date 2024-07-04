@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
+
+import { observer } from "mobx-react-lite";
+
 import { ChatContext } from "../ChatPage";
 import Context from "../../..";
-import { observer } from "mobx-react-lite";
 
 import BottomBlock from "../../../widgets/Chat/BottomBlock";
 import Message from "../../../widgets/Chat/Message";
@@ -134,8 +136,8 @@ const ChatMobile = observer(() => {
     chatStore.chatUsers.length === 0
       ? "Choose chat"
       : chatStore.chatUsers[0] === store.userInfo.username
-      ? chatStore.chatUsers[1]
-      : chatStore.chatUsers[0];
+        ? chatStore.chatUsers[1]
+        : chatStore.chatUsers[0];
 
   return (
     <Container isOpen={!chatStore.isMobileChatChoosing}>
